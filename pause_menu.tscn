@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://vrwj5ryuex6l"]
+
+[node name="Pause_Menu" type="CanvasLayer"]
+visible = false
+
+[node name="Resume" type="Button" parent="."]
+offset_left = 480.0
+offset_top = 200.0
+offset_right = 672.0
+offset_bottom = 248.0
+text = "Resume"
+
+[node name="Quit" type="Button" parent="."]
+offset_left = 480.0
+offset_top = 264.0
+offset_right = 672.0
+offset_bottom = 312.0
+text = "Quit"
