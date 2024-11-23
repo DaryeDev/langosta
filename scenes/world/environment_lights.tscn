@@ -1,0 +1,70 @@
+[gd_scene load_steps=6 format=3 uid="uid://dh6ckwdfb2vtf"]
+
+[ext_resource type="PackedScene" uid="uid://byjn5yc1m1okl" path="res://addons/SunshineVolumetricClouds/CloudsPrefab.tscn" id="1_qvhib"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_x8voq"]
+sky_top_color = Color(0.162047, 0.429135, 0.843697, 1)
+sky_horizon_color = Color(0.417942, 0.694059, 0.842029, 1)
+ground_horizon_color = Color(0.643182, 0.659734, 0.651781, 1)
+
+[sub_resource type="Sky" id="Sky_tyhie"]
+sky_material = SubResource("ProceduralSkyMaterial_x8voq")
+
+[sub_resource type="Environment" id="Environment_f8w8m"]
+background_mode = 2
+background_intensity = 100000.0
+sky = SubResource("Sky_tyhie")
+tonemap_mode = 3
+tonemap_white = 8.0
+ssao_detail = 2.0
+sdfgi_enabled = true
+glow_normalized = true
+glow_intensity = 6.68
+fog_light_color = Color(1, 1, 1, 1)
+fog_density = 0.001
+fog_aerial_perspective = 0.353
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.005
+volumetric_fog_emission = Color(0.596078, 0.866667, 0.980392, 1)
+adjustment_enabled = true
+adjustment_saturation = 1.5
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_qo5hu"]
+exposure_multiplier = 3.069
+auto_exposure_enabled = true
+auto_exposure_scale = 0.22
+auto_exposure_speed = 0.8
+dof_blur_far_distance = 1.44
+dof_blur_near_distance = 0.01
+auto_exposure_min_sensitivity = 8.01
+
+[node name="WorldEnvironment" type="WorldEnvironment"]
+environment = SubResource("Environment_f8w8m")
+camera_attributes = SubResource("CameraAttributesPractical_qo5hu")
+
+[node name="Sun3" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.605197, 0.796076, 0, -0.796076, 0.605197, -4.86868, 8.33126, 2.18251)
+light_energy = 2.8
+light_indirect_energy = 3.0
+shadow_enabled = true
+directional_shadow_split_1 = 0.005
+directional_shadow_blend_splits = true
+directional_shadow_max_distance = 10000.0
+
+[node name="ReflectionProbe" type="ReflectionProbe" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 49.8991, 25.834, -30.0061)
+size = Vector3(10000, 10000, 1000)
+enable_shadows = true
+
+[node name="CloudsSystem" parent="." node_paths=PackedStringArray("sunLight", "worldEnvironment") instance=ExtResource("1_qvhib")]
+updateConstantly = true
+sunLight = NodePath("../Sun3")
+worldEnvironment = NodePath("..")
+windSpeed = 0.01
+cloudsCutoff = 0.365
+cloudsFloor = 500.0
+detailNoisePower = -0.177
+sunColorDefault = Color(2.8, 2.8, 2.8, 2.8)
+overrideAmbientLight = true
+ambientColorDefault = Color(0.703808, 0.703808, 0.703808, 1)
+useFogDefault = false

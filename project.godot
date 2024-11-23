@@ -11,9 +11,17 @@ config_version=5
 [application]
 
 config/name="MultiplayerFPSTutorial"
-run/main_scene="res://world.tscn"
+run/main_scene="res://scenes/test.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.svg"
+
+[dotnet]
+
+project/assembly_name="MultiplayerFPSTutorial"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/SunshineVolumetricClouds/plugin.cfg", "res://addons/collision_groups/plugin.cfg", "res://addons/godot_3d_auto_collision_generator/plugin.cfg", "res://addons/instant-realistic-light/plugin.cfg", "res://addons/proton_scatter/plugin.cfg")
 
 [input]
 

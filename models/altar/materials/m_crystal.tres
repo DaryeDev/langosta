@@ -1,0 +1,22 @@
+[gd_resource type="StandardMaterial3D" load_steps=5 format=3 uid="uid://duha0c305nyyo"]
+
+[ext_resource type="Texture2D" uid="uid://cw3xwar2bay0a" path="res://models/altar_3.png" id="1_ks5y1"]
+[ext_resource type="Texture2D" uid="uid://ictg3qlyjpmp" path="res://models/altar_5.png" id="2_xqjt3"]
+[ext_resource type="Texture2D" uid="uid://b7en823d1o8y0" path="res://models/altar_4.png" id="3_vuexp"]
+[ext_resource type="Texture2D" uid="uid://re0a8530y2hc" path="res://models/altar_6.png" id="4_uli8b"]
+
+[resource]
+resource_name = "m_crystal"
+cull_mode = 2
+albedo_texture = ExtResource("1_ks5y1")
+metallic = 1.0
+metallic_texture = ExtResource("3_vuexp")
+metallic_texture_channel = 2
+roughness_texture = ExtResource("3_vuexp")
+roughness_texture_channel = 1
+emission_enabled = true
+emission = Color(0.0431373, 0.27451, 0.407843, 1)
+emission_energy_multiplier = 0.3
+emission_texture = ExtResource("2_xqjt3")
+normal_enabled = true
+normal_texture = ExtResource("4_uli8b")

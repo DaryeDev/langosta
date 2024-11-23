@@ -1,0 +1,96 @@
+[gd_scene load_steps=9 format=3 uid="uid://df24n0qt0b1jm"]
+
+[ext_resource type="PackedScene" uid="uid://cmi7nhad5v57v" path="res://models/crystals/crystals.glb" id="1_n3r3k"]
+[ext_resource type="Texture2D" uid="uid://l7yxa8r7488d" path="res://models/crystals/crystals_Image_3.png" id="2_x6lfq"]
+[ext_resource type="Texture2D" uid="uid://co7i0ns7tta3d" path="res://models/crystals/crystals_Image_5.png" id="3_mxi00"]
+[ext_resource type="Texture2D" uid="uid://dk32fjmgdnp68" path="res://models/crystals/crystals_Image_4.png" id="4_stlr8"]
+[ext_resource type="Texture2D" uid="uid://do5xg2vl4p52n" path="res://models/crystals/crystals_Image_6.png" id="5_skkyx"]
+[ext_resource type="Script" path="res://scripts/crystals.gd" id="6_25w1k"]
+
+[sub_resource type="Shader" id="Shader_etj3n"]
+code = "// NOTE: Shader automatically converted from Godot Engine 4.3.stable's StandardMaterial3D.
+
+shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_disabled, diffuse_burley, specular_schlick_ggx;
+
+uniform vec4 albedo : source_color;
+uniform sampler2D texture_albedo : source_color, filter_linear_mipmap, repeat_enable;
+uniform float point_size : hint_range(0.1, 128.0, 0.1);
+
+uniform float roughness : hint_range(0.0, 1.0);
+uniform sampler2D texture_metallic : hint_default_white, filter_linear_mipmap, repeat_enable;
+uniform vec4 metallic_texture_channel;
+uniform sampler2D texture_roughness : hint_roughness_g, filter_linear_mipmap, repeat_enable;
+
+uniform float specular : hint_range(0.0, 1.0, 0.01);
+uniform float metallic : hint_range(0.0, 1.0, 0.01);
+
+uniform sampler2D texture_emission : source_color, hint_default_black, filter_linear_mipmap, repeat_enable;
+uniform vec4 emission : source_color;
+uniform float emission_energy : hint_range(0.0, 100.0, 0.01);
+
+uniform sampler2D texture_normal : hint_roughness_normal, filter_linear_mipmap, repeat_enable;
+uniform float normal_scale : hint_range(-16.0, 16.0);
+
+uniform vec3 uv1_scale;
+uniform vec3 uv1_offset;
+uniform vec3 uv2_scale;
+uniform vec3 uv2_offset;
+
+void vertex() {
+	UV = UV * uv1_scale.xy + uv1_offset.xy;
+}
+
+void fragment() {
+	vec2 base_uv = UV;
+
+	vec4 albedo_tex = texture(texture_albedo, base_uv);
+	ALBEDO = albedo.rgb * albedo_tex.rgb;
+
+	float metallic_tex = dot(texture(texture_metallic, base_uv), metallic_texture_channel);
+	METALLIC = metallic_tex * metallic;
+	SPECULAR = specular;
+
+	vec4 roughness_texture_channel = vec4(0.0, 1.0, 0.0, 0.0);
+	float roughness_tex = dot(texture(texture_roughness, base_uv), roughness_texture_channel);
+	ROUGHNESS = roughness_tex * roughness;
+
+	// Normal Map: Enabled
+	NORMAL_MAP = texture(texture_normal, base_uv).rgb;
+	NORMAL_MAP_DEPTH = normal_scale;
+
+	// Emission: Enabled
+	vec3 emission_tex = texture(texture_emission, base_uv).rgb;
+	// Emission Operator: Add
+	EMISSION = (emission.rgb + emission_tex) * emission_energy;
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wxr4x"]
+resource_name = "m_crystal"
+render_priority = 0
+shader = SubResource("Shader_etj3n")
+shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/point_size = 1.0
+shader_parameter/roughness = 1.0
+shader_parameter/metallic_texture_channel = null
+shader_parameter/specular = 0.5
+shader_parameter/metallic = 1.0
+shader_parameter/emission = Color(0, 0, 0, 1)
+shader_parameter/emission_energy = 1.0
+shader_parameter/normal_scale = 1.0
+shader_parameter/uv1_scale = Vector3(1, 1, 1)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(1, 1, 1)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
+shader_parameter/texture_albedo = ExtResource("2_x6lfq")
+shader_parameter/texture_metallic = ExtResource("4_stlr8")
+shader_parameter/texture_roughness = ExtResource("4_stlr8")
+shader_parameter/texture_emission = ExtResource("3_mxi00")
+shader_parameter/texture_normal = ExtResource("5_skkyx")
+
+[node name="crystals" instance=ExtResource("1_n3r3k")]
+
+[node name="Extruded_002_m_crystal_0" parent="." index="0"]
+surface_material_override/0 = SubResource("ShaderMaterial_wxr4x")
+script = ExtResource("6_25w1k")
