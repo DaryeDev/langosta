@@ -10,8 +10,8 @@ config_version=5
 
 [application]
 
-config/name="MultiplayerFPSTutorial"
-run/main_scene="res://scenes/test.tscn"
+config/name="Multiplayer-Final"
+run/main_scene="res://scenes/level1_web.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.svg"
 

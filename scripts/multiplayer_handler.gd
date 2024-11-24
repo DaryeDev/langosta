@@ -1,7 +1,8 @@
-extends Node
+extends Node3D
 
 @onready var main_menu = $Main_UI/MainMenu
-@onready var address_entry = $Main_UI/MainMenu/MarginContainer/VBoxContainer/AddressEntry
+@onready var address_entry_host: LineEdit = $Main_UI/MainMenu/MarginContainer/VBoxContainer/VBoxContainer/AddressEntryHost
+@onready var address_entry_join: LineEdit = $Main_UI/MainMenu/MarginContainer/VBoxContainer/VBoxContainer2/AddressEntryJoin
 @onready var hud = $Main_UI/HUD
 @onready var health_bar = $Main_UI/HUD/HealthBar
 @onready var host_ui = $Main_UI/Host_UI
@@ -10,21 +11,26 @@ extends Node
 
 var paused = false
 
-const Player = preload("res://scenes/player.tscn")
+const Player = preload("res://scenes/modules/player.tscn")
 const PORT = 3131
 const DEFAULT_SERVER_IP = "localhost"
 var enet_peer = WebSocketMultiplayerPeer.new()
 
-@export var range_x_min = -28 
-@export var range_x_max = 28 
-@export var range_z_min = -28 
-@export var range_z_max = 28
+@export var range_x_min = 0
+@export var range_x_max = 0 
+@export var range_z_min = 0 
+@export var range_z_max = 0
 @export var spawn_y = 1.5
 @export var MIN_PLAYER_DISTANCE = 2
+@export var ground: CSGPolygon3D
+@export var border_margin: float = 1.0  # Minimum distance from the border of the ground polygon
 
 var connectedPlayers: Dictionary = {}
+var player_last_seen: Dictionary = {}
+var TIMEOUT_SECONDS = 10.0  # Time after which a player is considered disconnected
 
-var add_player_check = false
+var add_player_check := false
+var host = false
 
 func _unhandled_input(event):
 	# Handle pause and quit actions
@@ -35,7 +41,12 @@ func _unhandled_input(event):
 
 func _on_host_button_pressed():
 	# Start hosting a game
-	enet_peer.create_server(PORT, "*")
+	var address
+	if address_entry_host.text == "":
+		address = "*"
+	else:
+		address = address_entry_host.text
+	enet_peer.create_server(PORT, address)
 	multiplayer.multiplayer_peer = enet_peer
 	multiplayer.peer_connected.connect(add_player)
 	multiplayer.peer_disconnected.connect(remove_player)
@@ -44,60 +55,46 @@ func _on_host_button_pressed():
 		main_menu.hide()
 		hud.show()
 		add_player(multiplayer.get_unique_id())
+		host = true
 	else: 
 		main_menu.hide()
 		host_ui.show()
-		
 
 func _on_join_button_pressed():
 	# Join an existing game
 	main_menu.hide()
+	#loading_screen.show()
 	hud.show()
 	var address
-	if address_entry.text == "":
+	if address_entry_join.text == "":
 		address = DEFAULT_SERVER_IP
 	else:
-		address = address_entry.text
+		address = address_entry_join.text
 	enet_peer.create_client("ws://" + address + ":" + str(PORT))
 	multiplayer.multiplayer_peer = enet_peer
 	multiplayer.peer_connected.connect(_on_peer_connected)
 
+
 @rpc("call_remote")
 func _on_peer_connected(peer_id):
 	var player = get_node_or_null(str(peer_id))
-	# if player:
-	# 	player.call_deferred("update_position", get_new_position())
-	while player == null:
-		player = get_node_or_null(str(peer_id))
-		await get_tree().create_timer(0.1).timeout
-	print("Player ready")
-	var position = get_new_position()
-	player.call_deferred("update_position", position)
 
 func add_player(peer_id):
-	# Instantiate player
 	var player = Player.instantiate()
 	player.name = "Player" + str(peer_id)
-	# Get a non-occupied position
 	var spawn_position = get_new_position()
-	player.position = spawn_position
 	add_child(player)
-
-	# Connect signals if the player is the authority
+	player.position = spawn_position
 	if player.is_multiplayer_authority():
 		player.health_changed.connect(update_health_bar)
-
-	# Store node directly in the dictionary
 	connectedPlayers[peer_id] = player
 
 func remove_player(peer_id):
-	# Retrieve player from the dictionary
-	var player = get_node_or_null(str(peer_id))
-	#if connectedPlayers.has(peer_id):
-		#var player = connectedPlayers[peer_id]
-	if player:
-		player.queue_free()
-	connectedPlayers.erase(peer_id)
+	if connectedPlayers.has(peer_id):
+		var player = connectedPlayers[peer_id]
+		if player:
+			player.queue_free()
+		connectedPlayers.erase(peer_id)
 
 func update_health_bar(health_value):
 	# Update the health bar value
@@ -128,17 +125,39 @@ func _on_resume_pressed() -> void:
 	# Resume the game
 	toggle_pause()
 	
+func get_random_position():
+	# Get the bounds for generating random positions
+	var origin = ground.global_transform.origin
+	var bounds_size = Vector2(50, 50)  # Adjust based on expected size
+	var min_x = origin.x - bounds_size.x / 2 + border_margin
+	var max_x = origin.x + bounds_size.x / 2 - border_margin
+	var min_z = origin.z - bounds_size.y / 2 + border_margin
+	var max_z = origin.z + bounds_size.y / 2 - border_margin
+
+	# Generate a random position within the bounds
+	var x = randf_range(min_x, max_x)
+	var z = randf_range(min_z, max_z)
+
+	# Raycast to find the position on the ground
+	var ray_origin = Vector3(x, 100, z)  # Start from above the ground
+	var ray_target = Vector3(x, -100, z)  # Direction towards the ground
+
+	var space_state = get_world_3d().direct_space_state
+	var ray = PhysicsRayQueryParameters3D.create(ray_origin, ray_target, 1, [])
+	var result = space_state.intersect_ray(ray)
+
+	if result:
+		# Return the position where the ray hit the ground
+		return result.position
+	else:
+		# If no valid hit, retry
+		return get_random_position()
+
 func get_new_position():
 	var spawn = get_random_position()
 	while is_position_occupied(spawn):
 		spawn = get_random_position()
 	return spawn
-
-func get_random_position():
-	# Generate a random position within the game world bounds
-	var x = randi_range(range_x_min, range_x_max)
-	var z = randi_range(range_z_min, range_z_max)
-	return Vector3(x, spawn_y, z)
 
 func is_position_occupied(position) -> bool:
 	# Check if the position is occupied by any player
