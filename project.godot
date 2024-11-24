@@ -15,13 +15,27 @@ run/main_scene="res://scenes/test.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.svg"
 
+[audio]
+
+manager/sound/bus="Sound"
+manager/sound/pool_1D_size=16
+manager/sound/pool_2D_size=16
+manager/sound/pool_3D_size=16
+manager/sound/max_polyphony=32
+manager/music/bus="Music"
+
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+
 [dotnet]
 
 project/assembly_name="MultiplayerFPSTutorial"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/SunshineVolumetricClouds/plugin.cfg", "res://addons/collision_groups/plugin.cfg", "res://addons/godot_3d_auto_collision_generator/plugin.cfg", "res://addons/instant-realistic-light/plugin.cfg", "res://addons/proton_scatter/plugin.cfg")
+enabled=PackedStringArray("res://addons/SunshineVolumetricClouds/plugin.cfg", "res://addons/instant-realistic-light/plugin.cfg", "res://addons/proton_scatter/plugin.cfg")
 
 [input]
 
