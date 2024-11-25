@@ -1,0 +1,208 @@
+[gd_scene load_steps=33 format=3 uid="uid://ciyo3l0bytcqg"]
+
+[ext_resource type="Script" path="res://scenes/world/snow_world_pc.gd" id="1_ls3oa"]
+[ext_resource type="Script" path="res://addons/proton_scatter/src/scatter.gd" id="2_f7kgn"]
+[ext_resource type="PackedScene" uid="uid://c3p1nv8v0b662" path="res://scenes/world/ground/ground.tscn" id="2_ys2wu"]
+[ext_resource type="Script" path="res://addons/proton_scatter/src/stack/modifier_stack.gd" id="3_6pqux"]
+[ext_resource type="Script" path="res://addons/proton_scatter/src/modifiers/base_modifier.gd" id="4_507w6"]
+[ext_resource type="Script" path="res://addons/proton_scatter/src/modifiers/create_along_edge_random.gd" id="6_07xj5"]
+[ext_resource type="Script" path="res://addons/proton_scatter/src/modifiers/randomize_transforms.gd" id="7_b800f"]
+[ext_resource type="Script" path="res://addons/proton_scatter/src/modifiers/randomize_rotation.gd" id="8_bbbmh"]
+[ext_resource type="Script" path="res://addons/proton_scatter/src/modifiers/offset_scale.gd" id="9_8noyy"]
+[ext_resource type="Script" path="res://addons/proton_scatter/src/scatter_item.gd" id="10_w6umk"]
+[ext_resource type="Script" path="res://addons/proton_scatter/src/scatter_shape.gd" id="11_ywn60"]
+[ext_resource type="Script" path="res://addons/proton_scatter/src/shapes/path_shape.gd" id="12_6hjfg"]
+[ext_resource type="Script" path="res://addons/proton_scatter/src/modifiers/create_inside_grid.gd" id="13_n1ime"]
+[ext_resource type="Script" path="res://addons/proton_scatter/src/modifiers/offset_position.gd" id="14_ak87m"]
+[ext_resource type="Script" path="res://addons/proton_scatter/src/modifiers/offset_rotation.gd" id="15_bd4m6"]
+[ext_resource type="Script" path="res://addons/proton_scatter/src/modifiers/remove_outside_shapes.gd" id="16_a3h25"]
+
+[sub_resource type="Resource" id="Resource_g86ta"]
+script = ExtResource("6_07xj5")
+instance_count = 500
+align_to_path = true
+align_up_axis = Vector3(1, 1, 1)
+enabled = true
+override_global_seed = false
+custom_seed = 0
+restrict_height = false
+reference_frame = 0
+
+[sub_resource type="Resource" id="Resource_hcwrd"]
+script = ExtResource("7_b800f")
+position = Vector3(1, 4, 1)
+rotation = Vector3(10, 180, 10)
+scale = Vector3(1, 1, 1)
+enabled = true
+override_global_seed = true
+custom_seed = 25
+restrict_height = false
+reference_frame = 2
+
+[sub_resource type="Resource" id="Resource_bpmtu"]
+script = ExtResource("8_bbbmh")
+rotation = Vector3(360, 0, 360)
+snap_angle = Vector3(180, 0, 180)
+enabled = true
+override_global_seed = false
+custom_seed = 0
+restrict_height = false
+reference_frame = 2
+
+[sub_resource type="Resource" id="Resource_q07mc"]
+script = ExtResource("9_8noyy")
+operation = 1
+scale = Vector3(1, 2, 1)
+enabled = true
+override_global_seed = false
+custom_seed = 0
+restrict_height = false
+reference_frame = 2
+
+[sub_resource type="Resource" id="Resource_7v455"]
+script = ExtResource("3_6pqux")
+stack = Array[ExtResource("4_507w6")]([SubResource("Resource_g86ta"), SubResource("Resource_hcwrd"), SubResource("Resource_bpmtu"), SubResource("Resource_q07mc")])
+
+[sub_resource type="Curve3D" id="Curve3D_ps63y"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 67.6257, 0, -55.6874, 0, 0, 0, 0, 0, 0, 66.2669, 0, -56.1156, 0, 0, 0, 0, 0, 0, 62.2999, 0, -56.9564, 0, 0, 0, 0, 0, 0, 55.188, 0, -60.8014, 0, 0, 0, 0, 0, 0, 50.7016, 0, -61.9229, 0, 0, 0, 0, 0, 0, 42.5381, 0, -65.6426, 0, 0, 0, 0, 0, 0, 37.4794, 0, -67.0401, 0, 0, 0, 0, 0, 0, 33.2958, 0, -69.4678, 0, 0, 0, 0, 0, 0, 27.0649, 0, -71.1314, 0, 0, 0, 0, 0, 0, 18.3734, 0, -73.7509, 0, 0, 0, 0, 0, 0, 17.4135, 0, -71.9829, 0, 0, 0, 0, 0, 0, 13.0701, 0, -71.8906, 0, 0, 0, 0, 0, 0, 7.91161, 3.8147e-06, -71.4248, 0, 0, 0, 0, 0, 0, 4.1507, 0, -70.0095, 0, 0, 0, 0, 0, 0, -1.24098, 0, -63.3358, 0, 0, 0, 0, 0, 0, -5.13811, 0, -58.8416, 0, 0, 0, 0, 0, 0, -8.69079, -3.8147e-06, -54.8623, 0, 0, 0, 0, 0, 0, -12.754, 0, -47.6096, 0, 0, 0, 0, 0, 0, -17.5863, -3.8147e-06, -43.766, 0, 0, 0, 0, 0, 0, -23.8786, 0, -39.0639, 0, 0, 0, 0, 0, 0, -26.0685, -3.8147e-06, -32.6125, 0, 0, 0, 0, 0, 0, -27.9402, 0, -25.8276, 0, 0, 0, 0, 0, 0, -28.5485, 0, -17.4797, 0, 0, 0, 0, 0, 0, -26.1212, 0, -10.4786, 0, 0, 0, 0, 0, 0, -23.8763, 0, -7.3053, 0, 0, 0, 0, 0, 0, -21.4648, 0, 0.845314, 0, 0, 0, 0, 0, 0, -23.7711, -3.8147e-06, 6.30464, 0, 0, 0, 0, 0, 0, -24.4685, 3.8147e-06, 14.0295, 0, 0, 0, 0, 0, 0, -23.4441, 3.8147e-06, 20.5981, 0, 0, 0, 0, 0, 0, -22.4382, 0, 29.424, 0, 0, 0, 0, 0, 0, -25.5712, 0, 40.97, 0, 0, 0, 0, 0, 0, -23.5513, 0, 41.7773, 0, 0, 0, 0, 0, 0, -23.4605, 0, 47.6828, 0, 0, 0, 0, 0, 0, -22.5936, 0, 57.7115, 0, 0, 0, 0, 0, 0, -21.3923, 0, 62.0566, 0, 0, 0, 0, 0, 0, -18.193, 0, 62.1449, 0, 0, 0, 0, 0, 0, -13.863, 0, 61.4288, 0, 0, 0, 0, 0, 0, -8.68239, 0, 60.7323, 0, 0, 0, 0, 0, 0, -5.74793, 0, 60.8982, 0, 0, 0, 0, 0, 0, 0.554315, 0, 60.9427, 0, 0, 0, 0, 0, 0, 2.36617, 0, 60.9137, 0, 0, 0, 0, 0, 0, 4.93216, 0, 62.1408, 0, 0, 0, 0, 0, 0, 8.23395, 0, 62.327, 0, 0, 0, 0, 0, 0, 12.4713, 0, 61.2776, 0, 0, 0, 0, 0, 0, 15.5392, 0, 62.769, 0, 0, 0, 0, 0, 0, 20.8981, 0, 62.6376, 0, 0, 0, 0, 0, 0, 24.2547, 0, 61.3107, 0, 0, 0, 0, 0, 0, 28.0132, 0, 55.1946, 0, 0, 0, 0, 0, 0, 29.6677, 3.8147e-06, 52.7956, 0, 0, 0, 0, 0, 0, 35.565, 0, 48.8911, 0, 0, 0, 0, 0, 0, 34.6803, -3.8147e-06, 44.2985, 0, 0, 0, 0, 0, 0, 36.1776, 0, 39.0446, 0, 0, 0, 0, 0, 0, 36.8354, 3.8147e-06, 37.2055, 0, 0, 0, 0, 0, 0, 35.3342, 3.8147e-06, 31.4681, 0, 0, 0, 0, 0, 0, 36.4538, 0, 27.2854, 0, 0, 0, 0, 0, 0, 38.1831, 3.8147e-06, 25.4456, 0, 0, 0, 0, 0, 0, 39.8521, 0, 20.4676, 0, 0, 0, 0, 0, 0, 43.9863, 0, 17.1883, 0, 0, 0, 0, 0, 0, 49.0558, 0, 11.0684, 0, 0, 0, 0, 0, 0, 51.4596, -3.8147e-06, 7.87186, 0, 0, 0, 0, 0, 0, 55.0574, 0, 4.35015, 0, 0, 0, 0, 0, 0, 60.6231, 0, 0.30668, 0, 0, 0, 0, 0, 0, 65.5334, -3.8147e-06, -5.04257, 0, 0, 0, 0, 0, 0, 67.9509, 0, -8.29139, 0, 0, 0, 0, 0, 0, 71.6719, -3.8147e-06, -11.8508, 0, 0, 0, 0, 0, 0, 73.2486, 0, -15.3858, 0, 0, 0, 0, 0, 0, 74.3393, 0, -18.752, 0, 0, 0, 0, 0, 0, 75.1278, 0, -22.0356, 0, 0, 0, 0, 0, 0, 76.9283, 0, -27.0894, 0, 0, 0, 0, 0, 0, 77.9414, 0, -30.8144, 0, 0, 0, 0, 0, 0, 78.1284, 0, -33.5588, 0, 0, 0, 0, 0, 0, 79.3338, 0, -37.1071, 0, 0, 0, 0, 0, 0, 78.8139, 0, -42.1579, 0, 0, 0, 0, 0, 0, 76.9143, 0, -46.3864, 0, 0, 0, 0, 0, 0, 75.5704, 0, -48.7384, 0, 0, 0, 0, 0, 0, 72.9541, 0, -51.7165, 0, 0, 0, 0, 0, 0, 70.7818, 0, -54.5195, 0, 0, 0, 0, 0, 0, 68.1215, 0, -55.4455),
+"tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+}
+point_count = 78
+
+[sub_resource type="Resource" id="Resource_i8mfk"]
+script = ExtResource("12_6hjfg")
+closed = true
+thickness = 0.0
+curve = SubResource("Curve3D_ps63y")
+
+[sub_resource type="Resource" id="Resource_p6gp6"]
+script = ExtResource("13_n1ime")
+spacing = Vector3(6, 0.05, 6)
+enabled = true
+override_global_seed = false
+custom_seed = 0
+restrict_height = true
+reference_frame = 0
+
+[sub_resource type="Resource" id="Resource_xfjyh"]
+script = ExtResource("14_ak87m")
+operation = 0
+position = Vector3(0, 1.4, 0)
+enabled = true
+override_global_seed = false
+custom_seed = 0
+restrict_height = false
+reference_frame = 2
+
+[sub_resource type="Resource" id="Resource_co0hc"]
+script = ExtResource("15_bd4m6")
+operation = 0
+rotation = Vector3(-90, 0, 0)
+enabled = true
+override_global_seed = false
+custom_seed = 0
+restrict_height = false
+reference_frame = 2
+
+[sub_resource type="Resource" id="Resource_3doty"]
+script = ExtResource("9_8noyy")
+operation = 1
+scale = Vector3(0.2, 0.2, 0.2)
+enabled = true
+override_global_seed = false
+custom_seed = 0
+restrict_height = false
+reference_frame = 2
+
+[sub_resource type="Resource" id="Resource_d40fo"]
+script = ExtResource("7_b800f")
+position = Vector3(13, 7, 0.3)
+rotation = Vector3(0, 0, 0)
+scale = Vector3(0, 0, 0)
+enabled = true
+override_global_seed = false
+custom_seed = 0
+restrict_height = false
+reference_frame = 2
+
+[sub_resource type="Resource" id="Resource_vcfoo"]
+script = ExtResource("16_a3h25")
+negative_shapes_only = false
+enabled = true
+override_global_seed = false
+custom_seed = 0
+restrict_height = false
+reference_frame = 0
+
+[sub_resource type="Resource" id="Resource_v2gv7"]
+script = ExtResource("3_6pqux")
+stack = Array[ExtResource("4_507w6")]([SubResource("Resource_p6gp6"), SubResource("Resource_xfjyh"), SubResource("Resource_co0hc"), SubResource("Resource_3doty"), SubResource("Resource_d40fo"), SubResource("Resource_vcfoo")])
+
+[sub_resource type="Curve3D" id="Curve3D_84kwn"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 67.6257, 0, -55.6874, 0, 0, 0, 0, 0, 0, 66.2669, 0, -56.1156, 0, 0, 0, 0, 0, 0, 62.2999, 0, -56.9564, 0, 0, 0, 0, 0, 0, 55.188, 0, -60.8014, 0, 0, 0, 0, 0, 0, 50.7016, 0, -61.9229, 0, 0, 0, 0, 0, 0, 42.5381, 0, -65.6426, 0, 0, 0, 0, 0, 0, 37.4794, 0, -67.0401, 0, 0, 0, 0, 0, 0, 33.2958, 0, -69.4678, 0, 0, 0, 0, 0, 0, 27.0649, 0, -71.1314, 0, 0, 0, 0, 0, 0, 18.3734, 0, -73.7509, 0, 0, 0, 0, 0, 0, 17.4135, 0, -71.9829, 0, 0, 0, 0, 0, 0, 13.0701, 0, -71.8906, 0, 0, 0, 0, 0, 0, 7.91161, 3.8147e-06, -71.4248, 0, 0, 0, 0, 0, 0, 4.1507, 0, -70.0095, 0, 0, 0, 0, 0, 0, -1.24098, 0, -63.3358, 0, 0, 0, 0, 0, 0, -5.13811, 0, -58.8416, 0, 0, 0, 0, 0, 0, -8.69079, -3.8147e-06, -54.8623, 0, 0, 0, 0, 0, 0, -12.754, 0, -47.6096, 0, 0, 0, 0, 0, 0, -17.5863, -3.8147e-06, -43.766, 0, 0, 0, 0, 0, 0, -23.8786, 0, -39.0639, 0, 0, 0, 0, 0, 0, -26.0685, -3.8147e-06, -32.6125, 0, 0, 0, 0, 0, 0, -27.9402, 0, -25.8276, 0, 0, 0, 0, 0, 0, -28.5485, 0, -17.4797, 0, 0, 0, 0, 0, 0, -26.1212, 0, -10.4786, 0, 0, 0, 0, 0, 0, -23.8763, 0, -7.3053, 0, 0, 0, 0, 0, 0, -21.4648, 0, 0.845314, 0, 0, 0, 0, 0, 0, -23.7711, -3.8147e-06, 6.30464, 0, 0, 0, 0, 0, 0, -24.4685, 3.8147e-06, 14.0295, 0, 0, 0, 0, 0, 0, -23.4441, 3.8147e-06, 20.5981, 0, 0, 0, 0, 0, 0, -22.4382, 0, 29.424, 0, 0, 0, 0, 0, 0, -25.5712, 0, 40.97, 0, 0, 0, 0, 0, 0, -25.4355, 1.63913e-06, 45.1698, 0, 0, 0, 0, 0, 0, -25.6029, 1.63913e-06, 52.6763, 0, 0, 0, 0, 0, 0, -25.014, 1.63913e-06, 61.9809, 0, 0, 0, 0, 0, 0, -25.7553, 1.63913e-06, 69.2016, 0, 0, 0, 0, 0, 0, -20.0344, 1.63913e-06, 73.3524, 0, 0, 0, 0, 0, 0, -8.49565, 1.63913e-06, 72.8158, 0, 0, 0, 0, 0, 0, -4.2157, 1.63913e-06, 70.4844, 0, 0, 0, 0, 0, 0, 1.49668, 1.63913e-06, 69.485, 0, 0, 0, 0, 0, 0, 5.88632, 1.63913e-06, 71.5838, 0, 0, 0, 0, 0, 0, 9.36421, 1.63913e-06, 72.2601, 0, 0, 0, 0, 0, 0, 13.4602, 1.63913e-06, 74.1583, 0, 0, 0, 0, 0, 0, 16.2002, 1.63913e-06, 74.0503, 0, 0, 0, 0, 0, 0, 21.065, 1.63913e-06, 75.0422, 0, 0, 0, 0, 0, 0, 23.1247, 1.63913e-06, 71.1562, 0, 0, 0, 0, 0, 0, 24.3571, 1.63913e-06, 65.7823, 0, 0, 0, 0, 0, 0, 26.5172, 1.63913e-06, 61.2837, 0, 0, 0, 0, 0, 0, 32.6104, 1.63913e-06, 57.5311, 0, 0, 0, 0, 0, 0, 34.1365, 1.63913e-06, 53.6713, 0, 0, 0, 0, 0, 0, 35.565, 0, 48.8911, 0, 0, 0, 0, 0, 0, 34.6803, -3.8147e-06, 44.2985, 0, 0, 0, 0, 0, 0, 36.1776, 0, 39.0446, 0, 0, 0, 0, 0, 0, 36.8354, 3.8147e-06, 37.2055, 0, 0, 0, 0, 0, 0, 35.3342, 3.8147e-06, 31.4681, 0, 0, 0, 0, 0, 0, 36.4538, 0, 27.2854, 0, 0, 0, 0, 0, 0, 38.1831, 3.8147e-06, 25.4456, 0, 0, 0, 0, 0, 0, 39.8521, 0, 20.4676, 0, 0, 0, 0, 0, 0, 43.9863, 0, 17.1883, 0, 0, 0, 0, 0, 0, 49.0558, 0, 11.0684, 0, 0, 0, 0, 0, 0, 51.4596, -3.8147e-06, 7.87186, 0, 0, 0, 0, 0, 0, 55.0574, 0, 4.35015, 0, 0, 0, 0, 0, 0, 60.6231, 0, 0.30668, 0, 0, 0, 0, 0, 0, 65.5334, -3.8147e-06, -5.04257, 0, 0, 0, 0, 0, 0, 67.9509, 0, -8.29139, 0, 0, 0, 0, 0, 0, 71.6719, -3.8147e-06, -11.8508, 0, 0, 0, 0, 0, 0, 73.2486, 0, -15.3858, 0, 0, 0, 0, 0, 0, 74.3393, 0, -18.752, 0, 0, 0, 0, 0, 0, 75.1278, 0, -22.0356, 0, 0, 0, 0, 0, 0, 76.9283, 0, -27.0894, 0, 0, 0, 0, 0, 0, 77.9414, 0, -30.8144, 0, 0, 0, 0, 0, 0, 78.1284, 0, -33.5588, 0, 0, 0, 0, 0, 0, 79.3338, 0, -37.1071, 0, 0, 0, 0, 0, 0, 78.8139, 0, -42.1579, 0, 0, 0, 0, 0, 0, 76.9143, 0, -46.3864, 0, 0, 0, 0, 0, 0, 75.5704, 0, -48.7384, 0, 0, 0, 0, 0, 0, 72.9541, 0, -51.7165, 0, 0, 0, 0, 0, 0, 70.7818, 0, -54.5195, 0, 0, 0, 0, 0, 0, 68.1215, 0, -55.4455),
+"tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+}
+point_count = 78
+
+[sub_resource type="Resource" id="Resource_7pn34"]
+script = ExtResource("12_6hjfg")
+closed = true
+thickness = 0.0
+curve = SubResource("Curve3D_84kwn")
+
+[node name="SnowWorldWEB" type="Node3D"]
+script = ExtResource("1_ls3oa")
+
+[node name="ground" parent="." instance=ExtResource("2_ys2wu")]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -11.851, 0, 0)
+
+[node name="Rocks" type="Node3D" parent="."]
+process_mode = 3
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+script = ExtResource("2_f7kgn")
+keep_static_colliders = true
+modifier_stack = SubResource("Resource_7v455")
+Performance/use_chunks = true
+Performance/chunk_dimensions = Vector3(15, 15, 15)
+
+[node name="ScatterItem" type="Node3D" parent="Rocks"]
+script = ExtResource("10_w6umk")
+source_scale_multiplier = 1.5
+path = "res://scenes/props/rock.tscn"
+
+[node name="BoxShape" type="Node3D" parent="Rocks"]
+script = ExtResource("11_ywn60")
+shape = SubResource("Resource_i8mfk")
+
+[node name="Trees" type="Node3D" parent="."]
+process_mode = 3
+transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, 3.26077, 0.345, 0)
+script = ExtResource("2_f7kgn")
+keep_static_colliders = true
+modifier_stack = SubResource("Resource_v2gv7")
+Performance/use_chunks = true
+Performance/chunk_dimensions = Vector3(15, 15, 15)
+
+[node name="ScatterItem" type="Node3D" parent="Trees"]
+script = ExtResource("10_w6umk")
+path = "res://models/trees/tree1.glb"
+
+[node name="ScatterItem2" type="Node3D" parent="Trees"]
+script = ExtResource("10_w6umk")
+path = "res://models/trees/tree2.glb"
+
+[node name="ScatterItem3" type="Node3D" parent="Trees"]
+script = ExtResource("10_w6umk")
+path = "res://models/trees/tree3.glb"
+
+[node name="ScatterItem4" type="Node3D" parent="Trees"]
+script = ExtResource("10_w6umk")
+source_scale_multiplier = 5.0
+path = "res://models/trees/tree5.glb"
+
+[node name="BoxShape" type="Node3D" parent="Trees"]
+transform = Transform3D(0.83, 0, 0, 0, 0.83, 0, 0, 0, 0.83, 0, 0, 0)
+script = ExtResource("11_ywn60")
+shape = SubResource("Resource_7pn34")

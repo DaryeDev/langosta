@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://ujd8nwsrp1jo"]
+
+[ext_resource type="Environment" uid="uid://bscyevioes5lq" path="res://scenes/world/lights and environment/environment_lights_web.tres" id="1_vuekl"]
+[ext_resource type="CameraAttributesPractical" uid="uid://d0wfsxauvyj5a" path="res://scenes/world/lights and environment/camera_web.tres" id="2_wp5ap"]
+
+[node name="WorldEnvironment" type="WorldEnvironment"]
+environment = ExtResource("1_vuekl")
+camera_attributes = ExtResource("2_wp5ap")
+
+[node name="Sun3" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.605197, 0.796076, 0, -0.796076, 0.605197, -4.86868, 8.33126, 2.18251)
+light_energy = 2.8
+light_indirect_energy = 3.0
+shadow_enabled = true
+directional_shadow_split_1 = 0.005
+directional_shadow_blend_splits = true
+directional_shadow_max_distance = 10000.0
+
+[node name="ReflectionProbe" type="ReflectionProbe" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 49.8991, 25.834, -30.0061)
+size = Vector3(10000, 10000, 1000)
+enable_shadows = true

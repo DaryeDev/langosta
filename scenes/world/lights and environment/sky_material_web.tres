@@ -1,0 +1,45 @@
+[gd_resource type="ShaderMaterial" load_steps=7 format=3 uid="uid://wii7byxyp5p5"]
+
+[ext_resource type="Shader" uid="uid://bhe8im5rm1ml5" path="res://scenes/world/lights and environment/sky_web_shader_wclouds.tres" id="1_385x6"]
+
+[sub_resource type="Gradient" id="Gradient_nmd7i"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_1ulh2"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_6ptxi"]
+width = 1024
+height = 1024
+seamless = true
+color_ramp = SubResource("Gradient_nmd7i")
+noise = SubResource("FastNoiseLite_1ulh2")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_1u2hs"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_hdhqc"]
+width = 1024
+height = 1024
+seamless = true
+noise = SubResource("FastNoiseLite_1u2hs")
+
+[resource]
+shader = ExtResource("1_385x6")
+shader_parameter/sky_top_color = Color(0.162047, 0.429135, 0.843697, 1)
+shader_parameter/sky_horizon_color = Color(0.417942, 0.694059, 0.842029, 1)
+shader_parameter/sky_curve = 0.15
+shader_parameter/sky_energy = 1.0
+shader_parameter/sky_cover_modulate = Color(1, 1, 1, 1)
+shader_parameter/ground_bottom_color = Color(0.2, 0.169, 0.133, 1)
+shader_parameter/ground_horizon_color = Color(0.643182, 0.659734, 0.651781, 1)
+shader_parameter/ground_curve = 0.02
+shader_parameter/ground_energy = 1.0
+shader_parameter/sun_angle_max = 0.523599
+shader_parameter/sun_curve = 0.15
+shader_parameter/exposure = 1.0
+shader_parameter/cloud_direction = Vector2(-1, 1)
+shader_parameter/cloud_direction2 = Vector2(1, -1)
+shader_parameter/cloud_scale = Vector2(0.07, 0.07)
+shader_parameter/cloud_distance = 0.035
+shader_parameter/cloud_speed = 0.01
+shader_parameter/cloud_speed2 = 0.003
+shader_parameter/cloud_texture = SubResource("NoiseTexture2D_6ptxi")
+shader_parameter/cloud_texture2 = SubResource("NoiseTexture2D_hdhqc")

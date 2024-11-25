@@ -1,0 +1,32 @@
+[gd_scene load_steps=4 format=3 uid="uid://brsguqx3d5ouu"]
+
+[ext_resource type="Environment" uid="uid://cofxg5ffrjxof" path="res://scenes/world/lights and environment/environment_lights_pc.tres" id="1_j8vri"]
+[ext_resource type="CameraAttributesPractical" uid="uid://ckksl5hueie25" path="res://scenes/world/lights and environment/camera_pc.tres" id="2_7n5ym"]
+[ext_resource type="PackedScene" uid="uid://c3rjgqc8ehi3v" path="res://scenes/world/lights and environment/clouds_system_pc.tscn" id="3_gbvi5"]
+
+[node name="WorldEnvironmentPC" type="WorldEnvironment"]
+environment = ExtResource("1_j8vri")
+camera_attributes = ExtResource("2_7n5ym")
+
+[node name="Sun3" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.605197, 0.796076, 0, -0.796076, 0.605197, -4.86868, 8.33126, 2.18251)
+light_energy = 2.8
+light_indirect_energy = 3.0
+shadow_enabled = true
+directional_shadow_split_1 = 0.005
+directional_shadow_blend_splits = true
+directional_shadow_max_distance = 10000.0
+
+[node name="ReflectionProbe" type="ReflectionProbe" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 49.8991, 25.834, -30.0061)
+size = Vector3(10000, 10000, 1000)
+enable_shadows = true
+
+[node name="CloudsSystem" parent="." node_paths=PackedStringArray("sunLight", "worldEnvironment") instance=ExtResource("3_gbvi5")]
+sunLight = NodePath("../Sun3")
+worldEnvironment = NodePath("..")
+cloudsCutoff = 0.523
+cloudsFloor = 300.0
+sunColorDefault = Color(2.8, 2.8, 2.8, 2.8)
+ambientColorDefault = Color(0.363108, 0.461768, 0.532639, 1)
+fogColorDefault = Color(0.340392, 0.576471, 0.85098, 1.4)

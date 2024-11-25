@@ -11,7 +11,7 @@ extends Node3D
 
 var paused = false
 
-const Player = preload("res://scenes/modules/player.tscn")
+@export var Player = preload("res://scenes/modules/player.tscn")
 const PORT = 3131
 const DEFAULT_SERVER_IP = "localhost"
 var enet_peer = WebSocketMultiplayerPeer.new()
@@ -26,8 +26,6 @@ var enet_peer = WebSocketMultiplayerPeer.new()
 @export var border_margin: float = 1.0  # Minimum distance from the border of the ground polygon
 
 var connectedPlayers: Dictionary = {}
-var player_last_seen: Dictionary = {}
-var TIMEOUT_SECONDS = 10.0  # Time after which a player is considered disconnected
 
 var add_player_check := false
 var host = false
@@ -72,12 +70,12 @@ func _on_join_button_pressed():
 		address = address_entry_join.text
 	enet_peer.create_client("ws://" + address + ":" + str(PORT))
 	multiplayer.multiplayer_peer = enet_peer
-	multiplayer.peer_connected.connect(_on_peer_connected)
+	#multiplayer.peer_connected.connect(_on_peer_connected)
 
 
-@rpc("call_remote")
-func _on_peer_connected(peer_id):
-	var player = get_node_or_null(str(peer_id))
+#@rpc("call_remote")
+#func _on_peer_connected(peer_id):
+	#var player = get_node_or_null(str(peer_id))
 
 func add_player(peer_id):
 	var player = Player.instantiate()

@@ -1,7 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://ceplgiidxc8sl"]
+[gd_scene load_steps=11 format=3 uid="uid://ceplgiidxc8sl"]
 
 [ext_resource type="Script" path="res://scripts/multiplayer_handler.gd" id="1_1k3v6"]
 [ext_resource type="Texture2D" uid="uid://8ka2ui7sq36p" path="res://addons/kenney_particle_pack/circle_05.png" id="2_wbhfe"]
+[ext_resource type="Script" path="res://scenes/modules/multiplayer_spawner.gd" id="3_q3l7a"]
 
 [sub_resource type="InputEventKey" id="InputEventKey_usv6e"]
 device = -1
@@ -229,8 +230,8 @@ offset_bottom = 0.311981
 text = "Quit"
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("res://scenes/modules/player.tscn")
 spawn_path = NodePath("..")
+script = ExtResource("3_q3l7a")
 
 [connection signal="pressed" from="Main_UI/MainMenu/MarginContainer/VBoxContainer/VBoxContainer/HostButton" to="." method="_on_host_button_pressed"]
 [connection signal="toggled" from="Main_UI/MainMenu/MarginContainer/VBoxContainer/VBoxContainer/CheckButton" to="." method="_on_check_button_toggled"]

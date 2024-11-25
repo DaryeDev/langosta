@@ -1,0 +1,36 @@
+[gd_resource type="Environment" load_steps=2 format=3 uid="uid://cofxg5ffrjxof"]
+
+[ext_resource type="Sky" uid="uid://cp8myuae7jbkr" path="res://scenes/world/lights and environment/sky_pc.tres" id="1_7cbaq"]
+
+[resource]
+background_mode = 2
+background_energy_multiplier = 1.2
+background_intensity = 100000.0
+sky = ExtResource("1_7cbaq")
+ambient_light_color = Color(0.352941, 0.215686, 0.529412, 1)
+ambient_light_sky_contribution = 0.2
+ambient_light_energy = 0.5
+reflected_light_source = 2
+tonemap_mode = 3
+tonemap_white = 1.2
+ssr_enabled = true
+ssao_enabled = true
+ssao_detail = 2.0
+ssil_enabled = true
+sdfgi_enabled = true
+glow_enabled = true
+glow_normalized = true
+glow_intensity = 6.68
+fog_enabled = true
+fog_light_color = Color(0.243137, 0.411765, 0.607843, 1)
+fog_light_energy = 1.4
+fog_density = 0.02
+fog_aerial_perspective = 0.353
+fog_sky_affect = 0.05
+fog_height = 4.0
+fog_height_density = 0.02
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.005
+volumetric_fog_emission = Color(0.596078, 0.866667, 0.980392, 1)
+adjustment_enabled = true
+adjustment_saturation = 1.5
