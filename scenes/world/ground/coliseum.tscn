@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3 uid="uid://cvddlpurk41vi"]
+
+[ext_resource type="Script" path="res://scripts/snow_world_pc.gd" id="1_dsjjy"]
+[ext_resource type="PackedScene" uid="uid://ujd8nwsrp1jo" path="res://scenes/world/lights and environment/environment_lights_web.tscn" id="14_ns836"]
+[ext_resource type="PackedScene" uid="uid://ckueuuu6cat37" path="res://models/Colosseum.glb" id="15_u660v"]
+
+[node name="JungleWorldWEB" type="Node3D"]
+script = ExtResource("1_dsjjy")
+
+[node name="WorldEnvironment" parent="." instance=ExtResource("14_ns836")]
+
+[node name="Root Scene" parent="." instance=ExtResource("15_u660v")]
+transform = Transform3D(30, 0, 0, 0, 30, 0, 0, 0, 30, 0, 10.4903, 0)

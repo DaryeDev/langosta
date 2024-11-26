@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://dmpe6qnt6gvm3"]
+
+[ext_resource type="PackedScene" uid="uid://d3oyfoxvgu4fi" path="res://scenes/world/lights and environment/world_environment_web.tscn" id="1_qkvsh"]
+[ext_resource type="PackedScene" uid="uid://bvnwjpd0f3oa0" path="res://scenes/modules/multiplayer.tscn" id="2_olg5t"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="WorldEnvironmentWEB" parent="." instance=ExtResource("1_qkvsh")]
+
+[node name="Multiplayer" parent="." instance=ExtResource("2_olg5t")]

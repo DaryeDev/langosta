@@ -18,7 +18,7 @@ var peer = WebSocketMultiplayerPeer.new()
 
 var dedicated = false
 
-var levels = ["res://scenes/level1_web_nm.tscn", "res://scenes/tests/test_nm.tscn"]
+var levels = ["res://scenes/tests/test_nm.tscn", "res://scenes/jungle_level_web.tscn", "res://scenes/snow_level_web.tscn", "res://scenes/coliseum_level_web.tscn"]
 
 func _ready() -> void:
 	pause_menu_ui.process_mode = Node.PROCESS_MODE_ALWAYS
@@ -70,7 +70,7 @@ func start_game():
 	# Only change level on the server.
 	# Clients will instantiate the level via the spawner.
 	if multiplayer.is_server():
-		change_level.call_deferred(load("res://scenes/level1_web_nm.tscn"))
+		change_level.call_deferred(load("res://scenes/tests/test_nm.tscn"))
 
 
 # Call this function deferred and only on the main authority (server).

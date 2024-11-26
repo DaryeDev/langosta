@@ -1,0 +1,178 @@
+[gd_scene load_steps=29 format=3 uid="uid://wa80fxlq6lsg"]
+
+[ext_resource type="Material" uid="uid://c7mw5tryqfggw" path="res://addons/proton_scatter/demos/assets/materials/m_water.tres" id="1_cogyh"]
+[ext_resource type="Script" path="res://addons/proton_scatter/src/scatter.gd" id="2_3rlxa"]
+[ext_resource type="Script" path="res://addons/proton_scatter/src/stack/modifier_stack.gd" id="3_wm6nv"]
+[ext_resource type="Script" path="res://addons/proton_scatter/src/modifiers/base_modifier.gd" id="4_ky4h2"]
+[ext_resource type="Script" path="res://addons/proton_scatter/src/modifiers/create_inside_grid.gd" id="5_gqgl4"]
+[ext_resource type="Script" path="res://addons/proton_scatter/src/modifiers/randomize_transforms.gd" id="6_oreak"]
+[ext_resource type="Script" path="res://addons/proton_scatter/src/modifiers/randomize_rotation.gd" id="7_ailpm"]
+[ext_resource type="Script" path="res://addons/proton_scatter/src/scatter_item.gd" id="8_btvqb"]
+[ext_resource type="Script" path="res://addons/proton_scatter/src/scatter_shape.gd" id="9_q5rab"]
+[ext_resource type="Script" path="res://addons/proton_scatter/src/shapes/path_shape.gd" id="10_2sgcd"]
+[ext_resource type="Script" path="res://addons/proton_scatter/src/shapes/box_shape.gd" id="11_0vcbb"]
+[ext_resource type="PackedScene" uid="uid://ciyo3l0bytcqg" path="res://scenes/world/ground/snow_world_web.tscn" id="17_1gaql"]
+[ext_resource type="PackedScene" uid="uid://lryua1aujudt" path="res://scenes/modules/player_spawner.tscn" id="18_72n28"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_0xjln"]
+size = Vector2(300, 300)
+
+[sub_resource type="Resource" id="Resource_kokni"]
+script = ExtResource("5_gqgl4")
+spacing = Vector3(1.5, 2, 1)
+enabled = true
+override_global_seed = false
+custom_seed = 0
+restrict_height = true
+reference_frame = 0
+
+[sub_resource type="Resource" id="Resource_3n6l2"]
+script = ExtResource("6_oreak")
+position = Vector3(0.173, 0.222, 0.918)
+rotation = Vector3(10, 360, 10)
+scale = Vector3(1.201, 0.399, 1.183)
+enabled = true
+override_global_seed = true
+custom_seed = 10
+restrict_height = false
+reference_frame = 2
+
+[sub_resource type="Resource" id="Resource_4y31m"]
+script = ExtResource("7_ailpm")
+rotation = Vector3(360, 0, 360)
+snap_angle = Vector3(180, 0, 180)
+enabled = true
+override_global_seed = false
+custom_seed = 0
+restrict_height = false
+reference_frame = 2
+
+[sub_resource type="Resource" id="Resource_p5eis"]
+script = ExtResource("3_wm6nv")
+stack = Array[ExtResource("4_ky4h2")]([SubResource("Resource_kokni"), SubResource("Resource_3n6l2"), SubResource("Resource_4y31m")])
+
+[sub_resource type="Curve3D" id="Curve3D_2vyue"]
+_data = {
+"points": PackedVector3Array(3.80872, 0, 0.938568, -3.80872, 0, -0.938568, -5.23002, 0, 0.969148, -4.01273, -4.76837e-07, 0.319402, 4.01273, 4.76837e-07, -0.319402, -4.0201, 0, -3.87154, 0.483762, 0, -2.35326, -0.483762, 0, 2.35326, 2.27396, 0, -0.779812),
+"tilts": PackedFloat32Array(0, 0, 0)
+}
+point_count = 3
+
+[sub_resource type="Resource" id="Resource_lm0li"]
+script = ExtResource("10_2sgcd")
+closed = true
+thickness = 0.0
+curve = SubResource("Curve3D_2vyue")
+
+[sub_resource type="Resource" id="Resource_7o2k0"]
+script = ExtResource("5_gqgl4")
+spacing = Vector3(4, 4, 4)
+enabled = true
+override_global_seed = false
+custom_seed = 0
+restrict_height = true
+reference_frame = 0
+
+[sub_resource type="Resource" id="Resource_fb001"]
+script = ExtResource("6_oreak")
+position = Vector3(10, 4, 10)
+rotation = Vector3(10, 180, 10)
+scale = Vector3(5, 5, 5)
+enabled = true
+override_global_seed = true
+custom_seed = 25
+restrict_height = false
+reference_frame = 2
+
+[sub_resource type="Resource" id="Resource_hgw2n"]
+script = ExtResource("7_ailpm")
+rotation = Vector3(360, 0, 360)
+snap_angle = Vector3(180, 0, 180)
+enabled = true
+override_global_seed = false
+custom_seed = 0
+restrict_height = false
+reference_frame = 2
+
+[sub_resource type="Resource" id="Resource_xcl5f"]
+script = ExtResource("3_wm6nv")
+stack = Array[ExtResource("4_ky4h2")]([SubResource("Resource_7o2k0"), SubResource("Resource_fb001"), SubResource("Resource_hgw2n")])
+
+[sub_resource type="Resource" id="Resource_j7t0k"]
+script = ExtResource("11_0vcbb")
+size = Vector3(300, 1, 20)
+
+[sub_resource type="Resource" id="Resource_spge6"]
+script = ExtResource("11_0vcbb")
+size = Vector3(300, 1, 20)
+
+[sub_resource type="Resource" id="Resource_vellh"]
+script = ExtResource("11_0vcbb")
+size = Vector3(300, 1, 20)
+
+[sub_resource type="Resource" id="Resource_qhjoi"]
+script = ExtResource("11_0vcbb")
+size = Vector3(300, 1, 20)
+
+[node name="Node3D" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.11231, 0, 0)
+
+[node name="Water" type="MeshInstance3D" parent="."]
+material_override = ExtResource("1_cogyh")
+cast_shadow = 0
+mesh = SubResource("PlaneMesh_0xjln")
+metadata/_edit_lock_ = true
+metadata/_edit_group_ = true
+
+[node name="MainGround" type="Node3D" parent="."]
+process_mode = 3
+script = ExtResource("2_3rlxa")
+render_mode = 1
+modifier_stack = SubResource("Resource_p5eis")
+Performance/use_chunks = true
+Performance/chunk_dimensions = Vector3(15, 15, 15)
+
+[node name="ScatterItem" type="Node3D" parent="MainGround"]
+script = ExtResource("8_btvqb")
+source_scale_multiplier = 0.4
+path = "res://addons/proton_scatter/demos/assets/large_rock.tscn"
+
+[node name="PathShape" type="Node3D" parent="MainGround"]
+script = ExtResource("9_q5rab")
+shape = SubResource("Resource_lm0li")
+
+[node name="Mountains" type="Node3D" parent="."]
+process_mode = 3
+script = ExtResource("2_3rlxa")
+modifier_stack = SubResource("Resource_xcl5f")
+Performance/use_chunks = true
+Performance/chunk_dimensions = Vector3(15, 15, 15)
+
+[node name="ScatterItem" type="Node3D" parent="Mountains"]
+script = ExtResource("8_btvqb")
+source_scale_multiplier = 3.0
+path = "res://scenes/props/snow_rock.tscn"
+
+[node name="N" type="Node3D" parent="Mountains"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 150, 0, 0)
+script = ExtResource("9_q5rab")
+shape = SubResource("Resource_j7t0k")
+
+[node name="S" type="Node3D" parent="Mountains"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -150, 0, 0)
+script = ExtResource("9_q5rab")
+shape = SubResource("Resource_spge6")
+
+[node name="W" type="Node3D" parent="Mountains"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -150)
+script = ExtResource("9_q5rab")
+shape = SubResource("Resource_vellh")
+
+[node name="E" type="Node3D" parent="Mountains"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 150)
+script = ExtResource("9_q5rab")
+shape = SubResource("Resource_qhjoi")
+
+[node name="SnowWorldWEB" parent="." instance=ExtResource("17_1gaql")]
+
+[node name="PlayerSpawner" parent="." instance=ExtResource("18_72n28")]

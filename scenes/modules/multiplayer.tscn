@@ -37,7 +37,7 @@ script = ExtResource("1_jiv4u")
 [node name="Level" type="Node" parent="."]
 
 [node name="LevelSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("res://scenes/level1_web_nm.tscn", "res://scenes/tests/test_nm.tscn")
+_spawnable_scenes = PackedStringArray("res://scenes/tests/test_nm.tscn", "res://scenes/snow_level_web.tscn", "res://scenes/jungle_level_web.tscn", "res://scenes/coliseum_level_web.tscn")
 spawn_path = NodePath("../Level")
 spawn_limit = 1
 
