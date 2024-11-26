@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://bhe4vrbbu2cw5"]
+
+[ext_resource type="PackedScene" uid="uid://c1j7an8woikyd" path="res://scenes/world/ground/test_level.tscn" id="1_xw303"]
+[ext_resource type="PackedScene" uid="uid://df24n0qt0b1jm" path="res://scenes/props/crystals.tscn" id="2_61mdt"]
+[ext_resource type="PackedScene" uid="uid://lryua1aujudt" path="res://scenes/modules/player_spawner.tscn" id="3_c71rg"]
+
+[node name="World" type="Node"]
+
+[node name="Environment" parent="." instance=ExtResource("1_xw303")]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+visible = false
+shadow_enabled = true
+
+[node name="crystals" parent="." instance=ExtResource("2_61mdt")]
+
+[node name="PlayerSpawner" parent="." instance=ExtResource("3_c71rg")]

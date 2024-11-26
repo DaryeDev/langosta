@@ -1,0 +1,284 @@
+[gd_scene load_steps=10 format=3 uid="uid://bvnwjpd0f3oa0"]
+
+[ext_resource type="Script" path="res://scripts/multiplayer.gd" id="1_jiv4u"]
+[ext_resource type="Texture2D" uid="uid://8ka2ui7sq36p" path="res://addons/kenney_particle_pack/circle_05.png" id="2_2t8fi"]
+
+[sub_resource type="InputEventKey" id="InputEventKey_usv6e"]
+device = -1
+pressed = true
+keycode = 72
+unicode = 104
+
+[sub_resource type="Shortcut" id="Shortcut_j7wos"]
+events = [SubResource("InputEventKey_usv6e")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_bax4w"]
+pressed = true
+keycode = 4194309
+
+[sub_resource type="InputEventKey" id="InputEventKey_6itoa"]
+device = -1
+pressed = true
+keycode = 74
+unicode = 106
+
+[sub_resource type="Shortcut" id="Shortcut_b25bp"]
+events = [SubResource("InputEventKey_bax4w"), SubResource("InputEventKey_6itoa")]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8dqyr"]
+bg_color = Color(1, 0.117647, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_783xe"]
+bg_color = Color(0.00392157, 1, 0, 1)
+
+[node name="Multiplayer" type="Node"]
+script = ExtResource("1_jiv4u")
+
+[node name="Level" type="Node" parent="."]
+
+[node name="LevelSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://scenes/level1_web_nm.tscn", "res://scenes/tests/test_nm.tscn")
+spawn_path = NodePath("../Level")
+spawn_limit = 1
+
+[node name="UI" type="Control" parent="."]
+process_mode = 3
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Net" type="VBoxContainer" parent="UI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Options" type="HBoxContainer" parent="UI/Net"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/Net/Options"]
+layout_mode = 2
+text = "Direct:"
+
+[node name="Host" type="Button" parent="UI/Net/Options"]
+layout_mode = 2
+text = "Host"
+
+[node name="Connect" type="Button" parent="UI/Net/Options"]
+layout_mode = 2
+text = "Connect"
+
+[node name="Remote" type="LineEdit" parent="UI/Net/Options"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "127.0.0.1"
+placeholder_text = "Remote Host"
+caret_blink = true
+caret_blink_interval = 0.5
+
+[node name="Main_UI" type="CanvasLayer" parent="."]
+
+[node name="MainMenu" type="PanelContainer" parent="Main_UI"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 423.0
+offset_top = 227.0
+offset_right = -423.0
+offset_bottom = -227.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Main_UI/MainMenu"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Main_UI/MainMenu/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="Label" type="Label" parent="Main_UI/MainMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Main Menu"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Main_UI/MainMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Host" type="Button" parent="Main_UI/MainMenu/MarginContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+shortcut = SubResource("Shortcut_j7wos")
+text = "Host"
+
+[node name="CheckAddPlayer" type="CheckButton" parent="Main_UI/MainMenu/MarginContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Add playable character?"
+
+[node name="AddressEntryHost" type="LineEdit" parent="Main_UI/MainMenu/MarginContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+placeholder_text = "Enter Address for Hosting"
+alignment = 1
+caret_blink = true
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Main_UI/MainMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Connect" type="Button" parent="Main_UI/MainMenu/MarginContainer/VBoxContainer/VBoxContainer2"]
+layout_mode = 2
+shortcut = SubResource("Shortcut_b25bp")
+text = "Join"
+
+[node name="AddressEntryConnect" type="LineEdit" parent="Main_UI/MainMenu/MarginContainer/VBoxContainer/VBoxContainer2"]
+layout_mode = 2
+placeholder_text = "Enter Address to Join Here"
+alignment = 1
+caret_blink = true
+
+[node name="HUD" type="Control" parent="Main_UI"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="Main_UI/HUD"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.485
+anchor_top = 0.485
+anchor_right = 0.515
+anchor_bottom = 0.515
+offset_left = -558.72
+offset_top = -314.28
+offset_right = 558.72
+offset_bottom = 314.28
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.03, 0.03)
+pivot_offset = Vector2(576, 324)
+texture = ExtResource("2_2t8fi")
+stretch_mode = 5
+
+[node name="HealthBar" type="ProgressBar" parent="Main_UI/HUD"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.286
+anchor_top = 0.108
+anchor_right = 0.714
+anchor_bottom = 0.173
+offset_left = 0.527985
+offset_top = 0.0159988
+offset_right = -0.528076
+offset_bottom = -0.104004
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_8dqyr")
+theme_override_styles/fill = SubResource("StyleBoxFlat_783xe")
+max_value = 3.0
+value = 3.0
+show_percentage = false
+
+[node name="Host_UI" type="PanelContainer" parent="Main_UI"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 423.0
+offset_top = 227.0
+offset_right = -423.0
+offset_bottom = -227.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Main_UI/Host_UI"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Main_UI/Host_UI/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="Label" type="Label" parent="Main_UI/Host_UI/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Hosting game"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AddPlayer" type="Button" parent="Main_UI/Host_UI/MarginContainer/VBoxContainer"]
+layout_mode = 2
+shortcut = SubResource("Shortcut_b25bp")
+text = "Add playable character"
+
+[node name="Leave" type="Button" parent="Main_UI/Host_UI/MarginContainer/VBoxContainer"]
+layout_mode = 2
+shortcut = SubResource("Shortcut_b25bp")
+text = "Stop hosting"
+
+[node name="Pause_Menu" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="Control" type="Control" parent="Pause_Menu"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="Pause_Menu/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Resume" type="Button" parent="Pause_Menu/Control/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.417
+anchor_top = 0.309
+anchor_right = 0.583
+anchor_bottom = 0.383
+offset_left = -0.384033
+offset_top = -0.23201
+offset_right = 0.383972
+offset_bottom = -0.184006
+text = "Resume"
+
+[node name="Quit" type="Button" parent="Pause_Menu/Control/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.417
+anchor_top = 0.407
+anchor_right = 0.583
+anchor_bottom = 0.481
+offset_left = -0.384033
+offset_top = 0.264008
+offset_right = 0.383972
+offset_bottom = 0.311981
+text = "Quit"
+
+[connection signal="pressed" from="UI/Net/Options/Host" to="." method="_on_host_pressed"]
+[connection signal="pressed" from="UI/Net/Options/Connect" to="." method="_on_connect_pressed"]
+[connection signal="pressed" from="Main_UI/MainMenu/MarginContainer/VBoxContainer/VBoxContainer/Host" to="." method="_on_host_pressed"]
+[connection signal="toggled" from="Main_UI/MainMenu/MarginContainer/VBoxContainer/VBoxContainer/CheckAddPlayer" to="." method="_on_check_add_player_toggled"]
+[connection signal="pressed" from="Main_UI/MainMenu/MarginContainer/VBoxContainer/VBoxContainer2/Connect" to="." method="_on_connect_pressed"]
+[connection signal="pressed" from="Pause_Menu/Control/Panel/Resume" to="." method="_on_resume_pressed"]
+[connection signal="pressed" from="Pause_Menu/Control/Panel/Quit" to="." method="_on_quit_pressed"]

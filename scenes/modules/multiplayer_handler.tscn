@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/multiplayer_handler.gd" id="1_1k3v6"]
 [ext_resource type="Texture2D" uid="uid://8ka2ui7sq36p" path="res://addons/kenney_particle_pack/circle_05.png" id="2_wbhfe"]
-[ext_resource type="Script" path="res://scenes/modules/multiplayer_spawner.gd" id="3_q3l7a"]
+[ext_resource type="Script" path="res://scripts/multiplayer_spawner.gd" id="3_q3l7a"]
 
 [sub_resource type="InputEventKey" id="InputEventKey_usv6e"]
 device = -1
@@ -229,7 +229,7 @@ offset_right = 0.383972
 offset_bottom = 0.311981
 text = "Quit"
 
-[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+[node name="PlayerSpawner" type="MultiplayerSpawner" parent="."]
 spawn_path = NodePath("..")
 script = ExtResource("3_q3l7a")
 
@@ -240,4 +240,4 @@ script = ExtResource("3_q3l7a")
 [connection signal="pressed" from="Main_UI/Host_UI/MarginContainer/VBoxContainer/Leave" to="." method="_on_leave_pressed"]
 [connection signal="pressed" from="Pause_Menu/Control/Panel/Resume" to="." method="_on_resume_pressed"]
 [connection signal="pressed" from="Pause_Menu/Control/Panel/Quit" to="." method="_on_quit_pressed"]
-[connection signal="spawned" from="MultiplayerSpawner" to="." method="_on_multiplayer_spawner_spawned"]
+[connection signal="spawned" from="PlayerSpawner" to="." method="_on_multiplayer_spawner_spawned"]

@@ -125,12 +125,12 @@ func _on_resume_pressed() -> void:
 	
 func get_random_position():
 	# Get the bounds for generating random positions
-	var origin = ground.global_transform.origin
+	var origin = Vector3.ZERO
 	var bounds_size = Vector2(50, 50)  # Adjust based on expected size
-	var min_x = origin.x - bounds_size.x / 2 + border_margin
-	var max_x = origin.x + bounds_size.x / 2 - border_margin
-	var min_z = origin.z - bounds_size.y / 2 + border_margin
-	var max_z = origin.z + bounds_size.y / 2 - border_margin
+	var min_x = origin.x - bounds_size.x / 2
+	var max_x = origin.x + bounds_size.x / 2
+	var min_z = origin.z - bounds_size.y / 2
+	var max_z = origin.z + bounds_size.y / 2
 
 	# Generate a random position within the bounds
 	var x = randf_range(min_x, max_x)
@@ -157,10 +157,10 @@ func get_new_position():
 		spawn = get_random_position()
 	return spawn
 
-func is_position_occupied(position) -> bool:
+func is_position_occupied(pos) -> bool:
 	# Check if the position is occupied by any player
 	for player in connectedPlayers.values():
-		if player.position.distance_to(position) < MIN_PLAYER_DISTANCE: # Adjust this value based on player size
+		if player.position.distance_to(pos) < MIN_PLAYER_DISTANCE: # Adjust this value based on player size
 			return true
 	return false
 
