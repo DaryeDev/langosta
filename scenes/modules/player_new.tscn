@@ -1,41 +1,11 @@
-[gd_scene load_steps=17 format=3 uid="uid://busnbc5l2x2d8"]
+[gd_scene load_steps=12 format=3 uid="uid://busnbc5l2x2d8"]
 
 [ext_resource type="Script" path="res://scripts/player_new.gd" id="1_fpduk"]
-[ext_resource type="PackedScene" uid="uid://cf1dcxwv6bvl3" path="res://models/Pistol.glb" id="2_cr8gl"]
-[ext_resource type="Texture2D" uid="uid://vwob30tkwej4" path="res://addons/kenney_particle_pack/star_06.png" id="3_lj4wa"]
+[ext_resource type="PackedScene" uid="uid://cd3a4mmoryrfd" path="res://scenes/modules/guns/gun1/Gun1.tscn" id="2_s6nws"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_xk8km"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_67y6s"]
-
-[sub_resource type="Gradient" id="Gradient_cfnn0"]
-offsets = PackedFloat32Array(0, 0.141221, 1)
-colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_is51c"]
-gradient = SubResource("Gradient_cfnn0")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_uu53b"]
-angle_min = 45.0
-angle_max = 45.0
-gravity = Vector3(0, 0, 0)
-color_ramp = SubResource("GradientTexture1D_is51c")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4smqo"]
-transparency = 1
-shading_mode = 0
-vertex_color_use_as_albedo = true
-albedo_color = Color(1, 0.960784, 0.670588, 1)
-albedo_texture = ExtResource("3_lj4wa")
-billboard_mode = 3
-particles_anim_h_frames = 1
-particles_anim_v_frames = 1
-particles_anim_loop = false
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_b2g4i"]
-material = SubResource("StandardMaterial3D_4smqo")
-size = Vector2(0.5, 0.5)
-orientation = 2
 
 [sub_resource type="Animation" id="Animation_jhgv2"]
 length = 0.001
@@ -46,8 +16,8 @@ length = 3.0
 loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Camera3D/Pistol:position")
+tracks/0/enabled = false
+tracks/0/path = NodePath("Camera3D/Gun1:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -58,8 +28,8 @@ tracks/0/keys = {
 }
 tracks/1/type = "value"
 tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Camera3D/Pistol:rotation")
+tracks/1/enabled = false
+tracks/1/path = NodePath("Camera3D/Gun1:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -76,7 +46,7 @@ step = 0.25
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Camera3D/Pistol:position")
+tracks/0/path = NodePath("Camera3D/Gun1:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -92,7 +62,7 @@ length = 0.4
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Camera3D/Pistol:position")
+tracks/0/path = NodePath("Camera3D/Gun1:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -104,7 +74,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Camera3D/Pistol:rotation")
+tracks/1/path = NodePath("Camera3D/Gun1:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -132,10 +102,21 @@ properties/1/replication_mode = 1
 properties/2/path = NodePath("Camera3D:rotation")
 properties/2/spawn = true
 properties/2/replication_mode = 1
+properties/3/path = NodePath("Camera3D/Gun1:position")
+properties/3/spawn = true
+properties/3/replication_mode = 1
+properties/4/path = NodePath("Camera3D/Gun1:rotation")
+properties/4/spawn = true
+properties/4/replication_mode = 1
 
-[node name="Player" type="CharacterBody3D"]
+[sub_resource type="LabelSettings" id="LabelSettings_l1v7f"]
+font_size = 50
+
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("weapon")]
 collision_layer = 2
 script = ExtResource("1_fpduk")
+weapon = NodePath("Camera3D/Gun1")
+SHIFT_MULTIPLIER = 1.0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -148,18 +129,8 @@ shape = SubResource("CapsuleShape3D_67y6s")
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.51306, 0)
 
-[node name="Pistol" parent="Camera3D" instance=ExtResource("2_cr8gl")]
+[node name="Gun1" parent="Camera3D" instance=ExtResource("2_s6nws")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, -0.25, -0.5)
-
-[node name="MuzzleFlash" type="GPUParticles3D" parent="Camera3D/Pistol"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0588368, -0.313209)
-emitting = false
-amount = 1
-lifetime = 0.25
-one_shot = true
-local_coords = true
-process_material = SubResource("ParticleProcessMaterial_uu53b")
-draw_pass_1 = SubResource("PlaneMesh_b2g4i")
 
 [node name="RayCast3D" type="RayCast3D" parent="Camera3D"]
 target_position = Vector3(0, 0, -50)
@@ -200,9 +171,10 @@ offset_right = 103.0
 offset_bottom = 11.5
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(2, 2)
-pivot_offset = Vector2(60, 15)
 size_flags_horizontal = 4
 text = "Respawning in 3 seconds..."
+label_settings = SubResource("LabelSettings_l1v7f")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

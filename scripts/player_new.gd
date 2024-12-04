@@ -4,11 +4,12 @@ signal health_changed(health_value)
 
 @onready var camera = $Camera3D
 @onready var anim_player = $AnimationPlayer
-@onready var muzzle_flash = $Camera3D/Pistol/MuzzleFlash
-@onready var raycast = $Camera3D/RayCast3D
+@onready var gunRaycast = $Camera3D/RayCast3D
 @onready var multiplayer_handler = $"../"
 @onready var death_screen: PanelContainer = $DeathScreen
 @onready var death_label: Label = $DeathScreen/ColorRect/death_label
+@export var weapon: Weapon
+var weaponAnimPlayer: AnimationPlayer
 
 @export var gravity: int = ProjectSettings.get_setting("physics/3d/default_gravity")
 @export var JUMP_VELOCITY = 10.0
@@ -16,7 +17,7 @@ signal health_changed(health_value)
 @export var SHIFT_MULTIPLIER = 2.0
 @export var Y_OVERRIDE = 2
 
-var health = 3
+@export var health = 100
 var dead = false
 
 # FIX PAUSED
@@ -34,6 +35,12 @@ func _ready():
 	set_spawn_position()
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	camera.current = true
+	
+	if (weapon):
+		weapon.gunRaycast = gunRaycast
+		if (weapon.has_node("AnimationPlayer")):
+			weaponAnimPlayer = weapon.get_node("AnimationPlayer")
+			weaponAnimPlayer.animation_finished.connect(_on_animation_player_animation_finished)
 
 
 func set_spawn_position():
@@ -49,19 +56,13 @@ func _unhandled_input(event):
 	if event is InputEventMouseMotion:
 		handle_camera_rotation(event)
 	
-	if Input.is_action_just_pressed("shoot") and anim_player.current_animation != "shoot":
-		play_shoot_effects.rpc()
-		handle_shoot_collision()
+	if Input.is_action_just_pressed("shoot"):
+		weapon.use()
 
 func handle_camera_rotation(event):
 	rotate_y(-event.relative.x * 0.005)
 	camera.rotate_x(-event.relative.y * 0.005)
 	camera.rotation.x = clamp(camera.rotation.x, -PI / 2, PI / 2)
-
-func handle_shoot_collision():
-	if raycast.is_colliding():
-		var hit_player = raycast.get_collider()
-		hit_player.receive_damage.rpc_id(hit_player.get_multiplayer_authority())
 
 func player_movement():
 	if dead:
@@ -94,12 +95,12 @@ func update_velocity(direction, speed):
 		velocity.z = move_toward(velocity.z, 0, speed)
 
 func update_animation(input_dir):
-	if anim_player.current_animation == "shoot":
+	if weaponAnimPlayer.current_animation == "shoot":
 		return
 	if input_dir != Vector2.ZERO and is_on_floor():
-		anim_player.play("move")
+		anim_player.play("move", 0.2)
 	else:
-		anim_player.play("idle")
+		anim_player.play("idle", 0.2)
 
 func _physics_process(delta):
 	if not is_multiplayer_authority():
@@ -110,19 +111,10 @@ func _physics_process(delta):
 
 	player_movement()
 	move_and_slide()
-
-@rpc("call_local")
-func play_shoot_effects():
-	if dead:
-		return
-	anim_player.stop()
-	anim_player.play("shoot")
-	muzzle_flash.restart()
-	muzzle_flash.emitting = true
 	
 @rpc("any_peer")
-func receive_damage():
-	health -= 1
+func damage(attack: Dictionary):
+	health -= attack.get("damage", 1)
 	health_changed.emit(health)
 
 	if health <= 0:
@@ -148,7 +140,7 @@ func reset_player_state():
 
 func _on_animation_player_animation_finished(anim_name):
 	if anim_name == "shoot":
-		anim_player.play("idle")
+		anim_player.play("idle", 0.2)
 	
 func reset_animation():
-	anim_player.play("idle")
+	anim_player.play("idle", 0.2)
