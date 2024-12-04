@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://c70r5l5ysxn6w"]
+[gd_scene load_steps=29 format=3 uid="uid://c78woxn32desr"]
 
 [ext_resource type="Material" uid="uid://c7mw5tryqfggw" path="res://addons/proton_scatter/demos/assets/materials/m_water.tres" id="1_4adjy"]
 [ext_resource type="Script" path="res://addons/proton_scatter/src/scatter.gd" id="2_7fh4a"]
@@ -11,13 +11,13 @@
 [ext_resource type="Script" path="res://addons/proton_scatter/src/scatter_shape.gd" id="9_bruft"]
 [ext_resource type="Script" path="res://addons/proton_scatter/src/shapes/path_shape.gd" id="10_bw16o"]
 [ext_resource type="Script" path="res://addons/proton_scatter/src/shapes/box_shape.gd" id="11_fvcjf"]
-[ext_resource type="PackedScene" uid="uid://dypb6oqlpc280" path="res://scenes/world/ground/jungle_world_web.tscn" id="17_6oy5u"]
+[ext_resource type="PackedScene" path="res://scenes/world/ground/jungle_world_web.tscn" id="17_6oy5u"]
 [ext_resource type="PackedScene" uid="uid://lryua1aujudt" path="res://scenes/modules/player_spawner.tscn" id="18_25eqd"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_0xjln"]
 size = Vector2(300, 300)
 
-[sub_resource type="Resource" id="Resource_4yt1k"]
+[sub_resource type="Resource" id="Resource_tw1ct"]
 script = ExtResource("5_t0m2l")
 spacing = Vector3(1.5, 2, 1)
 enabled = true
@@ -26,7 +26,7 @@ custom_seed = 0
 restrict_height = true
 reference_frame = 0
 
-[sub_resource type="Resource" id="Resource_8tbuk"]
+[sub_resource type="Resource" id="Resource_yfrnu"]
 script = ExtResource("6_pxlg8")
 position = Vector3(0.173, 0.222, 0.918)
 rotation = Vector3(10, 360, 10)
@@ -37,7 +37,7 @@ custom_seed = 10
 restrict_height = false
 reference_frame = 2
 
-[sub_resource type="Resource" id="Resource_7msmm"]
+[sub_resource type="Resource" id="Resource_6e6k2"]
 script = ExtResource("7_ip7e8")
 rotation = Vector3(360, 0, 360)
 snap_angle = Vector3(180, 0, 180)
@@ -47,9 +47,9 @@ custom_seed = 0
 restrict_height = false
 reference_frame = 2
 
-[sub_resource type="Resource" id="Resource_m8c0s"]
+[sub_resource type="Resource" id="Resource_dmprm"]
 script = ExtResource("3_sfqau")
-stack = Array[ExtResource("4_4wb6j")]([SubResource("Resource_4yt1k"), SubResource("Resource_8tbuk"), SubResource("Resource_7msmm")])
+stack = Array[ExtResource("4_4wb6j")]([SubResource("Resource_tw1ct"), SubResource("Resource_yfrnu"), SubResource("Resource_6e6k2")])
 
 [sub_resource type="Curve3D" id="Curve3D_2vyue"]
 _data = {
@@ -64,7 +64,7 @@ closed = true
 thickness = 0.0
 curve = SubResource("Curve3D_2vyue")
 
-[sub_resource type="Resource" id="Resource_xogvq"]
+[sub_resource type="Resource" id="Resource_uc3p6"]
 script = ExtResource("5_t0m2l")
 spacing = Vector3(4, 4, 4)
 enabled = true
@@ -73,7 +73,7 @@ custom_seed = 0
 restrict_height = true
 reference_frame = 0
 
-[sub_resource type="Resource" id="Resource_c2o15"]
+[sub_resource type="Resource" id="Resource_55oqq"]
 script = ExtResource("6_pxlg8")
 position = Vector3(10, 4, 10)
 rotation = Vector3(10, 180, 10)
@@ -84,7 +84,7 @@ custom_seed = 25
 restrict_height = false
 reference_frame = 2
 
-[sub_resource type="Resource" id="Resource_q2il8"]
+[sub_resource type="Resource" id="Resource_6v37f"]
 script = ExtResource("7_ip7e8")
 rotation = Vector3(360, 0, 360)
 snap_angle = Vector3(180, 0, 180)
@@ -94,9 +94,9 @@ custom_seed = 0
 restrict_height = false
 reference_frame = 2
 
-[sub_resource type="Resource" id="Resource_fi0ll"]
+[sub_resource type="Resource" id="Resource_s1x1e"]
 script = ExtResource("3_sfqau")
-stack = Array[ExtResource("4_4wb6j")]([SubResource("Resource_xogvq"), SubResource("Resource_c2o15"), SubResource("Resource_q2il8")])
+stack = Array[ExtResource("4_4wb6j")]([SubResource("Resource_uc3p6"), SubResource("Resource_55oqq"), SubResource("Resource_6v37f")])
 
 [sub_resource type="Resource" id="Resource_j7t0k"]
 script = ExtResource("11_fvcjf")
@@ -128,7 +128,7 @@ metadata/_edit_group_ = true
 process_mode = 3
 script = ExtResource("2_7fh4a")
 render_mode = 1
-modifier_stack = SubResource("Resource_m8c0s")
+modifier_stack = SubResource("Resource_dmprm")
 Performance/use_chunks = true
 Performance/chunk_dimensions = Vector3(15, 15, 15)
 
@@ -144,7 +144,7 @@ shape = SubResource("Resource_lm0li")
 [node name="Mountains" type="Node3D" parent="."]
 process_mode = 3
 script = ExtResource("2_7fh4a")
-modifier_stack = SubResource("Resource_fi0ll")
+modifier_stack = SubResource("Resource_s1x1e")
 Performance/use_chunks = true
 Performance/chunk_dimensions = Vector3(15, 15, 15)
 

@@ -1,8 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://d3oyfoxvgu4fi"]
+[gd_scene load_steps=3 format=3 uid="uid://d3oyfoxvgu4fi"]
 
 [ext_resource type="PackedScene" uid="uid://ujd8nwsrp1jo" path="res://scenes/world/lights and environment/environment_lights_web.tscn" id="1_sxpnx"]
-[ext_resource type="CameraAttributesPractical" uid="uid://d0wfsxauvyj5a" path="res://scenes/world/lights and environment/camera_web.tres" id="2_4memq"]
-[ext_resource type="Environment" uid="uid://bscyevioes5lq" path="res://scenes/world/lights and environment/environment_lights_web.tres" id="2_tq34l"]
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_faml5"]
 
@@ -14,8 +12,6 @@ visible = false
 shadow_enabled = true
 
 [node name="WorldEnvironment" parent="." instance=ExtResource("1_sxpnx")]
-environment = ExtResource("2_tq34l")
-camera_attributes = ExtResource("2_4memq")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0)
