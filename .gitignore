@@ -13,3 +13,6 @@ data_*/
 # Build
 build/
 /dist
+
+# VS Code
+.vscode/

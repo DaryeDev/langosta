@@ -1,8 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://un8dxhiux3gd"]
+[gd_scene load_steps=4 format=3 uid="uid://un8dxhiux3gd"]
 
 [ext_resource type="PackedScene" uid="uid://c1j7an8woikyd" path="res://scenes/world/ground/test_level.tscn" id="1_evwjq"]
 [ext_resource type="PackedScene" uid="uid://dh6ckwdfb2vtf" path="res://scenes/world/lights and environment/environment_lights.tscn" id="2_c7yjn"]
-[ext_resource type="PackedScene" uid="uid://ceplgiidxc8sl" path="res://scenes/modules/multiplayer_handler.tscn" id="3_buu4d"]
 [ext_resource type="PackedScene" uid="uid://df24n0qt0b1jm" path="res://scenes/props/crystals.tscn" id="4_seppi"]
 
 [node name="World" type="Node"]
@@ -15,7 +14,5 @@ visible = false
 shadow_enabled = true
 
 [node name="WorldEnvironment" parent="." instance=ExtResource("2_c7yjn")]
-
-[node name="MultiplayerHandler" parent="." instance=ExtResource("3_buu4d")]
 
 [node name="crystals" parent="." instance=ExtResource("4_seppi")]

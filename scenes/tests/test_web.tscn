@@ -1,9 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://0fto1fkm8i4h"]
+[gd_scene load_steps=4 format=3 uid="uid://0fto1fkm8i4h"]
 
 [ext_resource type="PackedScene" uid="uid://c1j7an8woikyd" path="res://scenes/world/ground/test_level.tscn" id="1_4rl4c"]
 [ext_resource type="PackedScene" uid="uid://df24n0qt0b1jm" path="res://scenes/props/crystals.tscn" id="2_q0nhh"]
-[ext_resource type="PackedScene" path="res://scenes/world/world_environment_web.tscn" id="3_6alba"]
-[ext_resource type="PackedScene" uid="uid://ceplgiidxc8sl" path="res://scenes/modules/multiplayer_handler.tscn" id="4_rhtc0"]
+[ext_resource type="PackedScene" uid="uid://d3oyfoxvgu4fi" path="res://scenes/world/lights and environment/world_environment_web.tscn" id="3_6alba"]
 
 [node name="World" type="Node"]
 
@@ -12,5 +11,3 @@
 [node name="crystals" parent="." instance=ExtResource("2_q0nhh")]
 
 [node name="WorldEnvironmentWEB" parent="." instance=ExtResource("3_6alba")]
-
-[node name="MultiplayerHandler" parent="WorldEnvironmentWEB" instance=ExtResource("4_rhtc0")]

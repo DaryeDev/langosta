@@ -26,6 +26,7 @@ var dead = false
 var paused = false
 
 func _enter_tree():
+	print("Player name in player_new: ", str(name))
 	set_multiplayer_authority(str(name).to_int())
 
 func _ready():
