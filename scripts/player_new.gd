@@ -1,7 +1,8 @@
 extends CharacterBody3D
 
-signal health_changed(health_value)
+#signal health_changed(health_value)
 
+# UI and game logic
 @onready var camera = $Camera3D
 @onready var anim_player = $AnimationPlayer
 @onready var raycast = $Camera3D/RayCast3D
@@ -9,18 +10,20 @@ signal health_changed(health_value)
 @onready var death_screen: PanelContainer = $DeathScreen
 @onready var death_label: Label = $DeathScreen/ColorRect/death_label
 @onready var health_bar: ProgressBar = $HUD/HealthBar
+
+# Exported variables
 @export var blockManager: BlockManager
 @export var weapon: Weapon
-var weaponAnimPlayer: AnimationPlayer
-
-var defaultGravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 @export var gravityMultiplier: float = 1.0
 @export var JUMP_VELOCITY: float = 4.5
 @export var SPEED: float = 5.0
 @export var runMultiplier: float = 2.0
-
 @export var maxHealth = 100
 @export var health = 100
+
+# Flags
+var weaponAnimPlayer: AnimationPlayer
+var defaultGravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 var dead = false
 
 # FIX PAUSED
@@ -41,17 +44,16 @@ func _ready():
 	if Globals.currentMap and is_instance_valid(Globals.currentMap):
 		Globals.currentMap.spawnPlayer(self)
 	
-	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	#Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	camera.current = true
-	# FIXXXXX THISSSSSSSSS
-	self.multiplayer.connect("health_changed", update_health_bar)
 	
 	if blockManager:
 		blockManager.raycast = raycast
 	
-	if (weapon):
+	# Verificar esto
+	if weapon:
 		weapon.raycast = raycast
-		if (weapon.has_node("AnimationPlayer")):
+		if weapon.has_node("AnimationPlayer"):
 			weaponAnimPlayer = weapon.get_node("AnimationPlayer")
 			weaponAnimPlayer.animation_finished.connect(_on_animation_player_animation_finished)
 
@@ -79,7 +81,7 @@ func handle_camera_rotation(event):
 func player_movement():
 	if dead:
 		return
-	#
+	
 	if get_tree().paused:
 		velocity.x = 0
 		velocity.z = 0
@@ -128,7 +130,6 @@ func _physics_process(delta):
 func damage(attack: Dictionary):
 	var damageQuantity = attack.get("damage", 1)
 	health -= damageQuantity
-	health_changed.emit(health)
 	
 	if damageQuantity < 0:
 		$HealthAnimationPlayer.play("heal")
@@ -137,8 +138,7 @@ func damage(attack: Dictionary):
 
 	if health <= 0:
 		handle_death()
-	else:
-		health_changed.emit(health)
+
 
 func handle_death():
 	$MeshInstance3D.visible = false # No parece funcionar, hacer animación de muerte o algo jsjs
@@ -152,7 +152,6 @@ func handle_death():
 	reset_player_state()
 	$MeshInstance3D.visible = true # esto tampoco funciona, claro jsjsjs
 	$CollisionShape3D.disabled = false
-	
 
 func reset_player_state():
 	death_screen.hide()
@@ -162,7 +161,6 @@ func reset_player_state():
 		Globals.currentMap.spawnPlayer(self)
 	
 	dead = false
-	health_changed.emit(health)
 
 func _on_animation_player_animation_finished(anim_name):
 	if anim_name == "shoot":
@@ -170,7 +168,3 @@ func _on_animation_player_animation_finished(anim_name):
 	
 func reset_animation():
 	anim_player.play("idle", 0.2)
-
-func update_health_bar(health_value):
-	# Update the health bar value
-	health_bar.value = health_value

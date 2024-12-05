@@ -1,19 +1,19 @@
 extends Node
 
-signal healthChanged(currentHealth: int, maxHealth: int)
+#signal healthChanged(currentHealth: int, maxHealth: int)
 signal mapChanged()
-
-func _onHealthChanged(health_value: int):
-	healthChanged.emit(health_value, myPlayer.maxHealth)
+#
+#func _onHealthChanged(health_value: int):
+	#healthChanged.emit(health_value, myPlayer.maxHealth)
 
 var myPlayer: CharacterBody3D:
 	set(newPlayer):
-		if myPlayer:
-			myPlayer.health_changed.disconnect(_onHealthChanged)
-		
+		#if myPlayer:
+			#myPlayer.health_changed.disconnect(_onHealthChanged)
+		#
 		myPlayer = newPlayer
-
-		newPlayer.health_changed.connect(_onHealthChanged)
+#
+		#newPlayer.health_changed.connect(_onHealthChanged)
 	get:
 		return myPlayer
 

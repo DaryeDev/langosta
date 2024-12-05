@@ -32,7 +32,7 @@ func add_player(id: int):
 	var character
 	if id == 1:
 		print("Soy server")
-		if Globals.isViewer or OS.has_feature("viewer"):
+		if Globals.isViewer and OS.has_feature("viewer"):
 			character = load("res://scenes/modules/server_viewport.tscn").instantiate()
 		else:
 			character = load("res://scenes/modules/player_new.tscn").instantiate()

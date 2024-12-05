@@ -4,8 +4,8 @@ extends Node
 @onready var main_menu = $Main_UI/MainMenu
 @onready var address_entry_host: LineEdit = $Main_UI/MainMenu/MarginContainer/VBoxContainer/VBoxContainer/AddressEntryHost
 @onready var address_entry_connect: LineEdit = $Main_UI/MainMenu/MarginContainer/VBoxContainer/VBoxContainer2/AddressEntryConnect
-@onready var hud = $Main_UI/HUD
-@onready var health_bar = $Main_UI/HUD/HealthBar
+#@onready var hud = $Main_UI/HUD
+#@onready var health_bar = $Main_UI/HUD/HealthBar
 @onready var host_ui = $Main_UI/Host_UI
 @onready var pause_menu_ui = $Pause_Menu
 @onready var main_menu_ui = $Main_UI
@@ -32,6 +32,11 @@ var levels = ["res://scenes/tests/test_nm.tscn", "res://scenes/jungle_level_web.
 func isViewer():
 	return Globals.isViewer or OS.has_feature("viewer")
 
+func _process(delta: float) -> void:
+	if !initialized:
+		return
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if get_tree().paused else Input.MOUSE_MODE_CAPTURED
+
 func _ready() -> void:
 	if DisplayServer.get_name() == "headless":
 		dedicated = true
@@ -42,8 +47,9 @@ func _ready() -> void:
 		for level in levels:
 			$LevelSpawner.add_spawnable_scene(level)
 		
-	pause_menu_ui.process_mode = Node.PROCESS_MODE_ALWAYS
+	#pause_menu_ui.process_mode = Node.PROCESS_MODE_ALWAYS
 	self.process_mode = Node.PROCESS_MODE_ALWAYS
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 func _unhandled_input(event):
 	# Handle pause and quit actions
@@ -85,10 +91,9 @@ func start_game():
 	# Hide the UI and unpause to start the game.
 	initialized = true
 	main_menu.hide()
-	if !server or !isViewer():
-		hud.show()
-	else:
-		hud.hide()
+	
+	if OS.has_feature("web"):
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 	# Only change level on the server.
 	# Clients will instantiate the level via the spawner.
@@ -121,15 +126,15 @@ func _input(event):
 func _on_check_add_player_toggled(toggled_on: bool) -> void:
 	Globals.isViewer = !toggled_on
 
+#func update_health_bar(health_value):
+	## Update the health bar value
+	#health_bar.value = health_value
 
-func update_health_bar(health_value):
-	# Update the health bar value
-	health_bar.value = health_value
+#func _on_multiplayer_spawner_spawned(node):
+	## Connect health_changed signal if the node is the authority
+	#if node.is_multiplayer_authority():
+		#node.health_changed.connect(update_health_bar)
 
-func _on_multiplayer_spawner_spawned(node):
-	# Connect health_changed signal if the node is the authority
-	if node.is_multiplayer_authority():
-		node.health_changed.connect(update_health_bar)
 
 func toggle_pause():
 	# Toggle the pause state
@@ -140,14 +145,14 @@ func toggle_pause():
 	if paused:
 		pause_menu_ui.show()
 		main_menu_ui.hide()
-		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+		#Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	else:
 		pause_menu_ui.hide()
 		main_menu_ui.show()
-		if isViewer() and server:
-			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-		else:
-			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		#if isViewer() and server:
+			#Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+		#else:
+			#Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 
 func _on_quit_pressed() -> void:

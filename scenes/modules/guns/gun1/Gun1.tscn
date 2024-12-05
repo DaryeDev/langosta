@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://cd3a4mmoryrfd"]
+[gd_scene load_steps=15 format=3 uid="uid://cd3a4mmoryrfd"]
 
 [ext_resource type="Script" path="res://scenes/modules/guns/gun1/Gun1Script.gd" id="2_4ajkm"]
 [ext_resource type="Texture2D" uid="uid://vwob30tkwej4" path="res://addons/kenney_particle_pack/star_06.png" id="2_ou0hl"]
@@ -135,50 +135,6 @@ _data = {
 "shoot": SubResource("Animation_vi3e2")
 }
 
-[sub_resource type="GDScript" id="GDScript_vky57"]
-script/source = "extends RayCast3D
-@onready var laser_mesh = $LaserSight
-@onready var turnOnLaser = false
-
-func _process(_delta):
-	# Actualiza el RayCast
-	force_raycast_update()
-	
-	if Input.is_action_just_pressed(\"grab\"):
-		turnOnLaser = true
-	if Input.is_action_just_released(\"grab\"):
-		turnOnLaser = false
-	
-	if turnOnLaser:
-		if is_colliding():
-			# Si el rayo choca con algo
-			var collision_point = get_collision_point()
-			var distance = global_transform.origin.distance_to(collision_point)
-			
-			# Ajustar la longitud del láser
-			laser_mesh.scale = Vector3(1, distance, 1)
-			laser_mesh.position = Vector3(0, -distance/2.0, 0)
-		else:
-			# Si no colisiona, usar una longitud máxima
-			var max_distance = 50
-			laser_mesh.scale = Vector3(1, max_distance, 1)
-			laser_mesh.position = Vector3(0, -max_distance/2.0, 0)
-	else:
-		laser_mesh.scale = Vector3(0,0,0)
-"
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v8lld"]
-albedo_color = Color(1, 0, 0, 1)
-emission_enabled = true
-emission = Color(1, 0, 0, 1)
-emission_energy_multiplier = 4.0
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_c5igq"]
-material = SubResource("StandardMaterial3D_v8lld")
-top_radius = 0.01
-bottom_radius = 0.05
-height = 10.0
-
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_un5v7"]
 properties/0/path = NodePath(".:bulletsLeft")
 properties/0/spawn = true
@@ -220,16 +176,6 @@ libraries = {
 
 [node name="ShootingSound" type="AudioStreamPlayer3D" parent="Sounds"]
 stream = ExtResource("4_r0aug")
-
-[node name="RayCast3D" type="RayCast3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.0604744, -0.253157)
-target_position = Vector3(0, -50, 0)
-collision_mask = 3
-script = SubResource("GDScript_vky57")
-
-[node name="LaserSight" type="MeshInstance3D" parent="RayCast3D"]
-transform = Transform3D(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -5, 0)
-mesh = SubResource("CylinderMesh_c5igq")
 
 [node name="Label3D" type="Label3D" parent="."]
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0.146339, 0.0315318)

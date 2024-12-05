@@ -1,7 +1,6 @@
-[gd_scene load_steps=10 format=3 uid="uid://bvnwjpd0f3oa0"]
+[gd_scene load_steps=7 format=3 uid="uid://bvnwjpd0f3oa0"]
 
 [ext_resource type="Script" path="res://scripts/multiplayer.gd" id="1_jiv4u"]
-[ext_resource type="Texture2D" uid="uid://8ka2ui7sq36p" path="res://addons/kenney_particle_pack/circle_05.png" id="2_2t8fi"]
 
 [sub_resource type="InputEventKey" id="InputEventKey_usv6e"]
 device = -1
@@ -24,12 +23,6 @@ unicode = 106
 
 [sub_resource type="Shortcut" id="Shortcut_b25bp"]
 events = [SubResource("InputEventKey_bax4w"), SubResource("InputEventKey_6itoa")]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8dqyr"]
-bg_color = Color(1, 0.117647, 0, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_783xe"]
-bg_color = Color(0.00392157, 1, 0, 1)
 
 [node name="Multiplayer" type="Node"]
 script = ExtResource("1_jiv4u")
@@ -102,53 +95,6 @@ layout_mode = 2
 placeholder_text = "Enter Address to Join Here"
 alignment = 1
 caret_blink = true
-
-[node name="HUD" type="Control" parent="Main_UI"]
-visible = false
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-
-[node name="TextureRect" type="TextureRect" parent="Main_UI/HUD"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.485
-anchor_top = 0.485
-anchor_right = 0.515
-anchor_bottom = 0.515
-offset_left = -558.72
-offset_top = -314.28
-offset_right = 558.72
-offset_bottom = 314.28
-grow_horizontal = 2
-grow_vertical = 2
-scale = Vector2(0.03, 0.03)
-pivot_offset = Vector2(576, 324)
-texture = ExtResource("2_2t8fi")
-stretch_mode = 5
-
-[node name="HealthBar" type="ProgressBar" parent="Main_UI/HUD"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.286
-anchor_top = 0.108
-anchor_right = 0.714
-anchor_bottom = 0.173
-offset_left = 0.527985
-offset_top = 0.0159988
-offset_right = -0.528076
-offset_bottom = -0.104004
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_styles/background = SubResource("StyleBoxFlat_8dqyr")
-theme_override_styles/fill = SubResource("StyleBoxFlat_783xe")
-max_value = 3.0
-value = 3.0
-show_percentage = false
 
 [node name="Host_UI" type="PanelContainer" parent="Main_UI"]
 visible = false
