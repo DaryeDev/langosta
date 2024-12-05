@@ -21,6 +21,7 @@ func _ready():
 	self.process_mode = Node.PROCESS_MODE_ALWAYS
 	multiplayer.peer_connected.connect(_on_player_connected)
 	multiplayer.peer_disconnected.connect(_on_player_disconnected)
+	get_viewport().connect("size_changed", _on_window_resized)
 
 # Function to handle a new player connection
 func add_player_viewport(player_name):
@@ -70,6 +71,9 @@ func add_player_viewport(player_name):
 	height_adjustments[str(player_name)] = 0.0
 	print("Added viewport for player: ", player_name)
 
+	# Adjust the layout of the viewports
+	adjust_viewports()
+
 # Function to handle player disconnection
 func remove_player_viewport(player_name):
 	if str(player_name) in player_viewports:
@@ -81,6 +85,46 @@ func remove_player_viewport(player_name):
 		player_nodes.erase(str(player_name))
 		camera_initialized.erase(str(player_name))
 		print("Removed viewport for player: ", player_name)
+
+		# Adjust the layout of the viewports
+		adjust_viewports()
+
+# Adjust the layout of the viewports
+func adjust_viewports():
+	var num_players = player_viewports.size()
+	if num_players == 0:
+		return
+
+	# Calculate the number of rows and columns
+	var cols = int(ceil(sqrt(num_players)))
+	var rows = int(ceil(float(num_players) / cols))
+
+	var window_size = get_viewport().get_visible_rect().size
+	var aspect_ratio = window_size.x / window_size.y
+
+	# Adjust the number of columns and rows to maintain aspect ratio
+	while cols * rows < num_players:
+		if (cols / rows) > aspect_ratio:
+			rows += 1
+		else:
+			cols += 1
+
+	var viewport_width = window_size.x / cols
+	var viewport_height = window_size.y / rows
+
+	var index = 0
+	for player_name in player_viewports.keys():
+		var container = player_viewports[player_name]
+		var sub_viewport = container.get_child(0)
+
+		var row = index / cols
+		var col = index % cols
+
+		sub_viewport.size = Vector2(viewport_width, viewport_height)
+		container.size = Vector2(viewport_width, viewport_height)
+		container.position = Vector2(col * viewport_width, row * viewport_height)
+
+		index += 1
 
 # Synchronize camera transform from the original camera and player
 func _process(delta):
@@ -134,3 +178,7 @@ func _on_player_connected(player_name):
 
 func _on_player_disconnected(player_name):
 	remove_player_viewport(player_name)
+
+# Handle window resize
+func _on_window_resized():
+	adjust_viewports()
