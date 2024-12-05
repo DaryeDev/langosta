@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://bhe4vrbbu2cw5"]
+[gd_scene load_steps=11 format=3 uid="uid://bhe4vrbbu2cw5"]
 
 [ext_resource type="Script" path="res://scripts/Map.gd" id="1_8qpcf"]
 [ext_resource type="PackedScene" uid="uid://c1j7an8woikyd" path="res://scenes/world/ground/test_level.tscn" id="1_xw303"]
@@ -6,12 +6,53 @@
 [ext_resource type="PackedScene" uid="uid://lryua1aujudt" path="res://scenes/modules/player_spawner.tscn" id="3_c71rg"]
 [ext_resource type="PackedScene" path="res://scenes/modules/SpawnPoint.tscn" id="4_mcr0v"]
 [ext_resource type="PackedScene" uid="uid://bs2jm62cmkbrk" path="res://addons/instant-realistic-light/light_scene.tscn" id="5_ewdiu"]
+[ext_resource type="MeshLibrary" uid="uid://b1ymvt01dwlfv" path="res://scenes/modules/building/MeshLibrary.tres" id="7_dfum0"]
 
-[node name="World" type="Node3D"]
+[sub_resource type="NavigationMesh" id="NavigationMesh_w6xfn"]
+
+[sub_resource type="GDScript" id="GDScript_4irtu"]
+script/source = "extends GridMap
+
+@onready var currentPreview
+	
+func get_navreg() -> NavigationRegion3D:
+	var navReg = Globals.currentMap.navReg
+	if navReg:
+		return navReg
+	else: return null
+
+@rpc(\"any_peer\", \"call_local\", \"reliable\")
+func addBlock(blockPosition: Vector3, blockId: String = \"Block1\", addToBlocksPlaced: bool = true) -> void:
+	if addToBlocksPlaced:
+		Globals.currentMap.blocksPlaced.append([blockPosition, blockId])
+	
+	var navreg = get_navreg()
+	var newThing = (load(\"res://scenes/modules/building/blocks/\"+blockId+\"/\"+blockId+\".tscn\") as PackedScene).instantiate()
+	newThing.position = blockPosition + Vector3(0.5, 0.5, 0.5)
+	
+	set_cell_item(blockPosition, 0)
+	var deathCallback = func():
+		set_cell_item(blockPosition, -1)
+		if navreg:
+			navreg.bake_navigation_mesh()
+		
+	newThing.deathCallback = deathCallback
+	
+	add_child(newThing)
+	
+	if navreg:
+		navreg.bake_navigation_mesh()
+"
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_rxd33"]
+properties/0/path = NodePath(".:blocksPlaced")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+
+[node name="World" type="Node3D" node_paths=PackedStringArray("blockGrid")]
 script = ExtResource("1_8qpcf")
 mapName = "Test"
-
-[node name="Environment" parent="." instance=ExtResource("1_xw303")]
+blockGrid = NodePath("NavigationRegion3D/GridMap")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
@@ -52,3 +93,19 @@ transform = Transform3D(-0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, -0.707107
 
 [node name="9" parent="PlayerSpawnPoints" instance=ExtResource("4_mcr0v")]
 transform = Transform3D(-0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, -0.707107, -5, 6, -5)
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
+navigation_mesh = SubResource("NavigationMesh_w6xfn")
+
+[node name="Environment" parent="NavigationRegion3D" instance=ExtResource("1_xw303")]
+
+[node name="GridMap" type="GridMap" parent="NavigationRegion3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.001, -0.001, -0.001)
+mesh_library = ExtResource("7_dfum0")
+cell_size = Vector3(1, 1, 1)
+collision_layer = 0
+collision_mask = 0
+script = SubResource("GDScript_4irtu")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_rxd33")

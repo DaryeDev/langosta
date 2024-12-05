@@ -1,6 +1,7 @@
-[gd_scene load_steps=17 format=3 uid="uid://busnbc5l2x2d8"]
+[gd_scene load_steps=18 format=3 uid="uid://busnbc5l2x2d8"]
 
 [ext_resource type="Script" path="res://scripts/player_new.gd" id="1_fpduk"]
+[ext_resource type="PackedScene" uid="uid://bu0nvauvao0p8" path="res://scenes/modules/building/BlockManager/BlockManager.tscn" id="2_dr144"]
 [ext_resource type="PackedScene" uid="uid://cd3a4mmoryrfd" path="res://scenes/modules/guns/gun1/Gun1.tscn" id="2_s6nws"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_etadu"]
@@ -169,9 +170,10 @@ properties/4/path = NodePath("Camera3D/Gun1:rotation")
 properties/4/spawn = true
 properties/4/replication_mode = 1
 
-[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("weapon")]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("blockManager", "weapon")]
 collision_layer = 2
 script = ExtResource("1_fpduk")
+blockManager = NodePath("Camera3D/BlockManager")
 weapon = NodePath("Camera3D/Gun1")
 runMultiplier = 1.5
 
@@ -185,14 +187,18 @@ shape = SubResource("CapsuleShape3D_67y6s")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.51306, 0)
-cull_mask = 1048063
+cull_mask = 524287
+
+[node name="BlockManager" parent="Camera3D" node_paths=PackedStringArray("raycast") instance=ExtResource("2_dr144")]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -0.5, -0.25, -0.5)
+raycast = NodePath("../RayCast3D")
 
 [node name="Gun1" parent="Camera3D" instance=ExtResource("2_s6nws")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, -0.25, -0.5)
 
 [node name="RayCast3D" type="RayCast3D" parent="Camera3D"]
 target_position = Vector3(0, 0, -50)
-collision_mask = 2
+collision_mask = 3
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

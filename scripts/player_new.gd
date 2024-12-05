@@ -4,11 +4,12 @@ signal health_changed(health_value)
 
 @onready var camera = $Camera3D
 @onready var anim_player = $AnimationPlayer
-@onready var gunRaycast = $Camera3D/RayCast3D
+@onready var raycast = $Camera3D/RayCast3D
 @onready var multiplayer_handler = $"../"
 @onready var death_screen: PanelContainer = $DeathScreen
 @onready var death_label: Label = $DeathScreen/ColorRect/death_label
 @onready var health_bar: ProgressBar = $HUD/HealthBar
+@export var blockManager: BlockManager
 @export var weapon: Weapon
 var weaponAnimPlayer: AnimationPlayer
 
@@ -45,8 +46,11 @@ func _ready():
 	# FIXXXXX THISSSSSSSSS
 	self.multiplayer.connect("health_changed", update_health_bar)
 	
+	if blockManager:
+		blockManager.raycast = raycast
+	
 	if (weapon):
-		weapon.gunRaycast = gunRaycast
+		weapon.raycast = raycast
 		if (weapon.has_node("AnimationPlayer")):
 			weaponAnimPlayer = weapon.get_node("AnimationPlayer")
 			weaponAnimPlayer.animation_finished.connect(_on_animation_player_animation_finished)
@@ -63,6 +67,9 @@ func _unhandled_input(event):
 		
 	if Input.is_action_just_pressed("reload"):
 		weapon.reload()
+		
+	if Input.is_action_pressed("build"):
+		blockManager.buildBlock()
 
 func handle_camera_rotation(event):
 	rotate_y(-event.relative.x * 0.005)

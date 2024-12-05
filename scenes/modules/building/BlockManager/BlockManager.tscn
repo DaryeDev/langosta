@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://bu0nvauvao0p8"]
+
+[ext_resource type="Script" path="res://scenes/modules/building/BlockManager/BlockManagerScript.gd" id="1_7f83w"]
+[ext_resource type="PackedScene" uid="uid://b2it08goocwnd" path="res://scenes/modules/building/blocks/Block1/Block1.tscn" id="2_0gna1"]
+
+[node name="BlockManager" type="Node3D"]
+script = ExtResource("1_7f83w")
+
+[node name="RayCast3D" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+target_position = Vector3(0, -50, 0)
+
+[node name="buildCooldownTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="Block1" parent="." instance=ExtResource("2_0gna1")]
+collision_layer = 0
+collision_mask = 0

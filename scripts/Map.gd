@@ -2,9 +2,14 @@ extends Node3D
 class_name Map
 
 @export var mapName: String = ""
+@export var navReg: NavigationRegion3D
+@export var blockGrid: GridMap
+@export var blocksPlaced: Array = []
 
 func _ready() -> void:
-	#Globals.currentMap = self
+	Globals.currentMap = self
+	for block in blocksPlaced:
+		blockGrid.addBlock(block[0], block[1], false)
 	print(mapName)
 
 func spawnPlayer(player: CharacterBody3D):

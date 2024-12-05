@@ -29,7 +29,7 @@ class_name Gun
 @export var showMaxBullets: bool = true
 
 @export_category("Gun RayCast")
-@export var gunRaycast: RayCast3D
+@export var raycast: RayCast3D
 
 func updateBulletsLabel() -> void:
 	if bulletsLabel:
@@ -58,19 +58,22 @@ func use() -> bool:
 	bulletsLeft -= 1
 	updateBulletsLabel()
 	
-	if gunRaycast:
-		gunRaycast.collision_mask = 2
-		#gunRaycast.hit_from_inside = true
-		gunRaycast.exclude_parent = true
-		if gunRaycast.is_colliding():
-			var hit = gunRaycast.get_collider()
-			var hit_pos = gunRaycast.get_collision_point()
-			var hit_normal = gunRaycast.get_collision_normal()
+	if raycast:
+		raycast.collision_mask = 1|2
+		#raycast.hit_from_inside = true
+		raycast.exclude_parent = true
+		if raycast.is_colliding():
+			var hit = raycast.get_collider()
+			var hit_pos = raycast.get_collision_point()
+			var hit_normal = raycast.get_collision_normal()
 			
-			if hit_pos.distance_to(gunRaycast.global_transform.origin) <= gunRange and hit.has_method("damage"):
+			print(hit.has_method("damage"))
+			print(raycast.global_transform.origin)
+			print(hit_pos.distance_to(raycast.global_transform.origin))
+			if hit_pos.distance_to(raycast.global_transform.origin) <= gunRange and hit.has_method("damage"):
 				#if hit is Entity and hit.hasHitbox():  # Comprueba si puede recibir daño
 				if true:
-					var direction = (hit.global_transform.origin - gunRaycast.global_transform.origin).normalized()
+					var direction = (hit.global_transform.origin - raycast.global_transform.origin).normalized()
 					var pushForce = direction * knockbackForce
 					
 					var attack = {}
@@ -79,7 +82,7 @@ func use() -> bool:
 					attack.knockbackForce = pushForce
 					attack.impactPosition = hit_normal
 					
-					hit.damage.rpc_id(hit.get_multiplayer_authority(), attack)
+					hit.damage.rpc(attack)
 	
 	gunTimer.start(shootCooldown+0.01)
 	await gunTimer.timeout

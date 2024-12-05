@@ -1,0 +1,20 @@
+[gd_scene load_steps=5 format=3 uid="uid://b2it08goocwnd"]
+
+[ext_resource type="Script" path="res://scenes/modules/building/blocks/Block1/Block1Script.gd" id="1_wyejh"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_6jowt"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g7cym"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_i318v"]
+material = SubResource("StandardMaterial3D_g7cym")
+
+[node name="Block1" type="StaticBody3D"]
+script = ExtResource("1_wyejh")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_6jowt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_i318v")
