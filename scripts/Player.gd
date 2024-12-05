@@ -39,7 +39,7 @@ func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	camera.current = true
 
-func initialize_player():
+func initialize_player(): # Not used
 	ground = multiplayer_handler.get("ground")
 	connectedPlayers = multiplayer_handler.get("connectedPlayers")
 	border_margin = multiplayer_handler.get("border_margin")

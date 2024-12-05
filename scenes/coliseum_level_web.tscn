@@ -16,7 +16,7 @@
 [sub_resource type="PlaneMesh" id="PlaneMesh_0xjln"]
 size = Vector2(300, 300)
 
-[sub_resource type="Resource" id="Resource_7lv25"]
+[sub_resource type="Resource" id="Resource_5pylk"]
 script = ExtResource("5_8v6wi")
 spacing = Vector3(4, 4, 4)
 enabled = true
@@ -25,7 +25,7 @@ custom_seed = 0
 restrict_height = true
 reference_frame = 0
 
-[sub_resource type="Resource" id="Resource_ascb5"]
+[sub_resource type="Resource" id="Resource_g54bo"]
 script = ExtResource("6_jfwyc")
 position = Vector3(10, 4, 10)
 rotation = Vector3(10, 180, 10)
@@ -36,7 +36,7 @@ custom_seed = 25
 restrict_height = false
 reference_frame = 2
 
-[sub_resource type="Resource" id="Resource_xqkkt"]
+[sub_resource type="Resource" id="Resource_e605a"]
 script = ExtResource("7_28wqs")
 rotation = Vector3(360, 0, 360)
 snap_angle = Vector3(180, 0, 180)
@@ -46,9 +46,9 @@ custom_seed = 0
 restrict_height = false
 reference_frame = 2
 
-[sub_resource type="Resource" id="Resource_t2s7v"]
+[sub_resource type="Resource" id="Resource_x4goh"]
 script = ExtResource("3_5r0op")
-stack = Array[ExtResource("4_x4pja")]([SubResource("Resource_7lv25"), SubResource("Resource_ascb5"), SubResource("Resource_xqkkt")])
+stack = Array[ExtResource("4_x4pja")]([SubResource("Resource_5pylk"), SubResource("Resource_g54bo"), SubResource("Resource_e605a")])
 
 [sub_resource type="Resource" id="Resource_j7t0k"]
 script = ExtResource("10_a61pd")
@@ -79,7 +79,7 @@ metadata/_edit_group_ = true
 [node name="Mountains" type="Node3D" parent="."]
 process_mode = 3
 script = ExtResource("2_iw4s7")
-modifier_stack = SubResource("Resource_t2s7v")
+modifier_stack = SubResource("Resource_x4goh")
 Performance/use_chunks = true
 Performance/chunk_dimensions = Vector3(15, 15, 15)
 
@@ -108,7 +108,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 150)
 script = ExtResource("9_xr3ps")
 shape = SubResource("Resource_qhjoi")
 
-[node name="PlayerSpawner" parent="." instance=ExtResource("11_ljp0m")]
-
 [node name="JungleWorldWEB" parent="." instance=ExtResource("12_vecoq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.12124, 0)
+
+[node name="PlayerSpawner" parent="." instance=ExtResource("11_ljp0m")]

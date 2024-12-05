@@ -9,6 +9,7 @@ signal health_changed(health_value)
 @onready var multiplayer_handler = $"../"
 @onready var death_screen: PanelContainer = $DeathScreen
 @onready var death_label: Label = $DeathScreen/ColorRect/death_label
+@onready var health_bar: ProgressBar = $HUD/HealthBar
 
 @export var gravity: int = ProjectSettings.get_setting("physics/3d/default_gravity")
 @export var JUMP_VELOCITY = 10.0
@@ -34,6 +35,8 @@ func _ready():
 	set_spawn_position()
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	camera.current = true
+	# FIXXXXX THISSSSSSSSS
+	self.multiplayer.connect("health_changed", update_health_bar)
 
 
 func set_spawn_position():
@@ -152,3 +155,7 @@ func _on_animation_player_animation_finished(anim_name):
 	
 func reset_animation():
 	anim_player.play("idle")
+
+func update_health_bar(health_value):
+	# Update the health bar value
+	health_bar.value = health_value
