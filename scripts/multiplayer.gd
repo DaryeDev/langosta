@@ -15,6 +15,7 @@ extends Node
 
 # Flags
 var paused = false
+var initialized = false
 var dedicated = false
 var viewer = false
 #var add_player_check = Globals.
@@ -82,9 +83,13 @@ func _on_connect_pressed():
 
 func start_game():
 	# Hide the UI and unpause to start the game.
+	initialized = true
 	main_menu.hide()
-	if OS.has_feature("viewer") and !server:
+	if !server or !OS.has_feature("viewer"):
 		hud.show()
+	else:
+		hud.hide()
+
 	# Only change level on the server.
 	# Clients will instantiate the level via the spawner.
 	if multiplayer.is_server():
@@ -130,6 +135,8 @@ func _on_multiplayer_spawner_spawned(node):
 
 func toggle_pause():
 	# Toggle the pause state
+	if !initialized:
+		return
 	paused = !paused
 	get_tree().paused = paused  # Set the global paused state
 	if paused:
@@ -139,7 +146,11 @@ func toggle_pause():
 	else:
 		pause_menu_ui.hide()
 		main_menu_ui.show()
-		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		if OS.has_feature("viewer") and server:
+			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+		else:
+			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+
 
 func _on_quit_pressed() -> void:
 	# Quit the game
