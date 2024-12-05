@@ -56,6 +56,9 @@ func _unhandled_input(event):
 	
 	if Input.is_action_just_pressed("shoot"):
 		weapon.use()
+		
+	if Input.is_action_just_pressed("reload"):
+		weapon.reload()
 
 func handle_camera_rotation(event):
 	rotate_y(-event.relative.x * 0.005)

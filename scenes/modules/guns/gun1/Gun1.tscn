@@ -1,8 +1,8 @@
 [gd_scene load_steps=18 format=3 uid="uid://cd3a4mmoryrfd"]
 
-[ext_resource type="PackedScene" uid="uid://cf1dcxwv6bvl3" path="res://models/Pistol.glb" id="1_cy3vx"]
 [ext_resource type="Script" path="res://scenes/modules/guns/gun1/Gun1Script.gd" id="2_4ajkm"]
 [ext_resource type="Texture2D" uid="uid://vwob30tkwej4" path="res://addons/kenney_particle_pack/star_06.png" id="2_ou0hl"]
+[ext_resource type="PackedScene" uid="uid://dh74tcxb2rh7l" path="res://scenes/modules/guns/gun1/gun1.gltf" id="3_jtxy2"]
 [ext_resource type="AudioStream" uid="uid://bq5mujl8hnhxw" path="res://scenes/modules/guns/gun1/gun1Sound.mp3" id="4_r0aug"]
 
 [sub_resource type="Gradient" id="Gradient_wbabq"]
@@ -187,14 +187,19 @@ properties/1/path = NodePath("Label3D:text")
 properties/1/spawn = true
 properties/1/replication_mode = 1
 
-[node name="Gun1" node_paths=PackedStringArray("animationPlayer", "bulletsLabel", "gunRaycast") instance=ExtResource("1_cy3vx")]
+[node name="Gun1" type="Node3D" node_paths=PackedStringArray("animationPlayer", "bulletsLabel", "gunRaycast")]
 script = ExtResource("2_4ajkm")
 damage = 20.0
+maxBullets = 6
+bulletsLeft = 6
 animationPlayer = NodePath("AnimationPlayer")
 bulletsLabel = NodePath("Label3D")
 gunRaycast = NodePath("RayCast3D")
 
-[node name="MuzzleFlash" type="GPUParticles3D" parent="." index="1"]
+[node name="Sketchfab_Scene" parent="." instance=ExtResource("3_jtxy2")]
+transform = Transform3D(-4.37114e-09, 0, 0.1, 0, 0.1, 0, -0.1, 0, -4.37114e-09, 0, -0.0341203, -0.0214492)
+
+[node name="MuzzleFlash" type="GPUParticles3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0588368, -0.267713)
 emitting = false
 amount = 1
@@ -204,31 +209,31 @@ local_coords = true
 process_material = SubResource("ParticleProcessMaterial_wdbwb")
 draw_pass_1 = SubResource("PlaneMesh_qbdek")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="2"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_p7ikg")
 }
 
-[node name="Sounds" type="Node3D" parent="." index="3"]
+[node name="Sounds" type="Node3D" parent="."]
 
-[node name="ShootingSound" type="AudioStreamPlayer3D" parent="Sounds" index="0"]
+[node name="ShootingSound" type="AudioStreamPlayer3D" parent="Sounds"]
 stream = ExtResource("4_r0aug")
 
-[node name="RayCast3D" type="RayCast3D" parent="." index="4"]
+[node name="RayCast3D" type="RayCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.0604744, -0.253157)
 target_position = Vector3(0, -50, 0)
 collision_mask = 3
 script = SubResource("GDScript_vky57")
 
-[node name="LaserSight" type="MeshInstance3D" parent="RayCast3D" index="0"]
+[node name="LaserSight" type="MeshInstance3D" parent="RayCast3D"]
 transform = Transform3D(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -5, 0)
 mesh = SubResource("CylinderMesh_c5igq")
 
-[node name="Label3D" type="Label3D" parent="." index="5"]
+[node name="Label3D" type="Label3D" parent="."]
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0.146339, 0.0315318)
 billboard = 1
 text = "6/6"
 font_size = 50
 
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." index="6"]
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_un5v7")

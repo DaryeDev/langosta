@@ -27,6 +27,7 @@ script = ExtResource("1_5hlbq")
 shape = SubResource("BoxShape3D_oquqq")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="CollisionShape3D"]
+layers = 524288
 mesh = SubResource("BoxMesh_w7jch")
 script = SubResource("GDScript_nmfy1")
 

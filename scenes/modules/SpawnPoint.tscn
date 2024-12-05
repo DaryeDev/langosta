@@ -22,7 +22,7 @@ script = ExtResource("1_kjnoc")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
-layers = 512
+layers = 524288
 mesh = SubResource("SphereMesh_p1yam")
 script = SubResource("GDScript_ie8a8")
 
