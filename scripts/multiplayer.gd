@@ -1,5 +1,6 @@
 extends Node
 
+# UI and game logic
 @onready var main_menu = $Main_UI/MainMenu
 @onready var address_entry_host: LineEdit = $Main_UI/MainMenu/MarginContainer/VBoxContainer/VBoxContainer/AddressEntryHost
 @onready var address_entry_connect: LineEdit = $Main_UI/MainMenu/MarginContainer/VBoxContainer/VBoxContainer2/AddressEntryConnect
@@ -9,28 +10,39 @@ extends Node
 @onready var pause_menu_ui = $Pause_Menu
 @onready var main_menu_ui = $Main_UI
 
-var paused = false
-
+# Exported variables
 @export var Player = preload("res://scenes/modules/player.tscn")
+
+# Flags
+var paused = false
+var dedicated = false
+var viewer = false
+#var add_player_check = Globals.
+
+# Role
+var server = false
+
+# Multiplayer
 const PORT = 3131
 const DEFAULT_SERVER_IP = "localhost"
 var peer = WebSocketMultiplayerPeer.new()
 
-var dedicated = false
-
+# Level spawner
 var levels = ["res://scenes/tests/test_nm.tscn", "res://scenes/jungle_level_web.tscn", "res://scenes/snow_level_web.tscn", "res://scenes/coliseum_level_web.tscn"]
 
+
 func _ready() -> void:
-	for level in levels:
-		$LevelSpawner.add_spawnable_scene(level)
-	
+	if DisplayServer.get_name() == "headless":
+		dedicated = true
+		print("Automatically starting dedicated server")
+		_on_host_pressed.call_deferred()
+	else:
+		# Initialize UI and game logic only in non-headless mode
+		for level in levels:
+			$LevelSpawner.add_spawnable_scene(level)
+		
 	pause_menu_ui.process_mode = Node.PROCESS_MODE_ALWAYS
 	self.process_mode = Node.PROCESS_MODE_ALWAYS
-	
-	if DisplayServer.get_name() == "headless":
-		print("Automatically starting dedicated server")
-		dedicated = true
-		_on_host_pressed.call_deferred()
 
 func _unhandled_input(event):
 	# Handle pause and quit actions
@@ -52,12 +64,14 @@ func _on_host_pressed():
 	if peer.get_connection_status() == MultiplayerPeer.CONNECTION_DISCONNECTED:
 		OS.alert("Failed to start multiplayer server")
 		return
+	server = true
 	multiplayer.multiplayer_peer = peer
 	start_game()
 
 
 func _on_connect_pressed():
 	# Start as client
+	# Make a toggle for viewer
 	var address = address_entry_connect.text if address_entry_connect.text != "" else DEFAULT_SERVER_IP
 	peer.create_client("ws://" + address + ":" + str(PORT))
 	if peer.get_connection_status() == MultiplayerPeer.CONNECTION_DISCONNECTED:
@@ -69,7 +83,8 @@ func _on_connect_pressed():
 func start_game():
 	# Hide the UI and unpause to start the game.
 	main_menu.hide()
-	hud.show()
+	if OS.has_feature("viewer") and !server:
+		hud.show()
 	# Only change level on the server.
 	# Clients will instantiate the level via the spawner.
 	if multiplayer.is_server():
@@ -97,11 +112,11 @@ func _input(event):
 		var random_index = randi() % levels.size()
 		var random_element = levels[random_index]
 		change_level.call_deferred(load(random_element))
-		#change_level.call_deferred(load("res://level.tscn"))
 
-
-func _on_check_add_player_toggled(_toggled_on: bool) -> void:
-	pass # Replace with function body.
+func _on_check_add_player_toggled(toggled_on: bool) -> void:
+	# Toggle the add player check
+	#add_player_check = toggled_on
+	pass
 
 
 func update_health_bar(health_value):
