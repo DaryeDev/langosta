@@ -30,6 +30,8 @@ func _enter_tree():
 func _ready():
 	if not is_multiplayer_authority():
 		return
+		
+	Me.setPlayer(self)
 	
 	self.process_mode = Node.PROCESS_MODE_ALWAYS
 	
