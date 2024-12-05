@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://df24n0qt0b1jm" path="res://scenes/props/crystals.tscn" id="2_61mdt"]
 [ext_resource type="PackedScene" uid="uid://lryua1aujudt" path="res://scenes/modules/player_spawner.tscn" id="3_c71rg"]
 [ext_resource type="PackedScene" uid="uid://b582iud1fulso" path="res://scenes/modules/SpawnPoint.tscn" id="4_mcr0v"]
-[ext_resource type="PackedScene" uid="uid://bs2jm62cmkbrk" path="res://addons/instant-realistic-light/light_scene.tscn" id="5_ewdiu"]
+[ext_resource type="PackedScene" uid="uid://d3oyfoxvgu4fi" path="res://scenes/world/lights and environment/world_environment_web.tscn" id="4_r2u2b"]
 [ext_resource type="MeshLibrary" uid="uid://b1ymvt01dwlfv" path="res://scenes/modules/building/MeshLibrary.tres" id="7_dfum0"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_w6xfn"]
@@ -63,7 +63,7 @@ shadow_enabled = true
 
 [node name="PlayerSpawner" parent="." instance=ExtResource("3_c71rg")]
 
-[node name="WorldEnvironment" parent="." instance=ExtResource("5_ewdiu")]
+[node name="WorldEnvironmentWEB" parent="." instance=ExtResource("4_r2u2b")]
 
 [node name="PlayerSpawnPoints" type="Node3D" parent="."]
 

@@ -9,9 +9,8 @@ camera_attributes = ExtResource("2_wp5ap")
 
 [node name="Sun3" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.605197, 0.796076, 0, -0.796076, 0.605197, -4.86868, 8.33126, 2.18251)
-light_energy = 2.8
-light_indirect_energy = 3.0
 shadow_enabled = true
+directional_shadow_mode = 0
 directional_shadow_split_1 = 0.005
 directional_shadow_blend_splits = true
 directional_shadow_max_distance = 10000.0
