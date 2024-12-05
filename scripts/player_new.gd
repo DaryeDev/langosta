@@ -8,6 +8,7 @@ signal health_changed(health_value)
 @onready var multiplayer_handler = $"../"
 @onready var death_screen: PanelContainer = $DeathScreen
 @onready var death_label: Label = $DeathScreen/ColorRect/death_label
+@onready var health_bar: ProgressBar = $HUD/HealthBar
 @export var weapon: Weapon
 var weaponAnimPlayer: AnimationPlayer
 
@@ -25,6 +26,7 @@ var dead = false
 var paused = false
 
 func _enter_tree():
+	print("Player name in player_new: ", str(name))
 	set_multiplayer_authority(str(name).to_int())
 
 func _ready():
@@ -40,6 +42,8 @@ func _ready():
 	
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	camera.current = true
+	# FIXXXXX THISSSSSSSSS
+	self.multiplayer.connect("health_changed", update_health_bar)
 	
 	if (weapon):
 		weapon.gunRaycast = gunRaycast
@@ -159,3 +163,7 @@ func _on_animation_player_animation_finished(anim_name):
 	
 func reset_animation():
 	anim_player.play("idle", 0.2)
+
+func update_health_bar(health_value):
+	# Update the health bar value
+	health_bar.value = health_value

@@ -19,7 +19,7 @@
 [ext_resource type="PackedScene" uid="uid://ujd8nwsrp1jo" path="res://scenes/world/lights and environment/environment_lights_web.tscn" id="18_153nm"]
 [ext_resource type="Script" path="res://addons/proton_scatter/src/shapes/sphere_shape.gd" id="19_ajwkw"]
 
-[sub_resource type="Resource" id="Resource_5itmx"]
+[sub_resource type="Resource" id="Resource_xq14y"]
 script = ExtResource("7_ld2uj")
 instance_count = 500
 align_to_path = true
@@ -30,7 +30,7 @@ custom_seed = 0
 restrict_height = false
 reference_frame = 0
 
-[sub_resource type="Resource" id="Resource_k4yie"]
+[sub_resource type="Resource" id="Resource_msa5y"]
 script = ExtResource("8_ql8ys")
 position = Vector3(1, 4, 1)
 rotation = Vector3(10, 180, 10)
@@ -41,7 +41,7 @@ custom_seed = 25
 restrict_height = false
 reference_frame = 2
 
-[sub_resource type="Resource" id="Resource_kmfi6"]
+[sub_resource type="Resource" id="Resource_1ra0k"]
 script = ExtResource("9_aybgx")
 rotation = Vector3(360, 0, 360)
 snap_angle = Vector3(180, 0, 180)
@@ -51,7 +51,7 @@ custom_seed = 0
 restrict_height = false
 reference_frame = 2
 
-[sub_resource type="Resource" id="Resource_mir8y"]
+[sub_resource type="Resource" id="Resource_ck7a0"]
 script = ExtResource("10_thqsx")
 operation = 1
 scale = Vector3(1, 2, 1)
@@ -61,9 +61,9 @@ custom_seed = 0
 restrict_height = false
 reference_frame = 2
 
-[sub_resource type="Resource" id="Resource_dmif1"]
+[sub_resource type="Resource" id="Resource_l5vft"]
 script = ExtResource("5_yavpv")
-stack = Array[ExtResource("6_kw2yo")]([SubResource("Resource_5itmx"), SubResource("Resource_k4yie"), SubResource("Resource_kmfi6"), SubResource("Resource_mir8y")])
+stack = Array[ExtResource("6_kw2yo")]([SubResource("Resource_xq14y"), SubResource("Resource_msa5y"), SubResource("Resource_1ra0k"), SubResource("Resource_ck7a0")])
 
 [sub_resource type="Curve3D" id="Curve3D_hq0tt"]
 _data = {
@@ -78,7 +78,7 @@ closed = true
 thickness = 0.0
 curve = SubResource("Curve3D_hq0tt")
 
-[sub_resource type="Resource" id="Resource_a1y74"]
+[sub_resource type="Resource" id="Resource_1ij6g"]
 script = ExtResource("14_mmmeg")
 spacing = Vector3(5, 0.05, 5)
 enabled = true
@@ -87,7 +87,7 @@ custom_seed = 0
 restrict_height = true
 reference_frame = 0
 
-[sub_resource type="Resource" id="Resource_re67x"]
+[sub_resource type="Resource" id="Resource_ro1fo"]
 script = ExtResource("15_y5tat")
 operation = 0
 position = Vector3(0, 3.98, 0)
@@ -97,7 +97,7 @@ custom_seed = 0
 restrict_height = false
 reference_frame = 2
 
-[sub_resource type="Resource" id="Resource_waycs"]
+[sub_resource type="Resource" id="Resource_bue8w"]
 script = ExtResource("8_ql8ys")
 position = Vector3(7, 0, 0.3)
 rotation = Vector3(0, 0, 0)
@@ -108,7 +108,7 @@ custom_seed = 10
 restrict_height = false
 reference_frame = 2
 
-[sub_resource type="Resource" id="Resource_q4dcs"]
+[sub_resource type="Resource" id="Resource_fo386"]
 script = ExtResource("17_qnlrq")
 negative_shapes_only = false
 enabled = true
@@ -117,9 +117,9 @@ custom_seed = 0
 restrict_height = false
 reference_frame = 0
 
-[sub_resource type="Resource" id="Resource_q0onb"]
+[sub_resource type="Resource" id="Resource_vbr6e"]
 script = ExtResource("5_yavpv")
-stack = Array[ExtResource("6_kw2yo")]([SubResource("Resource_a1y74"), SubResource("Resource_re67x"), SubResource("Resource_waycs"), SubResource("Resource_q4dcs")])
+stack = Array[ExtResource("6_kw2yo")]([SubResource("Resource_1ij6g"), SubResource("Resource_ro1fo"), SubResource("Resource_bue8w"), SubResource("Resource_fo386")])
 
 [sub_resource type="Curve3D" id="Curve3D_75d13"]
 _data = {
@@ -150,7 +150,7 @@ process_mode = 3
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 script = ExtResource("4_qvdsm")
 keep_static_colliders = true
-modifier_stack = SubResource("Resource_dmif1")
+modifier_stack = SubResource("Resource_l5vft")
 Performance/use_chunks = true
 Performance/chunk_dimensions = Vector3(15, 15, 15)
 
@@ -170,7 +170,7 @@ process_mode = 3
 transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, 0, 0, 0)
 script = ExtResource("4_qvdsm")
 keep_static_colliders = true
-modifier_stack = SubResource("Resource_q0onb")
+modifier_stack = SubResource("Resource_vbr6e")
 Performance/use_chunks = true
 Performance/chunk_dimensions = Vector3(15, 15, 15)
 

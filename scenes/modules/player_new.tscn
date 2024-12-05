@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://busnbc5l2x2d8"]
+[gd_scene load_steps=21 format=3 uid="uid://busnbc5l2x2d8"]
 
 [ext_resource type="Script" path="res://scripts/player_new.gd" id="1_fpduk"]
 [ext_resource type="PackedScene" uid="uid://cd3a4mmoryrfd" path="res://scenes/modules/guns/gun1/Gun1.tscn" id="2_s6nws"]
