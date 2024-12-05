@@ -86,6 +86,7 @@ func change_level(scene: PackedScene):
 	
 	# Add new level.
 	var newLevel = scene.instantiate()
+	Globals.currentMap = newLevel
 	level.add_child(newLevel)
 
 # The server can restart the level by pressing HOME.

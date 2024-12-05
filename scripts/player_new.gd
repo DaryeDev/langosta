@@ -35,7 +35,7 @@ func _ready():
 	
 	self.process_mode = Node.PROCESS_MODE_ALWAYS
 	
-	if Globals.currentMap:
+	if Globals.currentMap and is_instance_valid(Globals.currentMap):
 		Globals.currentMap.spawnPlayer(self)
 	
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -147,7 +147,8 @@ func reset_player_state():
 	death_screen.hide()
 	health = maxHealth
 	
-	Globals.currentMap.spawnPlayer(self)
+	if Globals.currentMap and is_instance_valid(Globals.currentMap):
+		Globals.currentMap.spawnPlayer(self)
 	
 	dead = false
 	health_changed.emit(health)

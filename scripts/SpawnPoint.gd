@@ -2,7 +2,7 @@ extends Node3D
 class_name SpawnPoint
 
 @export var spawnTimeout: float = 5.0
-var timeoutTimer: Timer
+@export var timeoutTimer: Timer
 
 func _ready():
 	if not timeoutTimer:

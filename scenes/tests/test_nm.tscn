@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://bhe4vrbbu2cw5"]
+[gd_scene load_steps=7 format=3 uid="uid://bhe4vrbbu2cw5"]
 
 [ext_resource type="Script" path="res://scripts/Map.gd" id="1_8qpcf"]
 [ext_resource type="PackedScene" uid="uid://c1j7an8woikyd" path="res://scenes/world/ground/test_level.tscn" id="1_xw303"]
@@ -6,44 +6,10 @@
 [ext_resource type="PackedScene" uid="uid://lryua1aujudt" path="res://scenes/modules/player_spawner.tscn" id="3_c71rg"]
 [ext_resource type="PackedScene" uid="uid://b582iud1fulso" path="res://scenes/modules/SpawnPoint.tscn" id="4_mcr0v"]
 [ext_resource type="PackedScene" uid="uid://bs2jm62cmkbrk" path="res://addons/instant-realistic-light/light_scene.tscn" id="5_ewdiu"]
-[ext_resource type="PackedScene" uid="uid://ucejrc8oyf4f" path="res://scenes/modules/SpawnArea.tscn" id="5_v4m2n"]
-
-[sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_gn88m"]
-ground_color = Color(0, 0, 0, 1)
-
-[sub_resource type="Sky" id="Sky_tyhie"]
-sky_material = SubResource("PhysicalSkyMaterial_gn88m")
-radiance_size = 2
-
-[sub_resource type="Environment" id="Environment_f8w8m"]
-background_mode = 2
-background_intensity = 100000.0
-sky = SubResource("Sky_tyhie")
-tonemap_mode = 3
-tonemap_white = 8.0
-ssao_enabled = true
-ssao_detail = 2.0
-sdfgi_enabled = true
-sdfgi_bounce_feedback = 0.9
-glow_enabled = true
-glow_normalized = true
-glow_bloom = 0.2
-volumetric_fog_enabled = true
-volumetric_fog_density = 0.01
-volumetric_fog_gi_inject = 1.14
-volumetric_fog_anisotropy = 0.7
-volumetric_fog_sky_affect = 0.295
-adjustment_saturation = 1.17
-
-[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_qo5hu"]
-auto_exposure_scale = 0.22
-auto_exposure_speed = 0.8
-dof_blur_far_distance = 1.44
-dof_blur_near_distance = 0.01
-auto_exposure_min_sensitivity = 8.01
 
 [node name="World" type="Node3D"]
 script = ExtResource("1_8qpcf")
+mapName = "Test"
 
 [node name="Environment" parent="." instance=ExtResource("1_xw303")]
 
@@ -56,41 +22,33 @@ shadow_enabled = true
 
 [node name="PlayerSpawner" parent="." instance=ExtResource("3_c71rg")]
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." instance=ExtResource("5_ewdiu")]
-environment = SubResource("Environment_f8w8m")
-camera_attributes = SubResource("CameraAttributesPractical_qo5hu")
+[node name="WorldEnvironment" parent="." instance=ExtResource("5_ewdiu")]
 
-[node name="PlayerSpawnArea" parent="." instance=ExtResource("5_v4m2n")]
-transform = Transform3D(60, 0, 0, 0, 1, 0, 0, 0, 50, 0, 9, 0)
-collision_layer = 0
-collision_mask = 0
-input_ray_pickable = false
+[node name="PlayerSpawnPoints" type="Node3D" parent="."]
 
-[node name="PlayerSpawnPointsl" type="Node3D" parent="."]
+[node name="1" parent="PlayerSpawnPoints" instance=ExtResource("4_mcr0v")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -21, 6, 0)
 
-[node name="1" parent="PlayerSpawnPointsl" instance=ExtResource("4_mcr0v")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21, 6, 0)
+[node name="2" parent="PlayerSpawnPoints" instance=ExtResource("4_mcr0v")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 21, 6, 0)
 
-[node name="2" parent="PlayerSpawnPointsl" instance=ExtResource("4_mcr0v")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21, 6, 0)
+[node name="3" parent="PlayerSpawnPoints" instance=ExtResource("4_mcr0v")]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 6, -21)
 
-[node name="3" parent="PlayerSpawnPointsl" instance=ExtResource("4_mcr0v")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6, -21)
-
-[node name="4" parent="PlayerSpawnPointsl" instance=ExtResource("4_mcr0v")]
+[node name="4" parent="PlayerSpawnPoints" instance=ExtResource("4_mcr0v")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6, 21)
 
-[node name="5" parent="PlayerSpawnPointsl" instance=ExtResource("4_mcr0v")]
+[node name="5" parent="PlayerSpawnPoints" instance=ExtResource("4_mcr0v")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
 
-[node name="6" parent="PlayerSpawnPointsl" instance=ExtResource("4_mcr0v")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 6, 5)
+[node name="6" parent="PlayerSpawnPoints" instance=ExtResource("4_mcr0v")]
+transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, -5, 6, 5)
 
-[node name="7" parent="PlayerSpawnPointsl" instance=ExtResource("4_mcr0v")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 6, 5)
+[node name="7" parent="PlayerSpawnPoints" instance=ExtResource("4_mcr0v")]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 5, 6, 5)
 
-[node name="8" parent="PlayerSpawnPointsl" instance=ExtResource("4_mcr0v")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 6, -5)
+[node name="8" parent="PlayerSpawnPoints" instance=ExtResource("4_mcr0v")]
+transform = Transform3D(-0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, -0.707107, 5, 6, -5)
 
-[node name="9" parent="PlayerSpawnPointsl" instance=ExtResource("4_mcr0v")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 6, -5)
+[node name="9" parent="PlayerSpawnPoints" instance=ExtResource("4_mcr0v")]
+transform = Transform3D(-0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, -0.707107, -5, 6, -5)

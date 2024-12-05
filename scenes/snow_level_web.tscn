@@ -1,5 +1,6 @@
-[gd_scene load_steps=29 format=3 uid="uid://wa80fxlq6lsg"]
+[gd_scene load_steps=31 format=3 uid="uid://dyuq24567rhi6"]
 
+[ext_resource type="Script" path="res://scripts/Map.gd" id="1_4l36j"]
 [ext_resource type="Material" uid="uid://c7mw5tryqfggw" path="res://addons/proton_scatter/demos/assets/materials/m_water.tres" id="1_cogyh"]
 [ext_resource type="Script" path="res://addons/proton_scatter/src/scatter.gd" id="2_3rlxa"]
 [ext_resource type="Script" path="res://addons/proton_scatter/src/stack/modifier_stack.gd" id="3_wm6nv"]
@@ -11,13 +12,14 @@
 [ext_resource type="Script" path="res://addons/proton_scatter/src/scatter_shape.gd" id="9_q5rab"]
 [ext_resource type="Script" path="res://addons/proton_scatter/src/shapes/path_shape.gd" id="10_2sgcd"]
 [ext_resource type="Script" path="res://addons/proton_scatter/src/shapes/box_shape.gd" id="11_0vcbb"]
+[ext_resource type="PackedScene" uid="uid://ucejrc8oyf4f" path="res://scenes/modules/SpawnArea.tscn" id="14_rrlkc"]
 [ext_resource type="PackedScene" uid="uid://ciyo3l0bytcqg" path="res://scenes/world/ground/snow_world_web.tscn" id="17_1gaql"]
 [ext_resource type="PackedScene" uid="uid://lryua1aujudt" path="res://scenes/modules/player_spawner.tscn" id="18_72n28"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_0xjln"]
 size = Vector2(300, 300)
 
-[sub_resource type="Resource" id="Resource_kokni"]
+[sub_resource type="Resource" id="Resource_mxl1n"]
 script = ExtResource("5_gqgl4")
 spacing = Vector3(1.5, 2, 1)
 enabled = true
@@ -26,7 +28,7 @@ custom_seed = 0
 restrict_height = true
 reference_frame = 0
 
-[sub_resource type="Resource" id="Resource_3n6l2"]
+[sub_resource type="Resource" id="Resource_gl70a"]
 script = ExtResource("6_oreak")
 position = Vector3(0.173, 0.222, 0.918)
 rotation = Vector3(10, 360, 10)
@@ -37,7 +39,7 @@ custom_seed = 10
 restrict_height = false
 reference_frame = 2
 
-[sub_resource type="Resource" id="Resource_4y31m"]
+[sub_resource type="Resource" id="Resource_dw6ym"]
 script = ExtResource("7_ailpm")
 rotation = Vector3(360, 0, 360)
 snap_angle = Vector3(180, 0, 180)
@@ -47,9 +49,9 @@ custom_seed = 0
 restrict_height = false
 reference_frame = 2
 
-[sub_resource type="Resource" id="Resource_p5eis"]
+[sub_resource type="Resource" id="Resource_il8ud"]
 script = ExtResource("3_wm6nv")
-stack = Array[ExtResource("4_ky4h2")]([SubResource("Resource_kokni"), SubResource("Resource_3n6l2"), SubResource("Resource_4y31m")])
+stack = Array[ExtResource("4_ky4h2")]([SubResource("Resource_mxl1n"), SubResource("Resource_gl70a"), SubResource("Resource_dw6ym")])
 
 [sub_resource type="Curve3D" id="Curve3D_2vyue"]
 _data = {
@@ -64,7 +66,7 @@ closed = true
 thickness = 0.0
 curve = SubResource("Curve3D_2vyue")
 
-[sub_resource type="Resource" id="Resource_7o2k0"]
+[sub_resource type="Resource" id="Resource_pnd5y"]
 script = ExtResource("5_gqgl4")
 spacing = Vector3(4, 4, 4)
 enabled = true
@@ -73,7 +75,7 @@ custom_seed = 0
 restrict_height = true
 reference_frame = 0
 
-[sub_resource type="Resource" id="Resource_fb001"]
+[sub_resource type="Resource" id="Resource_7eh73"]
 script = ExtResource("6_oreak")
 position = Vector3(10, 4, 10)
 rotation = Vector3(10, 180, 10)
@@ -84,7 +86,7 @@ custom_seed = 25
 restrict_height = false
 reference_frame = 2
 
-[sub_resource type="Resource" id="Resource_hgw2n"]
+[sub_resource type="Resource" id="Resource_b731i"]
 script = ExtResource("7_ailpm")
 rotation = Vector3(360, 0, 360)
 snap_angle = Vector3(180, 0, 180)
@@ -94,9 +96,9 @@ custom_seed = 0
 restrict_height = false
 reference_frame = 2
 
-[sub_resource type="Resource" id="Resource_xcl5f"]
+[sub_resource type="Resource" id="Resource_detjm"]
 script = ExtResource("3_wm6nv")
-stack = Array[ExtResource("4_ky4h2")]([SubResource("Resource_7o2k0"), SubResource("Resource_fb001"), SubResource("Resource_hgw2n")])
+stack = Array[ExtResource("4_ky4h2")]([SubResource("Resource_pnd5y"), SubResource("Resource_7eh73"), SubResource("Resource_b731i")])
 
 [sub_resource type="Resource" id="Resource_j7t0k"]
 script = ExtResource("11_0vcbb")
@@ -116,6 +118,8 @@ size = Vector3(300, 1, 20)
 
 [node name="Node3D" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.11231, 0, 0)
+script = ExtResource("1_4l36j")
+mapName = "Snow"
 
 [node name="Water" type="MeshInstance3D" parent="."]
 material_override = ExtResource("1_cogyh")
@@ -128,7 +132,7 @@ metadata/_edit_group_ = true
 process_mode = 3
 script = ExtResource("2_3rlxa")
 render_mode = 1
-modifier_stack = SubResource("Resource_p5eis")
+modifier_stack = SubResource("Resource_il8ud")
 Performance/use_chunks = true
 Performance/chunk_dimensions = Vector3(15, 15, 15)
 
@@ -144,7 +148,7 @@ shape = SubResource("Resource_lm0li")
 [node name="Mountains" type="Node3D" parent="."]
 process_mode = 3
 script = ExtResource("2_3rlxa")
-modifier_stack = SubResource("Resource_xcl5f")
+modifier_stack = SubResource("Resource_detjm")
 Performance/use_chunks = true
 Performance/chunk_dimensions = Vector3(15, 15, 15)
 
@@ -176,3 +180,8 @@ shape = SubResource("Resource_qhjoi")
 [node name="SnowWorldWEB" parent="." instance=ExtResource("17_1gaql")]
 
 [node name="PlayerSpawner" parent="." instance=ExtResource("18_72n28")]
+
+[node name="PlayerSpawnArea" parent="." instance=ExtResource("14_rrlkc")]
+transform = Transform3D(34.1154, 0, -24.0568, 0, 1, 0, 9.33293, 0, 87.9368, 15.194, 3, -1.408)
+collision_layer = 0
+collision_mask = 0

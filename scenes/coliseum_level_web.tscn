@@ -1,5 +1,6 @@
-[gd_scene load_steps=22 format=3 uid="uid://di1xxa0kup6d2"]
+[gd_scene load_steps=24 format=3 uid="uid://b7r2blb7b4358"]
 
+[ext_resource type="Script" path="res://scripts/Map.gd" id="1_1yqgb"]
 [ext_resource type="Material" uid="uid://c7mw5tryqfggw" path="res://addons/proton_scatter/demos/assets/materials/m_water.tres" id="1_asp1d"]
 [ext_resource type="Script" path="res://addons/proton_scatter/src/scatter.gd" id="2_iw4s7"]
 [ext_resource type="Script" path="res://addons/proton_scatter/src/stack/modifier_stack.gd" id="3_5r0op"]
@@ -11,12 +12,13 @@
 [ext_resource type="Script" path="res://addons/proton_scatter/src/scatter_shape.gd" id="9_xr3ps"]
 [ext_resource type="Script" path="res://addons/proton_scatter/src/shapes/box_shape.gd" id="10_a61pd"]
 [ext_resource type="PackedScene" uid="uid://lryua1aujudt" path="res://scenes/modules/player_spawner.tscn" id="11_ljp0m"]
-[ext_resource type="PackedScene" uid="uid://cvddlpurk41vi" path="res://scenes/world/ground/coliseum.tscn" id="12_vecoq"]
+[ext_resource type="PackedScene" uid="uid://c7c8y6oxugrfn" path="res://scenes/world/ground/coliseum.tscn" id="12_vecoq"]
+[ext_resource type="PackedScene" uid="uid://b582iud1fulso" path="res://scenes/modules/SpawnPoint.tscn" id="14_u4i2k"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_0xjln"]
 size = Vector2(300, 300)
 
-[sub_resource type="Resource" id="Resource_7lv25"]
+[sub_resource type="Resource" id="Resource_u7y76"]
 script = ExtResource("5_8v6wi")
 spacing = Vector3(4, 4, 4)
 enabled = true
@@ -25,7 +27,7 @@ custom_seed = 0
 restrict_height = true
 reference_frame = 0
 
-[sub_resource type="Resource" id="Resource_ascb5"]
+[sub_resource type="Resource" id="Resource_terfr"]
 script = ExtResource("6_jfwyc")
 position = Vector3(10, 4, 10)
 rotation = Vector3(10, 180, 10)
@@ -36,7 +38,7 @@ custom_seed = 25
 restrict_height = false
 reference_frame = 2
 
-[sub_resource type="Resource" id="Resource_xqkkt"]
+[sub_resource type="Resource" id="Resource_imy6l"]
 script = ExtResource("7_28wqs")
 rotation = Vector3(360, 0, 360)
 snap_angle = Vector3(180, 0, 180)
@@ -46,9 +48,9 @@ custom_seed = 0
 restrict_height = false
 reference_frame = 2
 
-[sub_resource type="Resource" id="Resource_t2s7v"]
+[sub_resource type="Resource" id="Resource_uo3k0"]
 script = ExtResource("3_5r0op")
-stack = Array[ExtResource("4_x4pja")]([SubResource("Resource_7lv25"), SubResource("Resource_ascb5"), SubResource("Resource_xqkkt")])
+stack = Array[ExtResource("4_x4pja")]([SubResource("Resource_u7y76"), SubResource("Resource_terfr"), SubResource("Resource_imy6l")])
 
 [sub_resource type="Resource" id="Resource_j7t0k"]
 script = ExtResource("10_a61pd")
@@ -68,6 +70,8 @@ size = Vector3(300, 1, 20)
 
 [node name="Node3D" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.11231, 0, 0)
+script = ExtResource("1_1yqgb")
+mapName = "Colliseum"
 
 [node name="Water" type="MeshInstance3D" parent="."]
 material_override = ExtResource("1_asp1d")
@@ -79,7 +83,7 @@ metadata/_edit_group_ = true
 [node name="Mountains" type="Node3D" parent="."]
 process_mode = 3
 script = ExtResource("2_iw4s7")
-modifier_stack = SubResource("Resource_t2s7v")
+modifier_stack = SubResource("Resource_uo3k0")
 Performance/use_chunks = true
 Performance/chunk_dimensions = Vector3(15, 15, 15)
 
@@ -112,3 +116,29 @@ shape = SubResource("Resource_qhjoi")
 
 [node name="JungleWorldWEB" parent="." instance=ExtResource("12_vecoq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.12124, 0)
+
+[node name="PlayerSpawnPoints" type="Node3D" parent="."]
+
+[node name="SpawnPoint" parent="PlayerSpawnPoints" instance=ExtResource("14_u4i2k")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -26, 3, 0)
+
+[node name="SpawnPoint2" parent="PlayerSpawnPoints" instance=ExtResource("14_u4i2k")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 26, 3, 0)
+
+[node name="SpawnPoint3" parent="PlayerSpawnPoints" instance=ExtResource("14_u4i2k")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 26)
+
+[node name="SpawnPoint4" parent="PlayerSpawnPoints" instance=ExtResource("14_u4i2k")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 3, -26)
+
+[node name="SpawnPoint5" parent="PlayerSpawnPoints" instance=ExtResource("14_u4i2k")]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 17, 3, 17)
+
+[node name="SpawnPoint6" parent="PlayerSpawnPoints" instance=ExtResource("14_u4i2k")]
+transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, -17, 3, 17)
+
+[node name="SpawnPoint7" parent="PlayerSpawnPoints" instance=ExtResource("14_u4i2k")]
+transform = Transform3D(-0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, -0.707107, -17, 3, -17)
+
+[node name="SpawnPoint8" parent="PlayerSpawnPoints" instance=ExtResource("14_u4i2k")]
+transform = Transform3D(-0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, -0.707107, 17, 3, -17)

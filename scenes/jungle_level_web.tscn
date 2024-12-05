@@ -1,6 +1,7 @@
-[gd_scene load_steps=29 format=3 uid="uid://c78woxn32desr"]
+[gd_scene load_steps=31 format=3 uid="uid://c78woxn32desr"]
 
 [ext_resource type="Material" uid="uid://c7mw5tryqfggw" path="res://addons/proton_scatter/demos/assets/materials/m_water.tres" id="1_4adjy"]
+[ext_resource type="Script" path="res://scripts/Map.gd" id="1_u7y16"]
 [ext_resource type="Script" path="res://addons/proton_scatter/src/scatter.gd" id="2_7fh4a"]
 [ext_resource type="Script" path="res://addons/proton_scatter/src/stack/modifier_stack.gd" id="3_sfqau"]
 [ext_resource type="Script" path="res://addons/proton_scatter/src/modifiers/base_modifier.gd" id="4_4wb6j"]
@@ -11,13 +12,14 @@
 [ext_resource type="Script" path="res://addons/proton_scatter/src/scatter_shape.gd" id="9_bruft"]
 [ext_resource type="Script" path="res://addons/proton_scatter/src/shapes/path_shape.gd" id="10_bw16o"]
 [ext_resource type="Script" path="res://addons/proton_scatter/src/shapes/box_shape.gd" id="11_fvcjf"]
-[ext_resource type="PackedScene" path="res://scenes/world/ground/jungle_world_web.tscn" id="17_6oy5u"]
+[ext_resource type="PackedScene" uid="uid://ucejrc8oyf4f" path="res://scenes/modules/SpawnArea.tscn" id="14_t7sg5"]
+[ext_resource type="PackedScene" uid="uid://xd6lbpa52xf7" path="res://scenes/world/ground/jungle_world_web.tscn" id="17_6oy5u"]
 [ext_resource type="PackedScene" uid="uid://lryua1aujudt" path="res://scenes/modules/player_spawner.tscn" id="18_25eqd"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_0xjln"]
 size = Vector2(300, 300)
 
-[sub_resource type="Resource" id="Resource_tw1ct"]
+[sub_resource type="Resource" id="Resource_fmjgc"]
 script = ExtResource("5_t0m2l")
 spacing = Vector3(1.5, 2, 1)
 enabled = true
@@ -26,7 +28,7 @@ custom_seed = 0
 restrict_height = true
 reference_frame = 0
 
-[sub_resource type="Resource" id="Resource_yfrnu"]
+[sub_resource type="Resource" id="Resource_b5lrl"]
 script = ExtResource("6_pxlg8")
 position = Vector3(0.173, 0.222, 0.918)
 rotation = Vector3(10, 360, 10)
@@ -37,7 +39,7 @@ custom_seed = 10
 restrict_height = false
 reference_frame = 2
 
-[sub_resource type="Resource" id="Resource_6e6k2"]
+[sub_resource type="Resource" id="Resource_txn36"]
 script = ExtResource("7_ip7e8")
 rotation = Vector3(360, 0, 360)
 snap_angle = Vector3(180, 0, 180)
@@ -47,9 +49,9 @@ custom_seed = 0
 restrict_height = false
 reference_frame = 2
 
-[sub_resource type="Resource" id="Resource_dmprm"]
+[sub_resource type="Resource" id="Resource_yuoat"]
 script = ExtResource("3_sfqau")
-stack = Array[ExtResource("4_4wb6j")]([SubResource("Resource_tw1ct"), SubResource("Resource_yfrnu"), SubResource("Resource_6e6k2")])
+stack = Array[ExtResource("4_4wb6j")]([SubResource("Resource_fmjgc"), SubResource("Resource_b5lrl"), SubResource("Resource_txn36")])
 
 [sub_resource type="Curve3D" id="Curve3D_2vyue"]
 _data = {
@@ -64,7 +66,7 @@ closed = true
 thickness = 0.0
 curve = SubResource("Curve3D_2vyue")
 
-[sub_resource type="Resource" id="Resource_uc3p6"]
+[sub_resource type="Resource" id="Resource_13kuu"]
 script = ExtResource("5_t0m2l")
 spacing = Vector3(4, 4, 4)
 enabled = true
@@ -73,7 +75,7 @@ custom_seed = 0
 restrict_height = true
 reference_frame = 0
 
-[sub_resource type="Resource" id="Resource_55oqq"]
+[sub_resource type="Resource" id="Resource_anrym"]
 script = ExtResource("6_pxlg8")
 position = Vector3(10, 4, 10)
 rotation = Vector3(10, 180, 10)
@@ -84,7 +86,7 @@ custom_seed = 25
 restrict_height = false
 reference_frame = 2
 
-[sub_resource type="Resource" id="Resource_6v37f"]
+[sub_resource type="Resource" id="Resource_omiij"]
 script = ExtResource("7_ip7e8")
 rotation = Vector3(360, 0, 360)
 snap_angle = Vector3(180, 0, 180)
@@ -94,9 +96,9 @@ custom_seed = 0
 restrict_height = false
 reference_frame = 2
 
-[sub_resource type="Resource" id="Resource_s1x1e"]
+[sub_resource type="Resource" id="Resource_t1w8l"]
 script = ExtResource("3_sfqau")
-stack = Array[ExtResource("4_4wb6j")]([SubResource("Resource_uc3p6"), SubResource("Resource_55oqq"), SubResource("Resource_6v37f")])
+stack = Array[ExtResource("4_4wb6j")]([SubResource("Resource_13kuu"), SubResource("Resource_anrym"), SubResource("Resource_omiij")])
 
 [sub_resource type="Resource" id="Resource_j7t0k"]
 script = ExtResource("11_fvcjf")
@@ -116,6 +118,8 @@ size = Vector3(300, 1, 20)
 
 [node name="Node3D" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.11231, 0, 0)
+script = ExtResource("1_u7y16")
+mapName = "Jungle"
 
 [node name="Water" type="MeshInstance3D" parent="."]
 material_override = ExtResource("1_4adjy")
@@ -128,7 +132,7 @@ metadata/_edit_group_ = true
 process_mode = 3
 script = ExtResource("2_7fh4a")
 render_mode = 1
-modifier_stack = SubResource("Resource_dmprm")
+modifier_stack = SubResource("Resource_yuoat")
 Performance/use_chunks = true
 Performance/chunk_dimensions = Vector3(15, 15, 15)
 
@@ -144,7 +148,7 @@ shape = SubResource("Resource_lm0li")
 [node name="Mountains" type="Node3D" parent="."]
 process_mode = 3
 script = ExtResource("2_7fh4a")
-modifier_stack = SubResource("Resource_s1x1e")
+modifier_stack = SubResource("Resource_t1w8l")
 Performance/use_chunks = true
 Performance/chunk_dimensions = Vector3(15, 15, 15)
 
@@ -176,3 +180,8 @@ shape = SubResource("Resource_qhjoi")
 [node name="JungleWorldWEB" parent="." instance=ExtResource("17_6oy5u")]
 
 [node name="PlayerSpawner" parent="." instance=ExtResource("18_25eqd")]
+
+[node name="PlayerSpawnArea" parent="." instance=ExtResource("14_t7sg5")]
+transform = Transform3D(34.1135, -2.10868e-10, -24.0752, 6.98122e-09, 1, -7.07471e-09, 9.34007, 2.27224e-11, 87.9317, 12.672, 3, -1.408)
+collision_layer = 0
+collision_mask = 0

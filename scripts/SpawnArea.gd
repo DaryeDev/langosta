@@ -1,14 +1,15 @@
 extends Area3D
 class_name SpawnArea
 
+@onready var collisionShape: CollisionShape3D = $CollisionShape3D
+
 # Devuelve una posición aleatoria dentro del área
 func get_random_position() -> Vector3:
-	var collision_shape = $CollisionShape3D
-	if not collision_shape or not collision_shape.shape:
+	if not collisionShape or not collisionShape.shape:
 		push_error("PlayerSpawnArea no tiene un CollisionShape3D válido.")
 		return global_transform.origin
 	
-	var shape = collision_shape.shape
+	var shape = collisionShape.shape
 	if shape is BoxShape3D:
 		var extents = shape.extents
 		var random_position = Vector3(
@@ -16,7 +17,11 @@ func get_random_position() -> Vector3:
 			randf_range(-extents.y, extents.y),
 			randf_range(-extents.z, extents.z)
 		)
-		return global_transform * random_position
+		var z = get_parent()
+		var a = global_transform
+		var b = random_position
+		var c = global_transform * random_position
+		return c
 	else:
 		push_error("Forma no soportada en PlayerSpawnArea.")
 		return global_transform.origin

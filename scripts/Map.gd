@@ -1,8 +1,11 @@
 extends Node3D
 class_name Map
 
+@export var mapName: String = ""
+
 func _ready() -> void:
-	Globals.currentMap = self
+	#Globals.currentMap = self
+	print(mapName)
 
 func spawnPlayer(player: CharacterBody3D):
 	if has_node("PlayerSpawnPoint"):
@@ -11,6 +14,7 @@ func spawnPlayer(player: CharacterBody3D):
 			playerSpawnPoint.spawnPlayer(player)
 			return
 	elif has_node("PlayerSpawnPoints"):
+		print("PlayerSpawnPoints")
 		var spawnPoints = get_node("PlayerSpawnPoints").get_children()
 		while true:
 			spawnPoints.shuffle()
@@ -20,6 +24,7 @@ func spawnPlayer(player: CharacterBody3D):
 					return
 			await get_tree().create_timer(1).timeout
 	elif has_node("PlayerSpawnArea"):
+		print("PlayerSpawnArea")
 		var spawn_area = get_node("PlayerSpawnArea")
 		if spawn_area is SpawnArea:
 			spawn_area.spawnPlayer(player)
