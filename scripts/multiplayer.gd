@@ -20,8 +20,9 @@ var viewer = false
 var add_player_check = false
 
 # Role
-enum Role { SERVER, PLAYER, VIEWER }
-var role: Role = Role.PLAYER
+#enum Role { SERVER, PLAYER, VIEWER }
+#var role: Role = Role.PLAYERç
+var server = false
 
 # Multiplayer
 const PORT = 3131
@@ -56,7 +57,7 @@ func _unhandled_input(event):
 # FIX TOGGLE FOR HOST
 func _on_host_pressed():
 	# Start as server
-	role = Role.SERVER
+	#role = Role.SERVER
 	var address
 	if dedicated:
 		address = "*"
@@ -72,13 +73,14 @@ func _on_host_pressed():
 	# else:
 	# 	main_menu.hide()
 	# 	host_ui.show()
+	server = true
 	multiplayer.multiplayer_peer = peer
 	start_game()
 
 
 func _on_connect_pressed():
 	# Start as client		
-	role = Role.PLAYER if !viewer else Role.VIEWER
+	#role = Role.PLAYER if !viewer else Role.VIEWER
 	# Make a toggle for viewer
 	var address = address_entry_connect.text if address_entry_connect.text != "" else DEFAULT_SERVER_IP
 	peer.create_client("ws://" + address + ":" + str(PORT))
@@ -91,7 +93,8 @@ func _on_connect_pressed():
 func start_game():
 	# Hide the UI and unpause to start the game.
 	main_menu.hide()
-	hud.show()
+	if OS.has_feature("viewer") and !server:
+		hud.show()
 	# Only change level on the server.
 	# Clients will instantiate the level via the spawner.
 	if multiplayer.is_server():

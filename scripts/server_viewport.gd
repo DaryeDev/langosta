@@ -1,10 +1,14 @@
 extends Node3D
 
-@onready var sub_viewport_container: SubViewportContainer = $SubViewportContainer
-@onready var multiplayer_handler = $"../../"
+@onready var grid_container: GridContainer = $GridContainer
+@onready var players: Node = $"../../Players"
 
-# Dictionary to track players' SubViewport nodes
+# Dictionary to track players' SubViewportContainers, original cameras, and player nodes
 var player_viewports = {}
+var original_cameras = {}
+var player_nodes = {}
+var camera_initialized = {}
+var height_adjustments = {}
 
 func _enter_tree():
 	print("Player name in viewport: ", str(name))
@@ -13,52 +17,119 @@ func _enter_tree():
 func _ready():
 	if not is_multiplayer_authority():
 		return
-		
-	#Me.setPlayer(self)
-	self.process_mode = Node.PROCESS_MODE_ALWAYS
-	#
-	#multiplayer.multiplayer_peer.connect("player_connected", self, "_on_player_connected")
-	#multiplayer_handler.connect("player_disconnected", self, "_on_player_disconnected")
 
-func get_all_cameras():
-	var cameras_dict = {}
-	for player_name in player_viewports.keys():
-		var viewport = player_viewports[player_name]
-		if viewport.has_node("Camera3D"):
-			cameras_dict[player_name] = viewport.get_node("Camera3D")
-	return cameras_dict
+	self.process_mode = Node.PROCESS_MODE_ALWAYS
+	multiplayer.peer_connected.connect(_on_player_connected)
+	multiplayer.peer_disconnected.connect(_on_player_disconnected)
 
 # Function to handle a new player connection
 func add_player_viewport(player_name):
-	if player_name in player_viewports:
-		return # Avoid duplicates
-	
+	# Skip if the player already has a viewport or is the current player
+	if str(player_name) in player_viewports or str(player_name) == name:
+		return
+
+	# Get the player node as a child of the `Players` node
+	var player_node_path = NodePath(str(player_name))
+	var player_node = players.get_node_or_null(player_node_path)
+	if not player_node:
+		print("Player node not found: ", player_name)
+		return
+
+	# Fetch the Camera3D from the player node
+	var camera = player_node.get_node_or_null("Camera3D")
+	if not camera:
+		print("Camera3D not found for player: ", player_name)
+		return
+
+	# Disable the camera in the main scene to avoid conflicts
+	camera.current = false
+
+	# Create a new SubViewportContainer
+	var container = SubViewportContainer.new()
+
 	# Create a new SubViewport
 	var sub_viewport = SubViewport.new()
-	sub_viewport.size = sub_viewport_container.rect_size  # Match the container size
 	sub_viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
-	
-	# Create a new Camera3D for the SubViewport
-	var camera = Camera3D.new()
-	camera.current = true
-	sub_viewport.add_child(camera)
-	
-	# Add the SubViewport to the container
-	sub_viewport_container.add_child(sub_viewport)
-	player_viewports[player_name] = sub_viewport
+
+	# Create a clone of the camera for exclusive use in the SubViewport
+	var camera_clone = Camera3D.new()
+	camera_clone.current = true
+	sub_viewport.add_child(camera_clone)
+
+	# Add SubViewport to the container
+	container.add_child(sub_viewport)
+
+	# Add the container to the GridContainer
+	grid_container.add_child(container)
+
+	# Store the viewport container, original camera, and player node
+	player_viewports[str(player_name)] = container
+	original_cameras[str(player_name)] = camera
+	player_nodes[str(player_name)] = player_node
+	camera_initialized[str(player_name)] = false
+	height_adjustments[str(player_name)] = 0.0
 	print("Added viewport for player: ", player_name)
 
 # Function to handle player disconnection
 func remove_player_viewport(player_name):
-	if player_name in player_viewports:
-		var sub_viewport = player_viewports[player_name]
-		sub_viewport_container.remove_child(sub_viewport)
-		sub_viewport.queue_free()
-		player_viewports.erase(player_name)
+	if str(player_name) in player_viewports:
+		var container = player_viewports[str(player_name)]
+		grid_container.remove_child(container)
+		container.queue_free()
+		player_viewports.erase(str(player_name))
+		original_cameras.erase(str(player_name))
+		player_nodes.erase(str(player_name))
+		camera_initialized.erase(str(player_name))
 		print("Removed viewport for player: ", player_name)
+
+# Synchronize camera transform from the original camera and player
+func _process(delta):
+	for player_name in original_cameras.keys():
+		var original_camera = original_cameras[player_name]
+		var player_node = player_nodes[player_name]
+		var container = player_viewports[player_name]
+		var sub_viewport = container.get_child(0)
+
+		if sub_viewport:
+			var cloned_camera = sub_viewport.get_child(0)
+			if cloned_camera:
+				# Use the player's position and rotation
+				var player_transform = player_node.transform
+				var camera_transform = original_camera.transform
+
+				# Create a new transform for the cloned camera
+				var new_transform = Transform3D()
+				new_transform.origin = player_transform.origin
+
+				# Check if the camera has been initialized
+				if not camera_initialized[str(player_name)]:
+					# Set the initial height adjustment to match the original camera
+					height_adjustments[str(player_name)] = player_transform.origin.y
+					camera_initialized[str(player_name)] = true
+
+				# Apply the height adjustment
+				new_transform.origin.y += height_adjustments[str(player_name)]
+
+				# Apply player rotation (Y-axis) and clamp the X rotation
+				var player_rotation = player_transform.basis.get_euler()
+				var camera_rotation = camera_transform.basis.get_euler()
+
+				# Combine player Y rotation with camera X rotation
+				var new_rotation = Vector3(
+					clamp(camera_rotation.x, -PI / 2, PI / 2),  # Clamp X rotation
+					player_rotation.y,  # Use player Y rotation
+					0  # No roll (Z rotation)
+				)
+
+				# Apply the new rotation to the transform
+				new_transform.basis = Basis.from_euler(new_rotation)
+
+				# Apply the transform to the cloned camera
+				cloned_camera.transform = new_transform
 
 # Simulate player connection and disconnection
 func _on_player_connected(player_name):
+	print("Player name: ", player_name)
 	add_player_viewport(player_name)
 
 func _on_player_disconnected(player_name):
