@@ -83,8 +83,10 @@ func change_level(scene: PackedScene):
 	for c in level.get_children():
 		level.remove_child(c)
 		c.queue_free()
+	
 	# Add new level.
-	level.add_child(scene.instantiate())
+	var newLevel = scene.instantiate()
+	level.add_child(newLevel)
 
 # The server can restart the level by pressing HOME.
 func _input(event):
@@ -97,7 +99,7 @@ func _input(event):
 		#change_level.call_deferred(load("res://level.tscn"))
 
 
-func _on_check_add_player_toggled(toggled_on: bool) -> void:
+func _on_check_add_player_toggled(_toggled_on: bool) -> void:
 	pass # Replace with function body.
 
 

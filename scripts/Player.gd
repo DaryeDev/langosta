@@ -10,10 +10,10 @@ signal health_changed(health_value)
 @onready var death_screen: PanelContainer = $DeathScreen
 @onready var death_label: Label = $DeathScreen/ColorRect/death_label
 
-@export var gravity = 20.0
-@export var JUMP_VELOCITY = 10.0
-@export var SPEED = 5.0
-@export var SHIFT_MULTIPLIER = 2.0
+@export var gravity: float = 9.8
+@export var JUMP_VELOCITY: float = 10.0
+@export var SPEED: float = 5.0
+@export var runMultiplier: float = 2.0
 
 var health = 3
 var dead = false
@@ -86,8 +86,8 @@ func player_movement():
 	var input_dir = Input.get_vector("left", "right", "up", "down")
 	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	var current_speed = SPEED
-	if Input.is_action_pressed("shift"):
-		current_speed *= SHIFT_MULTIPLIER
+	if Input.is_action_pressed("run"):
+		current_speed *= runMultiplier
 		
 	update_velocity(direction, current_speed)
 	update_animation(input_dir)

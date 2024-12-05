@@ -1,0 +1,33 @@
+[gd_scene load_steps=5 format=3 uid="uid://b582iud1fulso"]
+
+[ext_resource type="Script" path="res://scripts/SpawnPoint.gd" id="1_kjnoc"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vu1gu"]
+albedo_color = Color(1, 0, 0, 1)
+emission_enabled = true
+emission = Color(1, 0, 0, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_p1yam"]
+material = SubResource("StandardMaterial3D_vu1gu")
+
+[sub_resource type="GDScript" id="GDScript_ie8a8"]
+script/source = "extends MeshInstance3D
+func _ready():
+	if not Engine.is_editor_hint():
+		queue_free()
+"
+
+[node name="SpawnPoint" type="Node3D"]
+script = ExtResource("1_kjnoc")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+layers = 512
+mesh = SubResource("SphereMesh_p1yam")
+script = SubResource("GDScript_ie8a8")
+
+[node name="Label3D" type="Label3D" parent="MeshInstance3D"]
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0.699546, -3.05781e-08, 0)
+billboard = 1
+text = "SpawnPoint"
+font_size = 40

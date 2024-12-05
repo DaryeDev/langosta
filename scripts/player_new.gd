@@ -11,11 +11,11 @@ signal health_changed(health_value)
 @export var weapon: Weapon
 var weaponAnimPlayer: AnimationPlayer
 
-@export var gravity: int = ProjectSettings.get_setting("physics/3d/default_gravity")
-@export var JUMP_VELOCITY = 10.0
-@export var SPEED = 5.0
-@export var SHIFT_MULTIPLIER = 2.0
-@export var Y_OVERRIDE = 2
+var defaultGravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
+@export var gravityMultiplier: float = 1.0
+@export var JUMP_VELOCITY: float = 4.5
+@export var SPEED: float = 5.0
+@export var runMultiplier: float = 2.0
 
 @export var maxHealth = 100
 @export var health = 100
@@ -31,11 +31,13 @@ func _ready():
 	if not is_multiplayer_authority():
 		return
 		
-	Me.setPlayer(self)
+	Globals.myPlayer = self
 	
 	self.process_mode = Node.PROCESS_MODE_ALWAYS
 	
-	set_spawn_position()
+	if Globals.currentMap:
+		Globals.currentMap.spawnPlayer(self)
+	
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	camera.current = true
 	
@@ -44,13 +46,6 @@ func _ready():
 		if (weapon.has_node("AnimationPlayer")):
 			weaponAnimPlayer = weapon.get_node("AnimationPlayer")
 			weaponAnimPlayer.animation_finished.connect(_on_animation_player_animation_finished)
-
-
-func set_spawn_position():
-	#self.position = get_new_position()
-	self.position = Vector3.ZERO
-	self.position.y = Y_OVERRIDE
-
 
 func _unhandled_input(event):
 	if not is_multiplayer_authority() or dead or paused:
@@ -83,8 +78,8 @@ func player_movement():
 	var input_dir = Input.get_vector("left", "right", "up", "down")
 	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	var current_speed = SPEED
-	if Input.is_action_pressed("shift"):
-		current_speed *= SHIFT_MULTIPLIER
+	if Input.is_action_pressed("run"):
+		current_speed *= runMultiplier
 		
 	update_velocity(direction, current_speed)
 	update_animation(input_dir)
@@ -110,7 +105,7 @@ func _physics_process(delta):
 		return
 	
 	if not is_on_floor():
-		velocity.y -= gravity * delta
+		velocity.y -= defaultGravity * gravityMultiplier * delta
 
 	player_movement()
 	move_and_slide()
@@ -148,7 +143,9 @@ func handle_death():
 func reset_player_state():
 	death_screen.hide()
 	health = maxHealth
-	position = Vector3.ZERO
+	
+	Globals.currentMap.spawnPlayer(self)
+	
 	dead = false
 	health_changed.emit(health)
 
