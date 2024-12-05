@@ -17,11 +17,9 @@ extends Node
 var paused = false
 var dedicated = false
 var viewer = false
-var add_player_check = false
+#var add_player_check = Globals.
 
 # Role
-#enum Role { SERVER, PLAYER, VIEWER }
-#var role: Role = Role.PLAYERç
 var server = false
 
 # Multiplayer
@@ -57,7 +55,6 @@ func _unhandled_input(event):
 # FIX TOGGLE FOR HOST
 func _on_host_pressed():
 	# Start as server
-	#role = Role.SERVER
 	var address
 	if dedicated:
 		address = "*"
@@ -67,20 +64,13 @@ func _on_host_pressed():
 	if peer.get_connection_status() == MultiplayerPeer.CONNECTION_DISCONNECTED:
 		OS.alert("Failed to start multiplayer server")
 		return
-	# if add_player_check:
-	# 	main_menu.hide()
-	# 	hud.show()
-	# else:
-	# 	main_menu.hide()
-	# 	host_ui.show()
 	server = true
 	multiplayer.multiplayer_peer = peer
 	start_game()
 
 
 func _on_connect_pressed():
-	# Start as client		
-	#role = Role.PLAYER if !viewer else Role.VIEWER
+	# Start as client
 	# Make a toggle for viewer
 	var address = address_entry_connect.text if address_entry_connect.text != "" else DEFAULT_SERVER_IP
 	peer.create_client("ws://" + address + ":" + str(PORT))
@@ -125,7 +115,8 @@ func _input(event):
 
 func _on_check_add_player_toggled(toggled_on: bool) -> void:
 	# Toggle the add player check
-	add_player_check = toggled_on
+	#add_player_check = toggled_on
+	pass
 
 
 func update_health_bar(health_value):

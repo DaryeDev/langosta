@@ -89,28 +89,30 @@ func remove_player_viewport(player_name):
 		# Adjust the layout of the viewports
 		adjust_viewports()
 
-# Adjust the layout of the viewports
+# Ajustar el diseño de los viewports
 func adjust_viewports():
 	var num_players = player_viewports.size()
 	if num_players == 0:
 		return
 
-	# Calculate the number of rows and columns
+	# Calcular el número de columnas y filas como la raíz cuadrada del número de jugadores
 	var cols = int(ceil(sqrt(num_players)))
 	var rows = int(ceil(float(num_players) / cols))
 
+	# Ajustar la cantidad de columnas del GridContainer
+	grid_container.columns = cols
+
 	var window_size = get_viewport().get_visible_rect().size
-	var aspect_ratio = window_size.x / window_size.y
 
-	# Adjust the number of columns and rows to maintain aspect ratio
-	while cols * rows < num_players:
-		if (cols / rows) > aspect_ratio:
-			rows += 1
-		else:
-			cols += 1
-
+	# Calcular el tamaño de cada viewport
 	var viewport_width = window_size.x / cols
 	var viewport_height = window_size.y / rows
+
+	# Asegurarse de que el tamaño de cada viewport no exceda el tamaño de la ventana
+	if viewport_width * cols > window_size.x:
+		viewport_width = window_size.x / cols
+	if viewport_height * rows > window_size.y:
+		viewport_height = window_size.y / rows
 
 	var index = 0
 	for player_name in player_viewports.keys():

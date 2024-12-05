@@ -3,6 +3,8 @@ extends Node
 signal healthChanged(currentHealth: int, maxHealth: int)
 signal mapChanged()
 
+var add_player = false
+
 func _onHealthChanged(health_value: int):
 	healthChanged.emit(health_value, myPlayer.maxHealth)
 
