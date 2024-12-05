@@ -17,6 +17,7 @@ var weaponAnimPlayer: AnimationPlayer
 @export var SHIFT_MULTIPLIER = 2.0
 @export var Y_OVERRIDE = 2
 
+@export var maxHealth = 100
 @export var health = 100
 var dead = false
 
@@ -114,8 +115,14 @@ func _physics_process(delta):
 	
 @rpc("any_peer")
 func damage(attack: Dictionary):
-	health -= attack.get("damage", 1)
+	var damageQuantity = attack.get("damage", 1)
+	health -= damageQuantity
 	health_changed.emit(health)
+	
+	if damageQuantity < 0:
+		$HealthAnimationPlayer.play("heal")
+	else:
+		$HealthAnimationPlayer.play("damage")
 
 	if health <= 0:
 		handle_death()
@@ -123,6 +130,8 @@ func damage(attack: Dictionary):
 		health_changed.emit(health)
 
 func handle_death():
+	$MeshInstance3D.visible = false # No parece funcionar, hacer animación de muerte o algo jsjs
+	$CollisionShape3D.disabled = true # ... pero, por ahora, hacerlos caer bajo la tierra mola 😎
 	dead = true
 	death_screen.show()
 	for n in range(3, 0, -1):
@@ -130,10 +139,13 @@ func handle_death():
 		await get_tree().create_timer(1).timeout
 
 	reset_player_state()
+	$MeshInstance3D.visible = true # esto tampoco funciona, claro jsjsjs
+	$CollisionShape3D.disabled = false
+	
 
 func reset_player_state():
 	death_screen.hide()
-	health = 3
+	health = maxHealth
 	position = Vector3.ZERO
 	dead = false
 	health_changed.emit(health)

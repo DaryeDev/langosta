@@ -24,6 +24,10 @@ manager/sound/pool_3D_size=16
 manager/sound/max_polyphony=32
 manager/music/bus="Music"
 
+[autoload]
+
+Me="*res://scripts/GlobalMe.gd"
+
 [dotnet]
 
 project/assembly_name="MultiplayerFPSTutorial"
