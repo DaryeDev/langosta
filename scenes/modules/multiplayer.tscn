@@ -80,6 +80,7 @@ text = "Host"
 
 [node name="CheckAddPlayer" type="CheckButton" parent="Main_UI/MainMenu/MarginContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
+button_pressed = true
 text = "Add playable character?"
 
 [node name="AddressEntryHost" type="LineEdit" parent="Main_UI/MainMenu/MarginContainer/VBoxContainer/VBoxContainer"]

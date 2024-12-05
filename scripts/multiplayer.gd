@@ -17,8 +17,6 @@ extends Node
 var paused = false
 var initialized = false
 var dedicated = false
-var viewer = false
-#var add_player_check = Globals.
 
 # Role
 var server = false
@@ -31,6 +29,8 @@ var peer = WebSocketMultiplayerPeer.new()
 # Level spawner
 var levels = ["res://scenes/tests/test_nm.tscn", "res://scenes/jungle_level_web.tscn", "res://scenes/snow_level_web.tscn", "res://scenes/coliseum_level_web.tscn"]
 
+func isViewer():
+	return Globals.isViewer or OS.has_feature("viewer")
 
 func _ready() -> void:
 	if DisplayServer.get_name() == "headless":
@@ -85,7 +85,7 @@ func start_game():
 	# Hide the UI and unpause to start the game.
 	initialized = true
 	main_menu.hide()
-	if !server or !OS.has_feature("viewer"):
+	if !server or !isViewer():
 		hud.show()
 	else:
 		hud.hide()
@@ -119,9 +119,7 @@ func _input(event):
 		change_level.call_deferred(load(random_element))
 
 func _on_check_add_player_toggled(toggled_on: bool) -> void:
-	# Toggle the add player check
-	#add_player_check = toggled_on
-	pass
+	Globals.isViewer = !toggled_on
 
 
 func update_health_bar(health_value):
@@ -146,7 +144,7 @@ func toggle_pause():
 	else:
 		pause_menu_ui.hide()
 		main_menu_ui.show()
-		if OS.has_feature("viewer") and server:
+		if isViewer() and server:
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		else:
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED

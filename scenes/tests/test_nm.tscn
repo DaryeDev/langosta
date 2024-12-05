@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://c1j7an8woikyd" path="res://scenes/world/ground/test_level.tscn" id="1_xw303"]
 [ext_resource type="PackedScene" uid="uid://df24n0qt0b1jm" path="res://scenes/props/crystals.tscn" id="2_61mdt"]
 [ext_resource type="PackedScene" uid="uid://lryua1aujudt" path="res://scenes/modules/player_spawner.tscn" id="3_c71rg"]
-[ext_resource type="PackedScene" path="res://scenes/modules/SpawnPoint.tscn" id="4_mcr0v"]
+[ext_resource type="PackedScene" uid="uid://b582iud1fulso" path="res://scenes/modules/SpawnPoint.tscn" id="4_mcr0v"]
 [ext_resource type="PackedScene" uid="uid://bs2jm62cmkbrk" path="res://addons/instant-realistic-light/light_scene.tscn" id="5_ewdiu"]
 [ext_resource type="MeshLibrary" uid="uid://b1ymvt01dwlfv" path="res://scenes/modules/building/MeshLibrary.tres" id="7_dfum0"]
 
@@ -38,7 +38,7 @@ func addBlock(blockPosition: Vector3, blockId: String = \"Block1\", addToBlocksP
 		
 	newThing.deathCallback = deathCallback
 	
-	add_child(newThing)
+	add_child(newThing, true)
 	
 	if navreg:
 		navreg.bake_navigation_mesh()
