@@ -7,6 +7,7 @@ var player: CharacterBody3D
 func setPlayer(player: CharacterBody3D):
 	self.player = player
 	
-	player.health_changed.connect(func(health_value: int):
-		healthChanged.emit(health_value, player.maxHealth)
-	)
+	if !OS.has_feature("viewer"):
+		player.health_changed.connect(func(health_value: int):
+			healthChanged.emit(health_value, player.maxHealth)
+		)

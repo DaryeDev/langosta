@@ -29,9 +29,16 @@ func _exit_tree():
 
 
 func add_player(id: int):
+	var character
 	if id == 1:
 		print("Soy server")
-	var character = preload("res://scenes/modules/player_new.tscn").instantiate()
+		if OS.has_feature("viewer"):
+			character = load("res://scenes/modules/server_viewport.tscn").instantiate()
+		else:
+			character = load("res://scenes/modules/player_new.tscn").instantiate()
+	else:
+		character = load("res://scenes/modules/player_new.tscn").instantiate()
+
 	# Set player id.
 	#character.player = id
 	# Randomize character position.
