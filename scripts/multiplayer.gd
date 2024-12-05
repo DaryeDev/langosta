@@ -21,6 +21,9 @@ var dedicated = false
 var levels = ["res://scenes/tests/test_nm.tscn", "res://scenes/jungle_level_web.tscn", "res://scenes/snow_level_web.tscn", "res://scenes/coliseum_level_web.tscn"]
 
 func _ready() -> void:
+	for level in levels:
+		$LevelSpawner.add_spawnable_scene(level)
+	
 	pause_menu_ui.process_mode = Node.PROCESS_MODE_ALWAYS
 	self.process_mode = Node.PROCESS_MODE_ALWAYS
 	
@@ -87,7 +90,7 @@ func change_level(scene: PackedScene):
 func _input(event):
 	if not multiplayer.is_server():
 		return
-	if event.is_action("ui_home") and Input.is_action_just_pressed("ui_home"):
+	if event.is_action("changeMap") and Input.is_action_just_pressed("changeMap"):
 		var random_index = randi() % levels.size()
 		var random_element = levels[random_index]
 		change_level.call_deferred(load(random_element))

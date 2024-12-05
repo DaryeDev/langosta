@@ -4,12 +4,13 @@ signal health_changed(health_value)
 
 @onready var camera = $Camera3D
 @onready var anim_player = $AnimationPlayer
-@onready var muzzle_flash = $Camera3D/Pistol/MuzzleFlash
-@onready var raycast = $Camera3D/RayCast3D
+@onready var gunRaycast = $Camera3D/RayCast3D
 @onready var multiplayer_handler = $"../"
 @onready var death_screen: PanelContainer = $DeathScreen
 @onready var death_label: Label = $DeathScreen/ColorRect/death_label
 @onready var health_bar: ProgressBar = $HUD/HealthBar
+@export var weapon: Weapon
+var weaponAnimPlayer: AnimationPlayer
 
 @export var gravity: int = ProjectSettings.get_setting("physics/3d/default_gravity")
 @export var JUMP_VELOCITY = 10.0
@@ -17,7 +18,8 @@ signal health_changed(health_value)
 @export var SHIFT_MULTIPLIER = 2.0
 @export var Y_OVERRIDE = 2
 
-var health = 3
+@export var maxHealth = 100
+@export var health = 100
 var dead = false
 
 # FIX PAUSED
@@ -29,6 +31,8 @@ func _enter_tree():
 func _ready():
 	if not is_multiplayer_authority():
 		return
+		
+	Me.setPlayer(self)
 	
 	self.process_mode = Node.PROCESS_MODE_ALWAYS
 	
@@ -37,6 +41,12 @@ func _ready():
 	camera.current = true
 	# FIXXXXX THISSSSSSSSS
 	self.multiplayer.connect("health_changed", update_health_bar)
+	
+	if (weapon):
+		weapon.gunRaycast = gunRaycast
+		if (weapon.has_node("AnimationPlayer")):
+			weaponAnimPlayer = weapon.get_node("AnimationPlayer")
+			weaponAnimPlayer.animation_finished.connect(_on_animation_player_animation_finished)
 
 
 func set_spawn_position():
@@ -52,19 +62,13 @@ func _unhandled_input(event):
 	if event is InputEventMouseMotion:
 		handle_camera_rotation(event)
 	
-	if Input.is_action_just_pressed("shoot") and anim_player.current_animation != "shoot":
-		play_shoot_effects.rpc()
-		handle_shoot_collision()
+	if Input.is_action_just_pressed("shoot"):
+		weapon.use()
 
 func handle_camera_rotation(event):
 	rotate_y(-event.relative.x * 0.005)
 	camera.rotate_x(-event.relative.y * 0.005)
 	camera.rotation.x = clamp(camera.rotation.x, -PI / 2, PI / 2)
-
-func handle_shoot_collision():
-	if raycast.is_colliding():
-		var hit_player = raycast.get_collider()
-		hit_player.receive_damage.rpc_id(hit_player.get_multiplayer_authority())
 
 func player_movement():
 	if dead:
@@ -97,12 +101,12 @@ func update_velocity(direction, speed):
 		velocity.z = move_toward(velocity.z, 0, speed)
 
 func update_animation(input_dir):
-	if anim_player.current_animation == "shoot":
+	if weaponAnimPlayer.current_animation == "shoot":
 		return
 	if input_dir != Vector2.ZERO and is_on_floor():
-		anim_player.play("move")
+		anim_player.play("move", 0.2)
 	else:
-		anim_player.play("idle")
+		anim_player.play("idle", 0.2)
 
 func _physics_process(delta):
 	if not is_multiplayer_authority():
@@ -113,20 +117,17 @@ func _physics_process(delta):
 
 	player_movement()
 	move_and_slide()
-
-@rpc("call_local")
-func play_shoot_effects():
-	if dead:
-		return
-	anim_player.stop()
-	anim_player.play("shoot")
-	muzzle_flash.restart()
-	muzzle_flash.emitting = true
 	
 @rpc("any_peer")
-func receive_damage():
-	health -= 1
+func damage(attack: Dictionary):
+	var damageQuantity = attack.get("damage", 1)
+	health -= damageQuantity
 	health_changed.emit(health)
+	
+	if damageQuantity < 0:
+		$HealthAnimationPlayer.play("heal")
+	else:
+		$HealthAnimationPlayer.play("damage")
 
 	if health <= 0:
 		handle_death()
@@ -134,6 +135,8 @@ func receive_damage():
 		health_changed.emit(health)
 
 func handle_death():
+	$MeshInstance3D.visible = false # No parece funcionar, hacer animación de muerte o algo jsjs
+	$CollisionShape3D.disabled = true # ... pero, por ahora, hacerlos caer bajo la tierra mola 😎
 	dead = true
 	death_screen.show()
 	for n in range(3, 0, -1):
@@ -141,20 +144,23 @@ func handle_death():
 		await get_tree().create_timer(1).timeout
 
 	reset_player_state()
+	$MeshInstance3D.visible = true # esto tampoco funciona, claro jsjsjs
+	$CollisionShape3D.disabled = false
+	
 
 func reset_player_state():
 	death_screen.hide()
-	health = 3
+	health = maxHealth
 	position = Vector3.ZERO
 	dead = false
 	health_changed.emit(health)
 
 func _on_animation_player_animation_finished(anim_name):
 	if anim_name == "shoot":
-		anim_player.play("idle")
+		anim_player.play("idle", 0.2)
 	
 func reset_animation():
-	anim_player.play("idle")
+	anim_player.play("idle", 0.2)
 
 func update_health_bar(health_value):
 	# Update the health bar value

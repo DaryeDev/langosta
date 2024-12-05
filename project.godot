@@ -26,8 +26,6 @@ manager/music/bus="Music"
 
 [autoload]
 
-XRToolsUserSettings="*res://addons/godot-xr-tools/user_settings/user_settings.gd"
-XRToolsRumbleManager="*res://addons/godot-xr-tools/rumble/rumble_manager.gd"
 Me="*res://scripts/GlobalMe.gd"
 
 [dotnet]
@@ -103,5 +101,6 @@ textures/vram_compression/import_etc2_astc=true
 
 [xr]
 
+openxr/enabled=true
 openxr/startup_alert=false
 shaders/enabled=true

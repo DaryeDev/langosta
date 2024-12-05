@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://c70r5l5ysxn6w"]
+[gd_scene load_steps=29 format=3 uid="uid://c78woxn32desr"]
 
 [ext_resource type="Material" uid="uid://c7mw5tryqfggw" path="res://addons/proton_scatter/demos/assets/materials/m_water.tres" id="1_4adjy"]
 [ext_resource type="Script" path="res://addons/proton_scatter/src/scatter.gd" id="2_7fh4a"]
@@ -11,7 +11,7 @@
 [ext_resource type="Script" path="res://addons/proton_scatter/src/scatter_shape.gd" id="9_bruft"]
 [ext_resource type="Script" path="res://addons/proton_scatter/src/shapes/path_shape.gd" id="10_bw16o"]
 [ext_resource type="Script" path="res://addons/proton_scatter/src/shapes/box_shape.gd" id="11_fvcjf"]
-[ext_resource type="PackedScene" uid="uid://dypb6oqlpc280" path="res://scenes/world/ground/jungle_world_web.tscn" id="17_6oy5u"]
+[ext_resource type="PackedScene" path="res://scenes/world/ground/jungle_world_web.tscn" id="17_6oy5u"]
 [ext_resource type="PackedScene" uid="uid://lryua1aujudt" path="res://scenes/modules/player_spawner.tscn" id="18_25eqd"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_0xjln"]
