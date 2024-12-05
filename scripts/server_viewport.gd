@@ -141,40 +141,6 @@ func _process(delta):
 			if cloned_camera:
 				cloned_camera.global_position = player_node.get_node("Camera3D").global_position
 				cloned_camera.global_rotation = player_node.get_node("Camera3D").global_rotation
-				
-				## Use the player's position and rotation
-				#var player_transform = player_node.transform
-				#var camera_transform = original_camera.transform
-#
-				## Create a new transform for the cloned camera
-				#var new_transform = Transform3D()
-				#new_transform.origin = player_transform.origin
-#
-				## Check if the camera has been initialized
-				#if not camera_initialized[str(player_name)]:
-					## Set the initial height adjustment to match the original camera
-					#height_adjustments[str(player_name)] = player_transform.origin.y
-					#camera_initialized[str(player_name)] = true
-#
-				## Apply the height adjustment
-				#new_transform.origin.y += height_adjustments[str(player_name)]
-#
-				## Apply player rotation (Y-axis) and clamp the X rotation
-				#var player_rotation = player_transform.basis.get_euler()
-				#var camera_rotation = camera_transform.basis.get_euler()
-#
-				## Combine player Y rotation with camera X rotation
-				#var new_rotation = Vector3(
-					#clamp(camera_rotation.x, -PI / 2, PI / 2),  # Clamp X rotation
-					#player_rotation.y,  # Use player Y rotation
-					#0  # No roll (Z rotation)
-				#)
-#
-				## Apply the new rotation to the transform
-				#new_transform.basis = Basis.from_euler(new_rotation)
-#
-				## Apply the transform to the cloned camera
-				#cloned_camera.transform = new_transform
 
 # Simulate player connection and disconnection
 func _on_player_connected(player_name):

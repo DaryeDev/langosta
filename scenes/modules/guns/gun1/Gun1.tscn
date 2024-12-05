@@ -186,15 +186,17 @@ properties/0/replication_mode = 1
 properties/1/path = NodePath("Label3D:text")
 properties/1/spawn = true
 properties/1/replication_mode = 1
+properties/2/path = NodePath("MuzzleFlash:emitting")
+properties/2/spawn = true
+properties/2/replication_mode = 1
 
-[node name="Gun1" type="Node3D" node_paths=PackedStringArray("animationPlayer", "bulletsLabel", "gunRaycast")]
+[node name="Gun1" type="Node3D" node_paths=PackedStringArray("animationPlayer", "bulletsLabel")]
 script = ExtResource("2_4ajkm")
 damage = 20.0
 maxBullets = 6
 bulletsLeft = 6
 animationPlayer = NodePath("AnimationPlayer")
 bulletsLabel = NodePath("Label3D")
-gunRaycast = NodePath("RayCast3D")
 
 [node name="Sketchfab_Scene" parent="." instance=ExtResource("3_jtxy2")]
 transform = Transform3D(-4.37114e-09, 0, 0.1, 0, 0.1, 0, -0.1, 0, -4.37114e-09, 0, -0.0341203, -0.0214492)
