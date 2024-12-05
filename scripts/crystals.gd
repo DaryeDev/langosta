@@ -11,7 +11,7 @@ var max_emission = 50  # Maximum emission energy
 func _ready():
 	original_position = position  # Store the original position
 
-func _process(delta):
+func _process(_delta):
 	var time = Time.get_ticks_msec() / 1000.0  # Get time in seconds
 	# Update position for hover effect
 	position.y = original_position.y + sin(time * hover_speed) * hover_amplitude

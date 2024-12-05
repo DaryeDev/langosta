@@ -13,6 +13,35 @@ material = SubResource("StandardMaterial3D_etadu")
 [sub_resource type="Animation" id="Animation_jhgv2"]
 length = 0.001
 
+[sub_resource type="Animation" id="Animation_knepc"]
+resource_name = "idle"
+length = 3.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = false
+tracks/0/path = NodePath("Camera3D/Gun1:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.5),
+"transitions": PackedFloat32Array(-2, -2),
+"update": 0,
+"values": [Vector3(0.5, -0.25, -0.5), Vector3(0.5, -0.284894, -0.5)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = false
+tracks/1/path = NodePath("Camera3D/Gun1:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1.5),
+"transitions": PackedFloat32Array(-2, -2),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(-0.122103, 0, 0)]
+}
+
 [sub_resource type="Animation" id="Animation_qcgne"]
 resource_name = "move"
 loop_mode = 1
@@ -58,57 +87,12 @@ tracks/1/keys = {
 "values": [Vector3(0.454152, 0, 0), Vector3(0, 0, 0)]
 }
 
-[sub_resource type="Animation" id="Animation_knepc"]
-resource_name = "idle"
-length = 3.0
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = false
-tracks/0/path = NodePath("Camera3D/Gun1:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1.5),
-"transitions": PackedFloat32Array(-2, -2),
-"update": 0,
-"values": [Vector3(0.5, -0.25, -0.5), Vector3(0.5, -0.284894, -0.5)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = false
-tracks/1/path = NodePath("Camera3D/Gun1:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 1.5),
-"transitions": PackedFloat32Array(-2, -2),
-"update": 0,
-"values": [Vector3(0, 0, 0), Vector3(-0.122103, 0, 0)]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_p6wdk"]
 _data = {
 "RESET": SubResource("Animation_jhgv2"),
 "idle": SubResource("Animation_knepc"),
 "move": SubResource("Animation_qcgne"),
 "shoot": SubResource("Animation_efeb8")
-}
-
-[sub_resource type="Animation" id="Animation_4kvac"]
-resource_name = "heal"
-length = 0.3
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("HealScreen:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.133333, 0.3),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_7e51c"]
@@ -137,6 +121,22 @@ tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.1, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_4kvac"]
+resource_name = "heal"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("HealScreen:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.133333, 0.3),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
@@ -173,7 +173,7 @@ properties/4/replication_mode = 1
 collision_layer = 2
 script = ExtResource("1_fpduk")
 weapon = NodePath("Camera3D/Gun1")
-SHIFT_MULTIPLIER = 1.0
+runMultiplier = 1.5
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -185,6 +185,7 @@ shape = SubResource("CapsuleShape3D_67y6s")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.51306, 0)
+cull_mask = 1048063
 
 [node name="Gun1" parent="Camera3D" instance=ExtResource("2_s6nws")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, -0.25, -0.5)
@@ -207,14 +208,22 @@ libraries = {
 
 [node name="DamageScreen" type="ColorRect" parent="."]
 modulate = Color(1, 1, 1, 0)
-offset_right = 1152.0
-offset_bottom = 648.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 6
+size_flags_vertical = 6
 color = Color(1, 0, 0, 0.270588)
 
 [node name="HealScreen" type="ColorRect" parent="."]
 modulate = Color(1, 1, 1, 0)
-offset_right = 1152.0
-offset_bottom = 648.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 color = Color(0.513678, 1, 0.48175, 0.270588)
 
 [node name="DeathScreen" type="PanelContainer" parent="."]

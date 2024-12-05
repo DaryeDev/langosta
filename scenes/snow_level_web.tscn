@@ -1,5 +1,6 @@
-[gd_scene load_steps=29 format=3 uid="uid://wa80fxlq6lsg"]
+[gd_scene load_steps=31 format=3 uid="uid://dyuq24567rhi6"]
 
+[ext_resource type="Script" path="res://scripts/Map.gd" id="1_4l36j"]
 [ext_resource type="Material" uid="uid://c7mw5tryqfggw" path="res://addons/proton_scatter/demos/assets/materials/m_water.tres" id="1_cogyh"]
 [ext_resource type="Script" path="res://addons/proton_scatter/src/scatter.gd" id="2_3rlxa"]
 [ext_resource type="Script" path="res://addons/proton_scatter/src/stack/modifier_stack.gd" id="3_wm6nv"]
@@ -11,6 +12,7 @@
 [ext_resource type="Script" path="res://addons/proton_scatter/src/scatter_shape.gd" id="9_q5rab"]
 [ext_resource type="Script" path="res://addons/proton_scatter/src/shapes/path_shape.gd" id="10_2sgcd"]
 [ext_resource type="Script" path="res://addons/proton_scatter/src/shapes/box_shape.gd" id="11_0vcbb"]
+[ext_resource type="PackedScene" uid="uid://ucejrc8oyf4f" path="res://scenes/modules/SpawnArea.tscn" id="14_rrlkc"]
 [ext_resource type="PackedScene" uid="uid://ciyo3l0bytcqg" path="res://scenes/world/ground/snow_world_web.tscn" id="17_1gaql"]
 [ext_resource type="PackedScene" uid="uid://lryua1aujudt" path="res://scenes/modules/player_spawner.tscn" id="18_72n28"]
 
@@ -116,6 +118,8 @@ size = Vector3(300, 1, 20)
 
 [node name="Node3D" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.11231, 0, 0)
+script = ExtResource("1_4l36j")
+mapName = "Snow"
 
 [node name="Water" type="MeshInstance3D" parent="."]
 material_override = ExtResource("1_cogyh")
@@ -176,3 +180,8 @@ shape = SubResource("Resource_qhjoi")
 [node name="SnowWorldWEB" parent="." instance=ExtResource("17_1gaql")]
 
 [node name="PlayerSpawner" parent="." instance=ExtResource("18_72n28")]
+
+[node name="PlayerSpawnArea" parent="." instance=ExtResource("14_rrlkc")]
+transform = Transform3D(34.1154, 0, -24.0568, 0, 1, 0, 9.33293, 0, 87.9368, 15.194, 3, -1.408)
+collision_layer = 0
+collision_mask = 0

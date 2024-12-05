@@ -1,0 +1,51 @@
+[gd_scene load_steps=7 format=3 uid="uid://b582iud1fulso"]
+
+[ext_resource type="Script" path="res://scripts/SpawnPoint.gd" id="1_kjnoc"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vu1gu"]
+albedo_color = Color(1, 0, 0, 1)
+emission_enabled = true
+emission = Color(1, 0, 0, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_p1yam"]
+material = SubResource("StandardMaterial3D_vu1gu")
+
+[sub_resource type="GDScript" id="GDScript_ie8a8"]
+script/source = "extends MeshInstance3D
+#func _ready():
+	#if not Engine.is_editor_hint():
+		#queue_free()
+"
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3gkuh"]
+albedo_color = Color(1, 0, 0, 1)
+emission_enabled = true
+emission = Color(1, 0, 0, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_kgwok"]
+material = SubResource("StandardMaterial3D_3gkuh")
+top_radius = 0.01
+
+[node name="SpawnPoint" type="Node3D" node_paths=PackedStringArray("timeoutTimer")]
+script = ExtResource("1_kjnoc")
+timeoutTimer = NodePath("Timer")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+layers = 524288
+mesh = SubResource("SphereMesh_p1yam")
+script = SubResource("GDScript_ie8a8")
+
+[node name="Label3D" type="Label3D" parent="MeshInstance3D"]
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0.699546, -3.05781e-08, 0)
+billboard = 1
+text = "SpawnPoint"
+font_size = 40
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, -1)
+layers = 524288
+mesh = SubResource("CylinderMesh_kgwok")
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true

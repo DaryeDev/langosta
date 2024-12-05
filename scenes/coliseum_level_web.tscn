@@ -1,5 +1,6 @@
-[gd_scene load_steps=22 format=3 uid="uid://di1xxa0kup6d2"]
+[gd_scene load_steps=24 format=3 uid="uid://b7r2blb7b4358"]
 
+[ext_resource type="Script" path="res://scripts/Map.gd" id="1_1yqgb"]
 [ext_resource type="Material" uid="uid://c7mw5tryqfggw" path="res://addons/proton_scatter/demos/assets/materials/m_water.tres" id="1_asp1d"]
 [ext_resource type="Script" path="res://addons/proton_scatter/src/scatter.gd" id="2_iw4s7"]
 [ext_resource type="Script" path="res://addons/proton_scatter/src/stack/modifier_stack.gd" id="3_5r0op"]
@@ -11,7 +12,8 @@
 [ext_resource type="Script" path="res://addons/proton_scatter/src/scatter_shape.gd" id="9_xr3ps"]
 [ext_resource type="Script" path="res://addons/proton_scatter/src/shapes/box_shape.gd" id="10_a61pd"]
 [ext_resource type="PackedScene" uid="uid://lryua1aujudt" path="res://scenes/modules/player_spawner.tscn" id="11_ljp0m"]
-[ext_resource type="PackedScene" uid="uid://cvddlpurk41vi" path="res://scenes/world/ground/coliseum.tscn" id="12_vecoq"]
+[ext_resource type="PackedScene" uid="uid://c7c8y6oxugrfn" path="res://scenes/world/ground/coliseum.tscn" id="12_vecoq"]
+[ext_resource type="PackedScene" uid="uid://b582iud1fulso" path="res://scenes/modules/SpawnPoint.tscn" id="14_u4i2k"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_0xjln"]
 size = Vector2(300, 300)
@@ -68,6 +70,8 @@ size = Vector3(300, 1, 20)
 
 [node name="Node3D" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.11231, 0, 0)
+script = ExtResource("1_1yqgb")
+mapName = "Colliseum"
 
 [node name="Water" type="MeshInstance3D" parent="."]
 material_override = ExtResource("1_asp1d")

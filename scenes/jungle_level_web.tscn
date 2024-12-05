@@ -1,6 +1,7 @@
-[gd_scene load_steps=29 format=3 uid="uid://c78woxn32desr"]
+[gd_scene load_steps=31 format=3 uid="uid://c78woxn32desr"]
 
 [ext_resource type="Material" uid="uid://c7mw5tryqfggw" path="res://addons/proton_scatter/demos/assets/materials/m_water.tres" id="1_4adjy"]
+[ext_resource type="Script" path="res://scripts/Map.gd" id="1_u7y16"]
 [ext_resource type="Script" path="res://addons/proton_scatter/src/scatter.gd" id="2_7fh4a"]
 [ext_resource type="Script" path="res://addons/proton_scatter/src/stack/modifier_stack.gd" id="3_sfqau"]
 [ext_resource type="Script" path="res://addons/proton_scatter/src/modifiers/base_modifier.gd" id="4_4wb6j"]
@@ -11,7 +12,8 @@
 [ext_resource type="Script" path="res://addons/proton_scatter/src/scatter_shape.gd" id="9_bruft"]
 [ext_resource type="Script" path="res://addons/proton_scatter/src/shapes/path_shape.gd" id="10_bw16o"]
 [ext_resource type="Script" path="res://addons/proton_scatter/src/shapes/box_shape.gd" id="11_fvcjf"]
-[ext_resource type="PackedScene" path="res://scenes/world/ground/jungle_world_web.tscn" id="17_6oy5u"]
+[ext_resource type="PackedScene" uid="uid://ucejrc8oyf4f" path="res://scenes/modules/SpawnArea.tscn" id="14_t7sg5"]
+[ext_resource type="PackedScene" uid="uid://xd6lbpa52xf7" path="res://scenes/world/ground/jungle_world_web.tscn" id="17_6oy5u"]
 [ext_resource type="PackedScene" uid="uid://lryua1aujudt" path="res://scenes/modules/player_spawner.tscn" id="18_25eqd"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_0xjln"]
@@ -176,3 +178,8 @@ shape = SubResource("Resource_qhjoi")
 [node name="JungleWorldWEB" parent="." instance=ExtResource("17_6oy5u")]
 
 [node name="PlayerSpawner" parent="." instance=ExtResource("18_25eqd")]
+
+[node name="PlayerSpawnArea" parent="." instance=ExtResource("14_t7sg5")]
+transform = Transform3D(34.1135, -2.10868e-10, -24.0752, 6.98122e-09, 1, -7.07471e-09, 9.34007, 2.27224e-11, 87.9317, 12.672, 3, -1.408)
+collision_layer = 0
+collision_mask = 0
