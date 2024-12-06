@@ -150,10 +150,16 @@ func damage(attack: Dictionary):
 	var damageQuantity = attack.get("damage", 1)
 	health -= damageQuantity
 	
+	
+	if (not is_multiplayer_authority()) or dead:
+		return
+	
 	if damageQuantity < 0:
-		$HealthAnimationPlayer.play("heal")
+		if is_multiplayer_authority():
+			$HealthAnimationPlayer.play("heal")
 	else:
-		$HealthAnimationPlayer.play("damage")
+		if is_multiplayer_authority():
+			$HealthAnimationPlayer.play("damage")
 
 	if health <= 0:
 		handle_death()
@@ -164,10 +170,13 @@ func handle_death():
 	#$headCollision.disabled = true
 	$CollisionShape3D.disabled = true
 	dead = true
-	death_screen.show()
-	for n in range(3, 0, -1):
-		death_label.text = "Respawning in %s seconds..." % n
-		await get_tree().create_timer(1).timeout
+	
+	if is_multiplayer_authority():
+		death_screen.show()
+	
+		for n in range(3, 0, -1):
+			death_label.text = "Respawning in %s seconds..." % n
+			await get_tree().create_timer(1).timeout
 
 	reset_player_state()
 	#$bodyCollision.disabled = false
@@ -175,7 +184,10 @@ func handle_death():
 	$CollisionShape3D.disabled = false
 
 func reset_player_state():
-	death_screen.hide()
+	if is_multiplayer_authority():
+		death_screen.hide()
+	
+	weaponManager.reload()
 	health = maxHealth
 	
 	if Globals.currentMap and is_instance_valid(Globals.currentMap):
