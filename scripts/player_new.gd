@@ -7,8 +7,8 @@ extends CharacterBody3D
 @onready var anim_player = $AnimationPlayer
 @onready var raycast = $Camera3D/RayCast3D
 @onready var multiplayer_handler = $"../"
-@onready var death_screen: PanelContainer = $DeathScreen
-@onready var death_label: Label = $DeathScreen/ColorRect/death_label
+@onready var death_screen: PanelContainer = $Control/SubViewportContainer/SubViewport/DeathScreen
+@onready var death_label: Label = $Control/SubViewportContainer/SubViewport/DeathScreen/ColorRect/death_label
 @onready var health_bar: ProgressBar = $HUD/HealthBar
 
 # Exported variables
@@ -47,15 +47,32 @@ func _ready():
 	#Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	camera.current = true
 	
-	if blockManager:
-		blockManager.raycast = raycast
+	if weapon and weapon.has_node("AnimationPlayer"):
+		weaponAnimPlayer = weapon.get_node("AnimationPlayer")
+		weaponAnimPlayer.animation_finished.connect(_on_animation_player_animation_finished)
 	
-	# Verificar esto
-	if weapon:
-		weapon.raycast = raycast
-		if weapon.has_node("AnimationPlayer"):
-			weaponAnimPlayer = weapon.get_node("AnimationPlayer")
-			weaponAnimPlayer.animation_finished.connect(_on_animation_player_animation_finished)
+	if Globals.isUsingVR and VrShit.initialize():
+		var vrPlayerController = preload("res://scenes/modules/VRPlayerController/VRPlayerController.tscn").instantiate()
+		add_child(vrPlayerController)
+	else:
+		if blockManager:
+			blockManager.raycast = raycast
+		
+		if weapon:
+			weapon.raycast = raycast
+		
+func _process(_delta: float) -> void:
+	if Input.is_key_pressed(KEY_K):
+		handle_death()
+		
+	if Input.is_action_pressed("shoot"):
+		weapon.use()
+		
+	if Input.is_action_pressed("reload"):
+		weapon.reload()
+		
+	if Input.is_action_pressed("build"):
+		blockManager.buildBlock()
 
 func _unhandled_input(event):
 	if not is_multiplayer_authority() or dead or paused:
@@ -63,15 +80,6 @@ func _unhandled_input(event):
 	
 	if event is InputEventMouseMotion:
 		handle_camera_rotation(event)
-	
-	if Input.is_action_just_pressed("shoot"):
-		weapon.use()
-		
-	if Input.is_action_just_pressed("reload"):
-		weapon.reload()
-		
-	if Input.is_action_pressed("build"):
-		blockManager.buildBlock()
 
 func handle_camera_rotation(event):
 	rotate_y(-event.relative.x * 0.005)
@@ -88,7 +96,7 @@ func player_movement():
 		reset_animation()
 		return
 
-	if Input.is_action_just_pressed("space") and is_on_floor():
+	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
 
 	var input_dir = Input.get_vector("left", "right", "up", "down")
@@ -111,10 +119,11 @@ func update_velocity(direction, speed):
 func update_animation(input_dir):
 	if weaponAnimPlayer.current_animation == "shoot":
 		return
-	if input_dir != Vector2.ZERO and is_on_floor():
-		anim_player.play("move", 0.2)
-	else:
-		anim_player.play("idle", 0.2)
+	if !Globals.isUsingVR:
+		if input_dir != Vector2.ZERO and is_on_floor():
+			anim_player.play("move", 0.2)
+		else:
+			anim_player.play("idle", 0.2)
 
 func _physics_process(delta):
 	if not is_multiplayer_authority():
@@ -123,10 +132,12 @@ func _physics_process(delta):
 	if not is_on_floor():
 		velocity.y -= defaultGravity * gravityMultiplier * delta
 
-	player_movement()
+	if !Globals.isUsingVR:
+		player_movement()
+	
 	move_and_slide()
 	
-@rpc("any_peer")
+@rpc("any_peer", "call_local")
 func damage(attack: Dictionary):
 	var damageQuantity = attack.get("damage", 1)
 	health -= damageQuantity
@@ -163,8 +174,13 @@ func reset_player_state():
 	dead = false
 
 func _on_animation_player_animation_finished(anim_name):
-	if anim_name == "shoot":
+	if anim_name == "shoot" and !Globals.isUsingVR:
 		anim_player.play("idle", 0.2)
 	
 func reset_animation():
-	anim_player.play("idle", 0.2)
+	if !Globals.isUsingVR:
+		anim_player.play("idle", 0.2)
+
+func update_health_bar(health_value):
+	# Update the health bar value
+	health_bar.value = health_value

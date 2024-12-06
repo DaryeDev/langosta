@@ -11,13 +11,14 @@ func setDeathCallback(callback: Callable):
 
 @rpc("any_peer", "call_local", "reliable")
 func damage(attack: Dictionary):
-	var damageQuantity = attack.get("damage", 1)
-	current_health -= damageQuantity
-	
-	print("Block hit! Current health:", current_health)
+	if max_health != -1: # Si la vida máxima es -1, el bloque será indañable
+		var damageQuantity = attack.get("damage", 1)
+		current_health -= damageQuantity
 		
-	if current_health <= 0:
-		die()
+		print("Block hit! Current health:", current_health)
+			
+		if current_health <= 0:
+			die()
 
 func die():
 	print("Block died")

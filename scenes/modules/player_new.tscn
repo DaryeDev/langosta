@@ -102,7 +102,7 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("HealScreen:modulate")
+tracks/0/path = NodePath("Control/SubViewportContainer/SubViewport/HealScreen:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -118,7 +118,7 @@ length = 0.4
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("DamageScreen:modulate")
+tracks/0/path = NodePath("Control/SubViewportContainer/SubViewport/DamageScreen:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -134,7 +134,7 @@ length = 0.3
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("HealScreen:modulate")
+tracks/0/path = NodePath("Control/SubViewportContainer/SubViewport/HealScreen:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -150,15 +150,6 @@ _data = {
 "damage": SubResource("Animation_hhb47"),
 "heal": SubResource("Animation_4kvac")
 }
-
-[sub_resource type="LabelSettings" id="LabelSettings_l1v7f"]
-font_size = 50
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rwhn8"]
-bg_color = Color(1, 0.117647, 0, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c300s"]
-bg_color = Color(0.00392157, 1, 0, 1)
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_hn37q"]
 properties/0/path = NodePath(".:position")
@@ -176,6 +167,9 @@ properties/3/replication_mode = 1
 properties/4/path = NodePath("Camera3D/Gun1:rotation")
 properties/4/spawn = true
 properties/4/replication_mode = 1
+
+[sub_resource type="LabelSettings" id="LabelSettings_l1v7f"]
+font_size = 50
 
 [node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("blockManager", "weapon")]
 collision_layer = 2
@@ -196,9 +190,8 @@ shape = SubResource("CapsuleShape3D_67y6s")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.51306, 0)
 cull_mask = 524287
 
-[node name="BlockManager" parent="Camera3D" node_paths=PackedStringArray("raycast") instance=ExtResource("2_dr144")]
+[node name="BlockManager" parent="Camera3D" instance=ExtResource("2_dr144")]
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -0.5, -0.25, -0.5)
-raycast = NodePath("../RayCast3D")
 
 [node name="Gun1" parent="Camera3D" instance=ExtResource("2_s6nws")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, -0.25, -0.5)
@@ -219,7 +212,33 @@ libraries = {
 "": SubResource("AnimationLibrary_3sgv2")
 }
 
-[node name="DamageScreen" type="ColorRect" parent="."]
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_hn37q")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SubViewport" type="SubViewport" parent="Control/SubViewportContainer"]
+disable_3d = true
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(3000, 3000)
+render_target_update_mode = 4
+
+[node name="DamageScreen" type="ColorRect" parent="Control/SubViewportContainer/SubViewport"]
 modulate = Color(1, 1, 1, 0)
 anchors_preset = 15
 anchor_right = 1.0
@@ -230,7 +249,7 @@ size_flags_horizontal = 6
 size_flags_vertical = 6
 color = Color(1, 0, 0, 0.270588)
 
-[node name="HealScreen" type="ColorRect" parent="."]
+[node name="HealScreen" type="ColorRect" parent="Control/SubViewportContainer/SubViewport"]
 modulate = Color(1, 1, 1, 0)
 anchors_preset = 15
 anchor_right = 1.0
@@ -239,7 +258,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.513678, 1, 0.48175, 0.270588)
 
-[node name="DeathScreen" type="PanelContainer" parent="."]
+[node name="DeathScreen" type="PanelContainer" parent="Control/SubViewportContainer/SubViewport"]
 visible = false
 anchors_preset = 15
 anchor_right = 1.0
@@ -247,11 +266,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ColorRect" type="ColorRect" parent="DeathScreen"]
+[node name="ColorRect" type="ColorRect" parent="Control/SubViewportContainer/SubViewport/DeathScreen"]
 layout_mode = 2
 color = Color(1, 0, 0, 0.270588)
 
-[node name="death_label" type="Label" parent="DeathScreen/ColorRect"]
+[node name="death_label" type="Label" parent="Control/SubViewportContainer/SubViewport/DeathScreen/ColorRect"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -269,54 +288,5 @@ text = "Respawning in 3 seconds..."
 label_settings = SubResource("LabelSettings_l1v7f")
 horizontal_alignment = 1
 vertical_alignment = 1
-
-[node name="HUD" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-
-[node name="TextureRect" type="TextureRect" parent="HUD"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.485
-anchor_top = 0.485
-anchor_right = 0.515
-anchor_bottom = 0.515
-offset_left = -558.72
-offset_top = -314.28
-offset_right = 558.72
-offset_bottom = 314.28
-grow_horizontal = 2
-grow_vertical = 2
-scale = Vector2(0.03, 0.03)
-pivot_offset = Vector2(576, 324)
-texture = ExtResource("4_ij1fv")
-stretch_mode = 5
-
-[node name="HealthBar" type="ProgressBar" parent="HUD"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.286
-anchor_top = 0.108
-anchor_right = 0.714
-anchor_bottom = 0.173
-offset_left = 0.527985
-offset_top = 0.0159988
-offset_right = -0.528076
-offset_bottom = -0.104004
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_styles/background = SubResource("StyleBoxFlat_rwhn8")
-theme_override_styles/fill = SubResource("StyleBoxFlat_c300s")
-max_value = 3.0
-value = 3.0
-show_percentage = false
-
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
-replication_config = SubResource("SceneReplicationConfig_hn37q")
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

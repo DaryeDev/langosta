@@ -67,10 +67,7 @@ func use() -> bool:
 			var hit_pos = raycast.get_collision_point()
 			var hit_normal = raycast.get_collision_normal()
 			
-			print(hit.has_method("damage"))
-			print(raycast.global_transform.origin)
-			print(hit_pos.distance_to(raycast.global_transform.origin))
-			if hit_pos.distance_to(raycast.global_transform.origin) <= gunRange and hit.has_method("damage"):
+			if hit and hit_pos.distance_to(raycast.global_transform.origin) <= gunRange and hit.has_method("damage"):
 				#if hit is Entity and hit.hasHitbox():  # Comprueba si puede recibir daño
 				if true:
 					var direction = (hit.global_transform.origin - raycast.global_transform.origin).normalized()

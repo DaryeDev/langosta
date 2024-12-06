@@ -79,8 +79,8 @@ func _on_host_pressed():
 func _on_connect_pressed():
 	# Start as client
 	# Make a toggle for viewer
-	var address = address_entry_connect.text if address_entry_connect.text != "" else DEFAULT_SERVER_IP
-	peer.create_client("ws://" + address + ":" + str(PORT))
+	var address = address_entry_connect.text if address_entry_connect.text != "" else "ws://"+DEFAULT_SERVER_IP
+	peer.create_client(address + ":" + str(PORT))
 	if peer.get_connection_status() == MultiplayerPeer.CONNECTION_DISCONNECTED:
 		OS.alert("Failed to start multiplayer client")
 		return

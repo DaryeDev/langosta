@@ -100,7 +100,7 @@ navigation_mesh = SubResource("NavigationMesh_w6xfn")
 [node name="Environment" parent="NavigationRegion3D" instance=ExtResource("1_xw303")]
 
 [node name="GridMap" type="GridMap" parent="NavigationRegion3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.001, -0.001, -0.001)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.001, 0)
 mesh_library = ExtResource("7_dfum0")
 cell_size = Vector3(1, 1, 1)
 collision_layer = 0
