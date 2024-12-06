@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://cd3a4mmoryrfd"]
+[gd_scene load_steps=18 format=3 uid="uid://cd3a4mmoryrfd"]
 
 [ext_resource type="Script" path="res://scenes/modules/guns/gun1/Gun1Script.gd" id="2_4ajkm"]
 [ext_resource type="Texture2D" uid="uid://vwob30tkwej4" path="res://addons/kenney_particle_pack/star_06.png" id="2_ou0hl"]
@@ -167,14 +167,14 @@ func _process(_delta):
 		laser_mesh.scale = Vector3(0,0,0)
 "
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v8lld"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_068xm"]
 albedo_color = Color(1, 0, 0, 1)
 emission_enabled = true
 emission = Color(1, 0, 0, 1)
 emission_energy_multiplier = 4.0
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_c5igq"]
-material = SubResource("StandardMaterial3D_v8lld")
+material = SubResource("StandardMaterial3D_068xm")
 top_radius = 0.01
 bottom_radius = 0.05
 height = 10.0

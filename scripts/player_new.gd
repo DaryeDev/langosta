@@ -11,6 +11,9 @@ extends CharacterBody3D
 @onready var death_label: Label = $Control/SubViewportContainer/SubViewport/DeathScreen/ColorRect/death_label
 @onready var health_bar: ProgressBar = $HUD/HealthBar
 
+@export var weakPointCollision: CollisionShape3D
+@export var weakPointMultiplier: float = 1.5
+
 # Exported variables
 @export var blockManager: BlockManager
 @export var weapon: Weapon
@@ -37,6 +40,12 @@ func _ready():
 	if not is_multiplayer_authority():
 		return
 		
+	
+	$bodyMesh.set_layer_mask_value(1, false)
+	$bodyMesh.set_layer_mask_value(20, true)
+	$headMesh.set_layer_mask_value(1, false)
+	$headMesh.set_layer_mask_value(20, true)
+		
 	Globals.myPlayer = self
 	
 	self.process_mode = Node.PROCESS_MODE_ALWAYS
@@ -60,8 +69,7 @@ func _ready():
 		
 		if weapon:
 			weapon.raycast = raycast
-		
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	if Input.is_key_pressed(KEY_K):
 		handle_death()
 		
@@ -74,7 +82,7 @@ func _process(_delta: float) -> void:
 	if Input.is_action_pressed("build"):
 		blockManager.buildBlock()
 
-func _unhandled_input(event):
+func _input(event: InputEvent):
 	if not is_multiplayer_authority() or dead or paused:
 		return
 	
@@ -152,8 +160,8 @@ func damage(attack: Dictionary):
 
 
 func handle_death():
-	$MeshInstance3D.visible = false # No parece funcionar, hacer animación de muerte o algo jsjs
-	$CollisionShape3D.disabled = true # ... pero, por ahora, hacerlos caer bajo la tierra mola 😎
+	$bodyCollision.disabled = true
+	$headCollision.disabled = true
 	dead = true
 	death_screen.show()
 	for n in range(3, 0, -1):
@@ -161,8 +169,8 @@ func handle_death():
 		await get_tree().create_timer(1).timeout
 
 	reset_player_state()
-	$MeshInstance3D.visible = true # esto tampoco funciona, claro jsjsjs
-	$CollisionShape3D.disabled = false
+	$bodyCollision.disabled = false
+	$headCollision.disabled = false
 
 func reset_player_state():
 	death_screen.hide()

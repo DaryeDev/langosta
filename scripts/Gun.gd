@@ -61,7 +61,7 @@ func use() -> bool:
 	if raycast:
 		raycast.collision_mask = 1|2
 		#raycast.hit_from_inside = true
-		raycast.exclude_parent = true
+		#raycast.exclude_parent = true
 		if raycast.is_colliding():
 			var hit = raycast.get_collider()
 			var hit_pos = raycast.get_collision_point()
@@ -70,11 +70,14 @@ func use() -> bool:
 			if hit and hit_pos.distance_to(raycast.global_transform.origin) <= gunRange and hit.has_method("damage"):
 				#if hit is Entity and hit.hasHitbox():  # Comprueba si puede recibir daño
 				if true:
+					var weakPointCollision = hit.get("weakPointCollision")
+					var hit_shape = hit.shape_owner_get_owner(hit.shape_find_owner(raycast.get_collider_shape()))
+					
 					var direction = (hit.global_transform.origin - raycast.global_transform.origin).normalized()
 					var pushForce = direction * knockbackForce
 					
 					var attack = {}
-					attack.damage = damage * (weakPointMultiplier if (hit.has_method("isWeakSpotAttack") and hit.isWeakSpotAttack(hit_normal)) else 1.0)
+					attack.damage = damage * (hit.get("weakPointMultiplier") if (hit.get("weakPointMultiplier") and weakPointCollision and weakPointCollision == hit_shape) else 1.0) # Añadir multiplicador de crítico del arma.
 					#attack.origin = getParentEntity()
 					attack.knockbackForce = pushForce
 					attack.impactPosition = hit_normal

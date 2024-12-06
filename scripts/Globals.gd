@@ -26,4 +26,4 @@ var currentMap: Map:
 		return currentMap
 		
 var isViewer: bool = false
-var isUsingVR: bool = true
+var isUsingVR: bool = false

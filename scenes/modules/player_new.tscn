@@ -1,16 +1,26 @@
-[gd_scene load_steps=21 format=3 uid="uid://busnbc5l2x2d8"]
+[gd_scene load_steps=20 format=3 uid="uid://busnbc5l2x2d8"]
 
 [ext_resource type="Script" path="res://scripts/player_new.gd" id="1_fpduk"]
 [ext_resource type="PackedScene" uid="uid://bu0nvauvao0p8" path="res://scenes/modules/building/BlockManager/BlockManager.tscn" id="2_dr144"]
 [ext_resource type="PackedScene" uid="uid://cd3a4mmoryrfd" path="res://scenes/modules/guns/gun1/Gun1.tscn" id="2_s6nws"]
-[ext_resource type="Texture2D" uid="uid://8ka2ui7sq36p" path="res://addons/kenney_particle_pack/circle_05.png" id="4_ij1fv"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_etadu"]
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_grdeb"]
+radius = 0.3
+height = 1.2
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_xk8km"]
-material = SubResource("StandardMaterial3D_etadu")
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4u5g6"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_p1mf8"]
+material = SubResource("StandardMaterial3D_4u5g6")
+radius = 0.25
+height = 0.5
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_67y6s"]
+radius = 0.3
+height = 1.2
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_8ryqv"]
+radius = 0.25
 
 [sub_resource type="Animation" id="Animation_jhgv2"]
 length = 0.001
@@ -171,20 +181,30 @@ properties/4/replication_mode = 1
 [sub_resource type="LabelSettings" id="LabelSettings_l1v7f"]
 font_size = 50
 
-[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("blockManager", "weapon")]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("weakPointCollision", "blockManager", "weapon")]
 collision_layer = 2
 script = ExtResource("1_fpduk")
+weakPointCollision = NodePath("headCollision")
 blockManager = NodePath("Camera3D/BlockManager")
 weapon = NodePath("Camera3D/Gun1")
+JUMP_VELOCITY = 5.0
 runMultiplier = 1.5
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-mesh = SubResource("CapsuleMesh_xk8km")
+[node name="bodyMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+mesh = SubResource("CapsuleMesh_grdeb")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+[node name="headMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+mesh = SubResource("SphereMesh_p1mf8")
+
+[node name="bodyCollision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 shape = SubResource("CapsuleShape3D_67y6s")
+
+[node name="headCollision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+shape = SubResource("SphereShape3D_8ryqv")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.51306, 0)
@@ -222,6 +242,19 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_right = 5.0
+offset_bottom = 5.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -0.785398
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="Control"]
 layout_mode = 1

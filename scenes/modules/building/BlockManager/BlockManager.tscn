@@ -1,7 +1,40 @@
-[gd_scene load_steps=3 format=3 uid="uid://bu0nvauvao0p8"]
+[gd_scene load_steps=6 format=3 uid="uid://bu0nvauvao0p8"]
 
 [ext_resource type="Script" path="res://scenes/modules/building/BlockManager/BlockManagerScript.gd" id="1_7f83w"]
 [ext_resource type="PackedScene" uid="uid://b2it08goocwnd" path="res://scenes/modules/building/blocks/Block1/Block1.tscn" id="2_0gna1"]
+
+[sub_resource type="GDScript" id="GDScript_qap0a"]
+script/source = "extends RayCast3D
+@onready var laser_mesh = $LaserSight
+
+func _process(delta):
+	force_raycast_update()
+	
+	if is_colliding():
+		var collision_point = get_collision_point()
+		var distance = global_transform.origin.distance_to(collision_point)
+		if distance <= get_parent().ray_length:
+			var castPoint = to_local(get_collision_point())
+			
+			laser_mesh.mesh.height = castPoint.y
+			laser_mesh.position.y = castPoint.y/2
+			
+			return
+	
+	laser_mesh.mesh.height = 0
+	laser_mesh.position.y = 0
+"
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0gr8d"]
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+emission_energy_multiplier = 4.0
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_6w4jw"]
+material = SubResource("StandardMaterial3D_0gr8d")
+top_radius = 0.01
+bottom_radius = 0.05
+height = 0.01
 
 [node name="BlockManager" type="Node3D" node_paths=PackedStringArray("raycast")]
 script = ExtResource("1_7f83w")
@@ -10,6 +43,11 @@ raycast = NodePath("RayCast3D")
 [node name="RayCast3D" type="RayCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
 target_position = Vector3(0, -50, 0)
+script = SubResource("GDScript_qap0a")
+
+[node name="LaserSight" type="MeshInstance3D" parent="RayCast3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -25, 0)
+mesh = SubResource("CylinderMesh_6w4jw")
 
 [node name="buildCooldownTimer" type="Timer" parent="."]
 one_shot = true

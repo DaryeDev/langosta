@@ -19,7 +19,7 @@
 [sub_resource type="PlaneMesh" id="PlaneMesh_0xjln"]
 size = Vector2(300, 300)
 
-[sub_resource type="Resource" id="Resource_2fy3f"]
+[sub_resource type="Resource" id="Resource_j4mdc"]
 script = ExtResource("5_t0m2l")
 spacing = Vector3(1.5, 2, 1)
 enabled = true
@@ -28,7 +28,7 @@ custom_seed = 0
 restrict_height = true
 reference_frame = 0
 
-[sub_resource type="Resource" id="Resource_4fgt0"]
+[sub_resource type="Resource" id="Resource_rtvla"]
 script = ExtResource("6_pxlg8")
 position = Vector3(0.173, 0.222, 0.918)
 rotation = Vector3(10, 360, 10)
@@ -39,7 +39,7 @@ custom_seed = 10
 restrict_height = false
 reference_frame = 2
 
-[sub_resource type="Resource" id="Resource_62qcq"]
+[sub_resource type="Resource" id="Resource_gsu8k"]
 script = ExtResource("7_ip7e8")
 rotation = Vector3(360, 0, 360)
 snap_angle = Vector3(180, 0, 180)
@@ -49,9 +49,9 @@ custom_seed = 0
 restrict_height = false
 reference_frame = 2
 
-[sub_resource type="Resource" id="Resource_810gx"]
+[sub_resource type="Resource" id="Resource_2bnyc"]
 script = ExtResource("3_sfqau")
-stack = Array[ExtResource("4_4wb6j")]([SubResource("Resource_2fy3f"), SubResource("Resource_4fgt0"), SubResource("Resource_62qcq")])
+stack = Array[ExtResource("4_4wb6j")]([SubResource("Resource_j4mdc"), SubResource("Resource_rtvla"), SubResource("Resource_gsu8k")])
 
 [sub_resource type="Curve3D" id="Curve3D_2vyue"]
 _data = {
@@ -66,7 +66,7 @@ closed = true
 thickness = 0.0
 curve = SubResource("Curve3D_2vyue")
 
-[sub_resource type="Resource" id="Resource_aybtx"]
+[sub_resource type="Resource" id="Resource_ya3jk"]
 script = ExtResource("5_t0m2l")
 spacing = Vector3(4, 4, 4)
 enabled = true
@@ -75,7 +75,7 @@ custom_seed = 0
 restrict_height = true
 reference_frame = 0
 
-[sub_resource type="Resource" id="Resource_lf0nc"]
+[sub_resource type="Resource" id="Resource_qiy6t"]
 script = ExtResource("6_pxlg8")
 position = Vector3(10, 4, 10)
 rotation = Vector3(10, 180, 10)
@@ -86,7 +86,7 @@ custom_seed = 25
 restrict_height = false
 reference_frame = 2
 
-[sub_resource type="Resource" id="Resource_v3145"]
+[sub_resource type="Resource" id="Resource_jevmd"]
 script = ExtResource("7_ip7e8")
 rotation = Vector3(360, 0, 360)
 snap_angle = Vector3(180, 0, 180)
@@ -96,9 +96,9 @@ custom_seed = 0
 restrict_height = false
 reference_frame = 2
 
-[sub_resource type="Resource" id="Resource_natsk"]
+[sub_resource type="Resource" id="Resource_jyeg4"]
 script = ExtResource("3_sfqau")
-stack = Array[ExtResource("4_4wb6j")]([SubResource("Resource_aybtx"), SubResource("Resource_lf0nc"), SubResource("Resource_v3145")])
+stack = Array[ExtResource("4_4wb6j")]([SubResource("Resource_ya3jk"), SubResource("Resource_qiy6t"), SubResource("Resource_jevmd")])
 
 [sub_resource type="Resource" id="Resource_j7t0k"]
 script = ExtResource("11_fvcjf")
@@ -132,7 +132,7 @@ metadata/_edit_group_ = true
 process_mode = 3
 script = ExtResource("2_7fh4a")
 render_mode = 1
-modifier_stack = SubResource("Resource_810gx")
+modifier_stack = SubResource("Resource_2bnyc")
 Performance/use_chunks = true
 Performance/chunk_dimensions = Vector3(15, 15, 15)
 
@@ -148,7 +148,7 @@ shape = SubResource("Resource_lm0li")
 [node name="Mountains" type="Node3D" parent="."]
 process_mode = 3
 script = ExtResource("2_7fh4a")
-modifier_stack = SubResource("Resource_natsk")
+modifier_stack = SubResource("Resource_jyeg4")
 Performance/use_chunks = true
 Performance/chunk_dimensions = Vector3(15, 15, 15)
 

@@ -162,3 +162,7 @@ func _on_quit_pressed() -> void:
 func _on_resume_pressed() -> void:
 	# Resume the game
 	toggle_pause()
+
+
+func _on_enableVR_button_toggled(toggled_on: bool) -> void:
+	Globals.isUsingVR = toggled_on

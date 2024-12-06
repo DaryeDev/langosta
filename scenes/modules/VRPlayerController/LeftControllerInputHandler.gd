@@ -20,12 +20,16 @@ func onButtonPressed(buttonName: String):
 	match buttonName:
 		"primary_click":
 			Input.action_press("run")
+		"grip_click":
+			Input.action_press("run")
 		"by_button":
 			Input.action_press("spawnRandomEnemy")
 
 func onButtonReleased(buttonName: String):
 	match buttonName:
 		"primary_click":
+			Input.action_release("run")
+		"grip_click":
 			Input.action_release("run")
 		"by_button":
 			Input.action_release("spawnRandomEnemy")

@@ -12,14 +12,18 @@ func _ready() -> void:
 	$MeshInstance3D.material_override.albedo_texture.viewport_path = Globals.myPlayer.get_node(\"Control/SubViewportContainer/SubViewport\").get_path()
 
 func _process(delta: float) -> void:
-	Globals.myPlayer.get_node(\"MeshInstance3D\").global_position.x = global_position.x
-	Globals.myPlayer.get_node(\"CollisionShape3D\").global_position.z = global_position.z
-	Globals.myPlayer.get_node(\"MeshInstance3D\").global_position.x = global_position.x
-	Globals.myPlayer.get_node(\"CollisionShape3D\").global_position.z = global_position.z
+	Globals.myPlayer.get_node(\"bodyMesh\").global_position.x = global_position.x
+	Globals.myPlayer.get_node(\"bodyMesh\").global_position.z = global_position.z
+	Globals.myPlayer.get_node(\"headMesh\").global_position.x = global_position.x
+	Globals.myPlayer.get_node(\"headMesh\").global_position.z = global_position.z
+	
+	Globals.myPlayer.get_node(\"bodyCollision\").global_position.x = global_position.x
+	Globals.myPlayer.get_node(\"bodyCollision\").global_position.z = global_position.z
+	Globals.myPlayer.get_node(\"headCollision\").global_position.x = global_position.x
+	Globals.myPlayer.get_node(\"headCollision\").global_position.z = global_position.z
 "
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_tfwuy"]
-viewport_path = NodePath("XRCamera3D/SubViewport")
+[sub_resource type="ViewportTexture" id="ViewportTexture_shw4o"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_15lkk"]
 resource_local_to_scene = true
@@ -27,7 +31,7 @@ transparency = 1
 shading_mode = 0
 disable_ambient_light = true
 disable_fog = true
-albedo_texture = SubResource("ViewportTexture_tfwuy")
+albedo_texture = SubResource("ViewportTexture_shw4o")
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_1sojk"]
 orientation = 2
