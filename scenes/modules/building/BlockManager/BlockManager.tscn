@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://bu0nvauvao0p8"]
+[gd_scene load_steps=7 format=3 uid="uid://bu0nvauvao0p8"]
 
 [ext_resource type="Script" path="res://scenes/modules/building/BlockManager/BlockManagerScript.gd" id="1_7f83w"]
 [ext_resource type="PackedScene" uid="uid://b2it08goocwnd" path="res://scenes/modules/building/blocks/Block1/Block1.tscn" id="2_0gna1"]
@@ -36,6 +36,17 @@ top_radius = 0.01
 bottom_radius = 0.05
 height = 0.01
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_nsdl7"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath(".:scale")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+
 [node name="BlockManager" type="Node3D" node_paths=PackedStringArray("raycast")]
 script = ExtResource("1_7f83w")
 raycast = NodePath("RayCast3D")
@@ -56,3 +67,6 @@ one_shot = true
 collision_layer = 2
 collision_mask = 2
 max_health = -1
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_nsdl7")

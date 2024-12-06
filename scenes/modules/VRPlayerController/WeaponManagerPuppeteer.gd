@@ -7,8 +7,8 @@ func _ready() -> void:
 	controller.button_released.connect(onButtonReleased)
 
 func _process(delta: float) -> void:
-	Globals.myPlayer.weapon.global_position = global_position
-	Globals.myPlayer.weapon.global_rotation = global_rotation
+	Globals.myPlayer.weaponManager.global_position = global_position
+	Globals.myPlayer.weaponManager.global_rotation = global_rotation
 	
 func onButtonPressed(buttonName: String):
 	match buttonName:

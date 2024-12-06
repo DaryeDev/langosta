@@ -125,4 +125,5 @@ textures/vram_compression/import_etc2_astc=true
 
 openxr/enabled=true
 openxr/startup_alert=false
+openxr/extensions/hand_tracking=false
 shaders/enabled=true

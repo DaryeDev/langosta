@@ -16,7 +16,7 @@ extends CharacterBody3D
 
 # Exported variables
 @export var blockManager: BlockManager
-@export var weapon: Weapon
+@export var weaponManager: WeaponManager
 @export var gravityMultiplier: float = 1.0
 @export var JUMP_VELOCITY: float = 4.5
 @export var SPEED: float = 5.0
@@ -56,9 +56,10 @@ func _ready():
 	#Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	camera.current = true
 	
-	if weapon and weapon.has_node("AnimationPlayer"):
-		weaponAnimPlayer = weapon.get_node("AnimationPlayer")
-		weaponAnimPlayer.animation_finished.connect(_on_animation_player_animation_finished)
+	if weaponManager and weaponManager.weapon and weaponManager.weapon.has_node("AnimationPlayer"):
+		weaponAnimPlayer = weaponManager.weapon.animationPlayer
+		if weaponAnimPlayer:
+			weaponAnimPlayer.animation_finished.connect(_on_animation_player_animation_finished)
 	
 	if Globals.isUsingVR and VrShit.initialize():
 		var vrPlayerController = preload("res://scenes/modules/VRPlayerController/VRPlayerController.tscn").instantiate()
@@ -67,17 +68,22 @@ func _ready():
 		if blockManager:
 			blockManager.raycast = raycast
 		
-		if weapon:
-			weapon.raycast = raycast
+		if weaponManager and weaponManager.weapon:
+			weaponManager.weapon.raycast = raycast
+
 func _process(delta: float) -> void:
+	if !Globals.isUsingVR:
+		if weaponManager and weaponManager.weapon:
+			weaponManager.weapon.raycast = raycast
+	
 	if Input.is_key_pressed(KEY_K):
 		handle_death()
 		
 	if Input.is_action_pressed("shoot"):
-		weapon.use()
+		weaponManager.use()
 		
 	if Input.is_action_pressed("reload"):
-		weapon.reload()
+		weaponManager.reload()
 		
 	if Input.is_action_pressed("build"):
 		blockManager.buildBlock()
@@ -125,7 +131,7 @@ func update_velocity(direction, speed):
 		velocity.z = move_toward(velocity.z, 0, speed)
 
 func update_animation(input_dir):
-	if weaponAnimPlayer.current_animation == "shoot":
+	if weaponAnimPlayer and weaponAnimPlayer.current_animation == "shoot":
 		return
 	if !Globals.isUsingVR:
 		if input_dir != Vector2.ZERO and is_on_floor():
