@@ -8,21 +8,22 @@ script/source = "extends RayCast3D
 @onready var laser_mesh = $LaserSight
 
 func _process(delta):
-	force_raycast_update()
-	
-	if is_colliding():
-		var collision_point = get_collision_point()
-		var distance = global_transform.origin.distance_to(collision_point)
-		if distance <= get_parent().ray_length:
-			var castPoint = to_local(get_collision_point())
-			
-			laser_mesh.mesh.height = castPoint.y
-			laser_mesh.position.y = castPoint.y/2
-			
-			return
-	
-	laser_mesh.mesh.height = 0
-	laser_mesh.position.y = 0
+	if Globals.isUsingVR:
+		force_raycast_update()
+		
+		if is_colliding():
+			var collision_point = get_collision_point()
+			var distance = global_transform.origin.distance_to(collision_point)
+			if distance <= get_parent().ray_length:
+				var castPoint = to_local(get_collision_point())
+				
+				laser_mesh.mesh.height = castPoint.y
+				laser_mesh.position.y = castPoint.y/2
+				
+				return
+		
+		laser_mesh.mesh.height = 0
+		laser_mesh.position.y = 0
 "
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0gr8d"]
@@ -57,7 +58,6 @@ target_position = Vector3(0, -50, 0)
 script = SubResource("GDScript_qap0a")
 
 [node name="LaserSight" type="MeshInstance3D" parent="RayCast3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -25, 0)
 mesh = SubResource("CylinderMesh_6w4jw")
 
 [node name="buildCooldownTimer" type="Timer" parent="."]

@@ -132,10 +132,9 @@ properties/2/replication_mode = 1
 [sub_resource type="LabelSettings" id="LabelSettings_l1v7f"]
 font_size = 50
 
-[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("weakPointCollision", "blockManager", "weaponManager")]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("blockManager", "weaponManager")]
 collision_layer = 2
 script = ExtResource("1_fpduk")
-weakPointCollision = NodePath("")
 blockManager = NodePath("Camera3D/BlockManager")
 weaponManager = NodePath("Camera3D/WeaponManager")
 JUMP_VELOCITY = 5.0

@@ -27,3 +27,4 @@ var currentMap: Map:
 		
 var isViewer: bool = false
 var isUsingVR: bool = false
+var paused: bool = false

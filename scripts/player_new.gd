@@ -27,10 +27,7 @@ extends CharacterBody3D
 # Flags
 var weaponAnimPlayer: AnimationPlayer
 var defaultGravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
-var dead = false
-
-# FIX PAUSED
-var paused = false
+@export var dead = false
 
 func _enter_tree():
 	print("Player name in player_new: ", str(name))
@@ -66,6 +63,9 @@ func _ready():
 			weaponManager.weapon.raycast = raycast
 
 func _process(delta: float) -> void:
+	if (not is_multiplayer_authority()) or dead or Globals.paused:
+		return
+	
 	if !Globals.isUsingVR:
 		if weaponManager and weaponManager.weapon:
 			weaponManager.weapon.raycast = raycast
@@ -83,7 +83,7 @@ func _process(delta: float) -> void:
 		blockManager.buildBlock()
 
 func _input(event: InputEvent):
-	if not is_multiplayer_authority() or dead or paused:
+	if (not is_multiplayer_authority()) or dead or Globals.paused:
 		return
 	
 	if event is InputEventMouseMotion:
@@ -98,7 +98,7 @@ func player_movement():
 	if dead:
 		return
 	
-	if get_tree().paused:
+	if Globals.paused:
 		velocity.x = 0
 		velocity.z = 0
 		reset_animation()

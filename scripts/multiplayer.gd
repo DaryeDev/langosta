@@ -14,7 +14,6 @@ extends Node
 @export var Player = preload("res://scenes/modules/player.tscn")
 
 # Flags
-var paused = false
 var initialized = false
 var dedicated = false
 
@@ -35,7 +34,7 @@ func isViewer():
 func _process(delta: float) -> void:
 	if !initialized:
 		return
-	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if get_tree().paused else Input.MOUSE_MODE_CAPTURED
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if Globals.paused else Input.MOUSE_MODE_CAPTURED
 
 func _ready() -> void:
 	if DisplayServer.get_name() == "headless":
@@ -140,9 +139,8 @@ func toggle_pause():
 	# Toggle the pause state
 	if !initialized:
 		return
-	paused = !paused
-	get_tree().paused = paused  # Set the global paused state
-	if paused:
+	Globals.paused = !Globals.paused
+	if Globals.paused:
 		pause_menu_ui.show()
 		main_menu_ui.hide()
 		#Input.mouse_mode = Input.MOUSE_MODE_VISIBLE

@@ -9,7 +9,9 @@ var weapon: Weapon
 
 func loadWeapons():
 	for weaponScene in weaponScenes:
-		weapons.append(weaponScene.instantiate())
+		var newWeapon = weaponScene.instantiate()
+		newWeapon.set_multiplayer_authority(get_multiplayer_authority())
+		weapons.append(newWeapon)
 	if not weapon:
 		changeWeapon.rpc(0)
 
