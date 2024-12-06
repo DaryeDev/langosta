@@ -10,11 +10,11 @@ var weapon: Weapon
 func loadWeapons():
 	for weaponScene in weaponScenes:
 		weapons.append(weaponScene.instantiate())
+	if not weapon:
+		changeWeapon.rpc(0)
 
 func _ready() -> void:
 	loadWeapons()
-	if get_multiplayer_authority() == multiplayer.get_unique_id():
-		changeWeapon.rpc(weaponIndex)
 
 @rpc("authority", "call_local", "reliable")
 func changeWeapon(index:int=weaponIndex+1):
@@ -27,7 +27,9 @@ func changeWeapon(index:int=weaponIndex+1):
 	add_child(weapon)
 
 func use() -> bool:
-	return await weapon.use()
+	if weapon:
+		return await weapon.use()
+	else: return false
 	
 func reload() -> bool:
 	if weapon is Gun:

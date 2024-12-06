@@ -40,12 +40,6 @@ func _ready():
 	if not is_multiplayer_authority():
 		return
 		
-	
-	$bodyMesh.set_layer_mask_value(1, false)
-	$bodyMesh.set_layer_mask_value(20, true)
-	$headMesh.set_layer_mask_value(1, false)
-	$headMesh.set_layer_mask_value(20, true)
-		
 	Globals.myPlayer = self
 	
 	self.process_mode = Node.PROCESS_MODE_ALWAYS
@@ -75,14 +69,14 @@ func _process(delta: float) -> void:
 	if !Globals.isUsingVR:
 		if weaponManager and weaponManager.weapon:
 			weaponManager.weapon.raycast = raycast
-	
-	if Input.is_key_pressed(KEY_K):
-		handle_death()
 		
-	if Input.is_action_pressed("shoot"):
+	if Input.is_action_just_pressed("shoot"):
 		weaponManager.use()
 		
-	if Input.is_action_pressed("reload"):
+	if Input.is_action_just_pressed("changeGun"):
+		weaponManager.changeWeapon.rpc()
+		
+	if Input.is_action_just_pressed("reload"):
 		weaponManager.reload()
 		
 	if Input.is_action_pressed("build"):
@@ -166,8 +160,9 @@ func damage(attack: Dictionary):
 
 
 func handle_death():
-	$bodyCollision.disabled = true
-	$headCollision.disabled = true
+	#$bodyCollision.disabled = true
+	#$headCollision.disabled = true
+	$CollisionShape3D.disabled = true
 	dead = true
 	death_screen.show()
 	for n in range(3, 0, -1):
@@ -175,8 +170,9 @@ func handle_death():
 		await get_tree().create_timer(1).timeout
 
 	reset_player_state()
-	$bodyCollision.disabled = false
-	$headCollision.disabled = false
+	#$bodyCollision.disabled = false
+	#$headCollision.disabled = false
+	$CollisionShape3D.disabled = false
 
 func reset_player_state():
 	death_screen.hide()

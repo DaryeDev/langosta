@@ -61,7 +61,7 @@ func use() -> bool:
 	if raycast:
 		raycast.collision_mask = 1|2
 		#raycast.hit_from_inside = true
-		#raycast.exclude_parent = true
+		raycast.exclude_parent = true
 		if raycast.is_colliding():
 			var hit = raycast.get_collider()
 			var hit_pos = raycast.get_collision_point()

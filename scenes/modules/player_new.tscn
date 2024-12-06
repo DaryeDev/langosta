@@ -1,26 +1,12 @@
-[gd_scene load_steps=19 format=3 uid="uid://busnbc5l2x2d8"]
+[gd_scene load_steps=16 format=3 uid="uid://busnbc5l2x2d8"]
 
 [ext_resource type="Script" path="res://scripts/player_new.gd" id="1_fpduk"]
 [ext_resource type="PackedScene" uid="uid://bu0nvauvao0p8" path="res://scenes/modules/building/BlockManager/BlockManager.tscn" id="2_dr144"]
 [ext_resource type="PackedScene" uid="uid://ba4dqbjixuqtp" path="res://scenes/modules/guns/WeaponManager.tscn" id="3_skmbn"]
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_grdeb"]
-radius = 0.3
-height = 1.2
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_3eu0p"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4u5g6"]
-
-[sub_resource type="SphereMesh" id="SphereMesh_p1mf8"]
-material = SubResource("StandardMaterial3D_4u5g6")
-radius = 0.25
-height = 0.5
-
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_67y6s"]
-radius = 0.3
-height = 1.2
-
-[sub_resource type="SphereShape3D" id="SphereShape3D_8ryqv"]
-radius = 0.25
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_e445b"]
 
 [sub_resource type="Animation" id="Animation_jhgv2"]
 length = 0.001
@@ -31,7 +17,7 @@ length = 3.0
 loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
-tracks/0/enabled = false
+tracks/0/enabled = true
 tracks/0/path = NodePath("Camera3D/WeaponManager:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
@@ -43,7 +29,7 @@ tracks/0/keys = {
 }
 tracks/1/type = "value"
 tracks/1/imported = false
-tracks/1/enabled = false
+tracks/1/enabled = true
 tracks/1/path = NodePath("Camera3D/WeaponManager:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
@@ -142,12 +128,6 @@ properties/1/replication_mode = 1
 properties/2/path = NodePath("Camera3D:rotation")
 properties/2/spawn = true
 properties/2/replication_mode = 1
-properties/3/path = NodePath("Camera3D/Gun1:position")
-properties/3/spawn = true
-properties/3/replication_mode = 1
-properties/4/path = NodePath("Camera3D/Gun1:rotation")
-properties/4/spawn = true
-properties/4/replication_mode = 1
 
 [sub_resource type="LabelSettings" id="LabelSettings_l1v7f"]
 font_size = 50
@@ -155,27 +135,19 @@ font_size = 50
 [node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("weakPointCollision", "blockManager", "weaponManager")]
 collision_layer = 2
 script = ExtResource("1_fpduk")
-weakPointCollision = NodePath("headCollision")
+weakPointCollision = NodePath("")
 blockManager = NodePath("Camera3D/BlockManager")
 weaponManager = NodePath("Camera3D/WeaponManager")
 JUMP_VELOCITY = 5.0
 runMultiplier = 1.5
 
-[node name="bodyMesh" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
-mesh = SubResource("CapsuleMesh_grdeb")
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("CapsuleMesh_3eu0p")
 
-[node name="headMesh" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
-mesh = SubResource("SphereMesh_p1mf8")
-
-[node name="bodyCollision" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
-shape = SubResource("CapsuleShape3D_67y6s")
-
-[node name="headCollision" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
-shape = SubResource("SphereShape3D_8ryqv")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_e445b")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.51306, 0)
@@ -185,6 +157,7 @@ cull_mask = 524287
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -0.5, -0.25, -0.5)
 
 [node name="WeaponManager" parent="Camera3D" instance=ExtResource("3_skmbn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, -0.25, -0.5)
 
 [node name="RayCast3D" type="RayCast3D" parent="Camera3D"]
 target_position = Vector3(0, 0, -50)
