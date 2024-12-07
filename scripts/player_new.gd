@@ -10,7 +10,6 @@ class_name Player
 @onready var multiplayer_handler = $"../"
 @onready var death_screen: PanelContainer = $Control/SubViewportContainer/SubViewport/DeathScreen
 @onready var death_label: Label = $Control/SubViewportContainer/SubViewport/DeathScreen/ColorRect/death_label
-@onready var health_bar: ProgressBar = $HUD/HealthBar
 
 @export var portrait: CompressedTexture2D = preload("res://textures/yo.png")
 
@@ -90,6 +89,9 @@ func _process(delta: float) -> void:
 	if !Globals.isUsingVR:
 		if weaponManager and weaponManager.weapon:
 			weaponManager.weapon.raycast = raycast
+		
+	if Input.is_action_just_pressed("kms"):
+		damage.rpc({"damage": health})
 		
 	if Input.is_action_just_pressed("shoot"):
 		weaponManager.use()
@@ -243,7 +245,3 @@ func _on_animation_player_animation_finished(anim_name):
 func reset_animation():
 	if !Globals.isUsingVR:
 		anim_player.play("idle", 0.2)
-
-func update_health_bar(health_value):
-	# Update the health bar value
-	health_bar.value = health_value

@@ -1,10 +1,10 @@
-[gd_scene load_steps=17 format=3 uid="uid://d26n3ejrixggv"]
+[gd_scene load_steps=18 format=3 uid="uid://d26n3ejrixggv"]
 
 [ext_resource type="Script" path="res://scripts/Billboard.gd" id="1_pjh6b"]
 [ext_resource type="PackedScene" uid="uid://biky3wjoogdnh" path="res://scenes/modules/SyncedTimer.tscn" id="2_80opc"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_hm6s1"]
-viewport_path = NodePath("Billboard/MeshInstance3D/Viewport")
+viewport_path = NodePath("MeshInstance3D/Viewport")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fs2ji"]
 resource_local_to_scene = true
@@ -16,8 +16,13 @@ albedo_texture = SubResource("ViewportTexture_hm6s1")
 refraction_scale = 1.0
 disable_receive_shadows = true
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0r2lq"]
+transparency = 1
+albedo_color = Color(1, 1, 1, 0)
+
 [sub_resource type="PlaneMesh" id="PlaneMesh_1ojk6"]
 lightmap_size_hint = Vector2i(602, 417)
+material = SubResource("StandardMaterial3D_0r2lq")
 size = Vector2(120, 83)
 orientation = 2
 
@@ -68,7 +73,6 @@ script/source = "extends TextureRect
 		return imagePath
 
 func _process(delta: float) -> void:
-	var a = (texture as CompressedTexture2D).load_path
 	if (texture as CompressedTexture2D).load_path != imagePath:
 		var image = load(imagePath)
 		
@@ -182,7 +186,7 @@ healthBar1 = NodePath("MeshInstance3D/Viewport/ColorRect/VBoxContainer/MarginCon
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 process_mode = 3
-transform = Transform3D(-0.1, 8.74228e-09, 0, -8.74228e-09, -0.1, 0, 0, 0, 1, 0, 16, 0)
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 1, 0, 0, 0)
 material_override = SubResource("StandardMaterial3D_fs2ji")
 cast_shadow = 0
 gi_mode = 0
@@ -213,7 +217,7 @@ grow_vertical = 2
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
-text = "00:10"
+text = "00:00"
 label_settings = SubResource("LabelSettings_l7fl3")
 horizontal_alignment = 1
 

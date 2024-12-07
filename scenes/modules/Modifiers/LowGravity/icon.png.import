@@ -2,9 +2,9 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://clw3wr1eakxri"
-path.s3tc="res://.godot/imported/icon.png-1eca16ddf8b2f3d0db26e6dfbaae7242.s3tc.ctex"
-path.etc2="res://.godot/imported/icon.png-1eca16ddf8b2f3d0db26e6dfbaae7242.etc2.ctex"
+uid="uid://b0y3y4nw0do11"
+path.s3tc="res://.godot/imported/icon.png-36c4bacf7873ffe170d24fe6b6c3c4b1.s3tc.ctex"
+path.etc2="res://.godot/imported/icon.png-36c4bacf7873ffe170d24fe6b6c3c4b1.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://scenes/modules/Modifiers/JumpHigher/icon.png"
-dest_files=["res://.godot/imported/icon.png-1eca16ddf8b2f3d0db26e6dfbaae7242.s3tc.ctex", "res://.godot/imported/icon.png-1eca16ddf8b2f3d0db26e6dfbaae7242.etc2.ctex"]
+source_file="res://scenes/modules/Modifiers/LowGravity/icon.png"
+dest_files=["res://.godot/imported/icon.png-36c4bacf7873ffe170d24fe6b6c3c4b1.s3tc.ctex", "res://.godot/imported/icon.png-36c4bacf7873ffe170d24fe6b6c3c4b1.etc2.ctex"]
 
 [params]
 

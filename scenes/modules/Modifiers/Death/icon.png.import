@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dbb2dbuuj3210"
-path="res://.godot/imported/icon.png-487276ed1e3a0c39cad0279d744ee560.ctex"
+uid="uid://b2eevocjehdhl"
+path="res://.godot/imported/icon.png-9f7fbe1313d3c30e54c321fffd20d2b9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://icon.png"
-dest_files=["res://.godot/imported/icon.png-487276ed1e3a0c39cad0279d744ee560.ctex"]
+source_file="res://scenes/modules/Modifiers/Death/icon.png"
+dest_files=["res://.godot/imported/icon.png-9f7fbe1313d3c30e54c321fffd20d2b9.ctex"]
 
 [params]
 

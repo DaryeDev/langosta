@@ -20,7 +20,7 @@ func _ready() -> void:
 
 @rpc("authority", "call_local", "reliable")
 func changeWeapon(index:int=weaponIndex+1):
-	if get_children().size() > 0:
+	if get_children().size() > 1:
 		remove_child(weapon)
 	
 	weaponIndex = index%weapons.size()

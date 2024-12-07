@@ -1,0 +1,115 @@
+[gd_scene load_steps=11 format=3 uid="uid://djmugko7tgloc"]
+
+[ext_resource type="Texture2D" uid="uid://clw3wr1eakxri" path="res://scenes/modules/Modifiers/JumpHigher/icon.png" id="1_f0yss"]
+
+[sub_resource type="GDScript" id="GDScript_adwoo"]
+script/source = "@tool
+extends Modifier
+
+@export var multiplier: float = 2.0
+
+func _ready() -> void:
+	super._ready()
+	$Mesh/MeshInstance3D/SubViewport/TextureRect.texture = load(modifierIconPath)
+
+func _onAppliedOnPlayer() -> void:
+	player.JUMP_VELOCITY *= multiplier
+	
+func _onModifierTimeEnds() -> void:
+	player.JUMP_VELOCITY /= multiplier
+"
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_d1a6w"]
+size = Vector3(2, 2, 2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lbpjx"]
+transparency = 1
+albedo_color = Color(1, 1, 0.968627, 0.145098)
+emission_enabled = true
+emission = Color(0, 1, 0, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_ynr6x"]
+material = SubResource("StandardMaterial3D_lbpjx")
+radius = 1.0
+height = 2.0
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_oa0bw"]
+viewport_path = NodePath("Mesh/MeshInstance3D/SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_x471x"]
+resource_local_to_scene = true
+transparency = 1
+shading_mode = 0
+diffuse_mode = 3
+specular_mode = 1
+albedo_texture = SubResource("ViewportTexture_oa0bw")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g4hrl"]
+transparency = 1
+albedo_color = Color(1, 1, 1, 0)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_ocumj"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_g4hrl")
+orientation = 2
+
+[sub_resource type="GDScript" id="GDScript_7fa6h"]
+script/source = "extends MeshInstance3D
+
+@onready var viewport: SubViewport = $SubViewport
+@onready var texture: TextureRect = $SubViewport/TextureRect
+@onready var modifier: Modifier = $\"../..\"
+
+func _ready():
+	material_override.albedo_texture.viewport_path = viewport.get_path()
+
+func _process(delta: float) -> void:
+	if Globals.myPlayer:
+		var target_position = Globals.myPlayer.global_transform.origin
+		var direction = target_position - global_transform.origin
+		
+		# Evita el cálculo si los vectores están alineados
+		if abs(Vector3.UP.cross(direction).length()) > 0.01:
+			look_at(Globals.myPlayer.global_transform.origin, Vector3.UP, true)
+"
+
+[node name="JumpHigher" type="Node3D" node_paths=PackedStringArray("collider", "mesh", "timer")]
+script = SubResource("GDScript_adwoo")
+modifierIcon = ExtResource("1_f0yss")
+modifierIconPath = "res://scenes/modules/Modifiers/JumpHigher/icon.png"
+modifierName = "JumpHigher"
+modifierDescription = "Makes you jump higher for 10 seconds."
+collider = NodePath("Collision")
+mesh = NodePath("Mesh")
+timer = NodePath("Timer")
+
+[node name="Collision" type="Area3D" parent="."]
+transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0, 1, 0)
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Collision"]
+shape = SubResource("BoxShape3D_d1a6w")
+
+[node name="Mesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0, 1, 0)
+mesh = SubResource("SphereMesh_ynr6x")
+skeleton = NodePath("")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mesh"]
+material_override = SubResource("StandardMaterial3D_x471x")
+mesh = SubResource("PlaneMesh_ocumj")
+skeleton = NodePath("")
+script = SubResource("GDScript_7fa6h")
+
+[node name="SubViewport" type="SubViewport" parent="Mesh/MeshInstance3D"]
+transparent_bg = true
+render_target_update_mode = 4
+
+[node name="TextureRect" type="TextureRect" parent="Mesh/MeshInstance3D/SubViewport"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_f0yss")
+expand_mode = 3

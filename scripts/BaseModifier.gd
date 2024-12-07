@@ -1,8 +1,19 @@
+@tool
 extends Node3D
 class_name Modifier
 
-@export var modifierIcon: CompressedTexture2D = preload("res://textures/yo.png")
-@export var modifierName: String = "BaseModifier"
+@export var modifierIcon: CompressedTexture2D:
+	set(newIcon):
+		modifierIcon = newIcon
+		modifierIconPath = newIcon.resource_path
+
+@export var modifierIconPath: String = "res://textures/yo.png"
+
+@export var modifierName: String = "BaseModifier":
+	set(newName):
+		modifierName = newName
+		name = newName
+
 @export var modifierDescription: String = "Does nothing, but is the base of all the modifiers."
 @export var modifierDuration: float = 10.0
 @export var collider: Area3D
@@ -12,25 +23,25 @@ class_name Modifier
 var player: Player
 
 func _ready() -> void:
-	if not timer:
-		timer = Timer.new()
-		timer.one_shot = true
-		add_child(timer, true)
-	
-	if collider:
-		collider.collision_mask = 0
-		collider.set_collision_mask_value(2, true)
+	if not Engine.is_editor_hint():
+		if not timer:
+			timer = Timer.new()
+			timer.one_shot = true
+			add_child(timer, true)
 		
-		collider.body_entered.connect(_internal_onBodyEntered)
+		if collider:
+			collider.collision_mask = 0
+			collider.set_collision_mask_value(2, true)
+			
+			collider.body_entered.connect(_internal_onBodyEntered)
 
-@rpc("any_peer", "call_local", "reliable")
 func _internal_onBodyEntered(body: Node3D) -> void:
 	if body is Player:
 		body = (body as Player)
 		player = body
 		body.applyModifier(self)
 		
-		_onAppliedOnPlayer()
+		_onAppliedOnPlayer.call_deferred()
 		
 		if collider:
 			collider.queue_free()
@@ -41,21 +52,17 @@ func _internal_onBodyEntered(body: Node3D) -> void:
 		if timer:
 			timer.start(modifierDuration)
 			timer.timeout.connect(func():
-				_onModifierTimeEnds()
+				_onModifierTimeEnds.call_deferred()
 				queue_free()
 			)
 
-@rpc("any_peer", "call_local", "reliable")
 func _onAppliedOnPlayer() -> void:
 	pass
 	
-@rpc("any_peer", "call_local", "reliable")
 func _onModifierTimeEnds() -> void:
 	pass
 
 func attackModifier(attack: Dictionary) -> Dictionary:
-	Globals.myPlayer.spawnExplosionAtCoordinates.rpc(Globals.myPlayer.global_position)
-	
 	return attack
 
 func damageModifier(attack: Dictionary) -> Dictionary:

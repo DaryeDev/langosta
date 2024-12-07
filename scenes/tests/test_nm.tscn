@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://bhe4vrbbu2cw5"]
+[gd_scene load_steps=24 format=3 uid="uid://bhe4vrbbu2cw5"]
 
 [ext_resource type="Script" path="res://scripts/Map.gd" id="1_8qpcf"]
 [ext_resource type="PackedScene" uid="uid://c1j7an8woikyd" path="res://scenes/world/ground/test_level.tscn" id="1_xw303"]
@@ -8,7 +8,18 @@
 [ext_resource type="PackedScene" uid="uid://d3oyfoxvgu4fi" path="res://scenes/world/lights and environment/world_environment_web.tscn" id="4_r2u2b"]
 [ext_resource type="MeshLibrary" uid="uid://b1ymvt01dwlfv" path="res://scenes/modules/building/MeshLibrary.tres" id="7_dfum0"]
 [ext_resource type="PackedScene" uid="uid://d26n3ejrixggv" path="res://scenes/modules/Billboard.tscn" id="8_ejf3q"]
-[ext_resource type="PackedScene" uid="uid://cblv000ajodea" path="res://scenes/modules/Modifiers/JumpHigher/JumpHigher.tscn" id="9_6w7tv"]
+[ext_resource type="PackedScene" uid="uid://djmugko7tgloc" path="res://scenes/modules/Modifiers/JumpHigher/scene.tscn" id="9_cqx0c"]
+[ext_resource type="PackedScene" uid="uid://vqpku0f5r5jg" path="res://scenes/modules/Modifiers/JumpLower/scene.tscn" id="11_f5ev8"]
+[ext_resource type="PackedScene" uid="uid://bgv63kk1sgmcm" path="res://scenes/modules/Modifiers/LowGravity/scene.tscn" id="11_tjick"]
+[ext_resource type="PackedScene" uid="uid://sgtxwnsdo51" path="res://scenes/modules/Modifiers/InstaHeal/scene.tscn" id="12_ugb8q"]
+[ext_resource type="PackedScene" uid="uid://cqs5p574lkk83" path="res://scenes/modules/Modifiers/InstaDamage/scene.tscn" id="13_8jghg"]
+[ext_resource type="PackedScene" uid="uid://cy5rbjkd4yd3p" path="res://scenes/modules/Modifiers/Regen/scene.tscn" id="14_2ful3"]
+[ext_resource type="PackedScene" uid="uid://bkrdl5v83x81s" path="res://scenes/modules/Modifiers/Poison/scene.tscn" id="15_bh8he"]
+[ext_resource type="PackedScene" uid="uid://cumco1lqj2dia" path="res://scenes/modules/Modifiers/HeightIncrease/scene.tscn" id="16_ktxkq"]
+[ext_resource type="PackedScene" uid="uid://50x5sw82i0h0" path="res://scenes/modules/Modifiers/HeightDecrease/scene.tscn" id="17_uyhpf"]
+[ext_resource type="PackedScene" uid="uid://cv84dws1umckx" path="res://scenes/modules/Modifiers/Death/scene.tscn" id="18_kpnfa"]
+[ext_resource type="PackedScene" uid="uid://bkmx0pvtu5lt2" path="res://scenes/modules/Modifiers/DamageMinus/scene.tscn" id="19_663ha"]
+[ext_resource type="PackedScene" uid="uid://d3otxs58rokom" path="res://scenes/modules/Modifiers/DamagePlus/scene.tscn" id="20_u8twq"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_w6xfn"]
 
@@ -114,7 +125,41 @@ script = SubResource("GDScript_4irtu")
 replication_config = SubResource("SceneReplicationConfig_rxd33")
 
 [node name="Billboard" parent="." instance=ExtResource("8_ejf3q")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 16, 0)
 timeLimit = 1000
 
-[node name="JumpHigher" parent="." instance=ExtResource("9_6w7tv")]
-transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, -1.95715, 0.724863, -3.4043)
+[node name="JumpHigher" parent="." instance=ExtResource("9_cqx0c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.08767, 2.38419e-07, 6.75109)
+
+[node name="LowGravity" parent="." instance=ExtResource("11_tjick")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.23569, -2.38419e-07, 8.81089)
+
+[node name="JumpLower" parent="." instance=ExtResource("11_f5ev8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.93015, 0, 7.89116)
+
+[node name="InstaHeal" parent="." instance=ExtResource("12_ugb8q")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.26877, 0.445448, 12.2272)
+
+[node name="InstaDamage" parent="." instance=ExtResource("13_8jghg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.19656, 0.395487, 11.9774)
+
+[node name="Regen" parent="." instance=ExtResource("14_2ful3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.09373, 0.891308, 14.4565)
+
+[node name="Poison" parent="." instance=ExtResource("15_bh8he")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.11327, 1.07578, 15.3789)
+
+[node name="HeightIncrease" parent="." instance=ExtResource("16_ktxkq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.01408, 1.39108, 16.9554)
+
+[node name="HeightDecrease" parent="." instance=ExtResource("17_uyhpf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.840671, 1.02192, 16.305)
+
+[node name="Death" parent="." instance=ExtResource("18_kpnfa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.12328, 0, 9.49106)
+
+[node name="DamageMinus" parent="." instance=ExtResource("19_663ha")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.19516, 1.82577, 19.1288)
+
+[node name="DamagePlus" parent="." instance=ExtResource("20_u8twq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.65705, 1.80584, 19.0292)
