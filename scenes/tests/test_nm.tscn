@@ -113,3 +113,4 @@ script = SubResource("GDScript_4irtu")
 replication_config = SubResource("SceneReplicationConfig_rxd33")
 
 [node name="Billboard" parent="." instance=ExtResource("8_ejf3q")]
+timeLimit = 1000

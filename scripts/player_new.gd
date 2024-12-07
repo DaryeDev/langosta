@@ -180,8 +180,17 @@ func damage(attack: Dictionary):
 	if health <= 0:
 		handle_death()
 
+@rpc("any_peer", "call_local")
+func spawnExplosionAtCoordinates(coords: Vector3):
+	if is_multiplayer_authority(): return
+	
+	var newExplosion = preload("res://scenes/modules/Explosion.tscn").instantiate()
+	newExplosion.global_position = coords
+	Globals.currentMap.add_child(newExplosion)
 
 func handle_death():
+	spawnExplosionAtCoordinates.rpc(global_position)
+	
 	#$bodyCollision.disabled = true
 	#$headCollision.disabled = true
 	$CollisionShape3D.disabled = true
