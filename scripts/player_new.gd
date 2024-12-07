@@ -110,7 +110,7 @@ func _input(event: InputEvent):
 		return
 	
 	if event is InputEventMouseMotion:
-		handle_camera_rotation(event.relative.x, event.relative.y)
+		handle_camera_rotation(event.relative.x * 0.005, event.relative.y * 0.005)
 
 func handle_camera_rotation(delta_x: float, delta_y: float):
 	rotate_y(-delta_x)
