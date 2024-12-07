@@ -39,7 +39,7 @@ func _ready() -> void:
 	if not gunTimer:
 		gunTimer = Timer.new()
 		gunTimer.one_shot = true
-		add_child(gunTimer)
+		add_child(gunTimer, true)
 	
 	updateBulletsLabel()
 

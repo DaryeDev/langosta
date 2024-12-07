@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://bhe4vrbbu2cw5"]
+[gd_scene load_steps=13 format=3 uid="uid://bhe4vrbbu2cw5"]
 
 [ext_resource type="Script" path="res://scripts/Map.gd" id="1_8qpcf"]
 [ext_resource type="PackedScene" uid="uid://c1j7an8woikyd" path="res://scenes/world/ground/test_level.tscn" id="1_xw303"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://d3oyfoxvgu4fi" path="res://scenes/world/lights and environment/world_environment_web.tscn" id="4_r2u2b"]
 [ext_resource type="MeshLibrary" uid="uid://b1ymvt01dwlfv" path="res://scenes/modules/building/MeshLibrary.tres" id="7_dfum0"]
 [ext_resource type="PackedScene" uid="uid://d26n3ejrixggv" path="res://scenes/modules/Billboard.tscn" id="8_ejf3q"]
+[ext_resource type="PackedScene" uid="uid://cblv000ajodea" path="res://scenes/modules/Modifiers/JumpHigher/JumpHigher.tscn" id="9_6w7tv"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_w6xfn"]
 
@@ -114,3 +115,6 @@ replication_config = SubResource("SceneReplicationConfig_rxd33")
 
 [node name="Billboard" parent="." instance=ExtResource("8_ejf3q")]
 timeLimit = 1000
+
+[node name="JumpHigher" parent="." instance=ExtResource("9_6w7tv")]
+transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, -1.95715, 0.724863, -3.4043)

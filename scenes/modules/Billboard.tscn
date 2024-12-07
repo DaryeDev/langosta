@@ -120,63 +120,63 @@ func _process(delta: float) -> void:
 "
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_6dgsn"]
-properties/0/path = NodePath("MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer/TextureRect:visible")
+properties/0/path = NodePath("MeshInstance3D/Viewport/ColorRect/VBoxContainer/Label:text")
 properties/0/spawn = true
 properties/0/replication_mode = 1
-properties/1/path = NodePath("MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer/Label:text")
+properties/1/path = NodePath("MeshInstance3D/Viewport/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer/TextureRect:imagePath")
 properties/1/spawn = true
 properties/1/replication_mode = 1
-properties/2/path = NodePath("MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer/Label:visible")
+properties/2/path = NodePath("MeshInstance3D/Viewport/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer/TextureRect:visible")
 properties/2/spawn = true
 properties/2/replication_mode = 1
-properties/3/path = NodePath("MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer/ProgressBar:max_value")
+properties/3/path = NodePath("MeshInstance3D/Viewport/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer/Label:text")
 properties/3/spawn = true
 properties/3/replication_mode = 1
-properties/4/path = NodePath("MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer/ProgressBar:value")
+properties/4/path = NodePath("MeshInstance3D/Viewport/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer/Label:visible")
 properties/4/spawn = true
 properties/4/replication_mode = 1
-properties/5/path = NodePath("MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer/ProgressBar:visible")
+properties/5/path = NodePath("MeshInstance3D/Viewport/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer/ProgressBar:max_value")
 properties/5/spawn = true
 properties/5/replication_mode = 1
-properties/6/path = NodePath("MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer2/TextureRect:imagePath")
+properties/6/path = NodePath("MeshInstance3D/Viewport/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer/ProgressBar:value")
 properties/6/spawn = true
 properties/6/replication_mode = 1
-properties/7/path = NodePath("MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer2/Label:text")
+properties/7/path = NodePath("MeshInstance3D/Viewport/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer/ProgressBar:visible")
 properties/7/spawn = true
 properties/7/replication_mode = 1
-properties/8/path = NodePath("MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer2/ProgressBar:max_value")
+properties/8/path = NodePath("MeshInstance3D/Viewport/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer2/TextureRect:imagePath")
 properties/8/spawn = true
 properties/8/replication_mode = 1
-properties/9/path = NodePath("MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer2/ProgressBar:value")
+properties/9/path = NodePath("MeshInstance3D/Viewport/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer2/TextureRect:visible")
 properties/9/spawn = true
 properties/9/replication_mode = 1
-properties/10/path = NodePath("MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer2/TextureRect:visible")
+properties/10/path = NodePath("MeshInstance3D/Viewport/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer2/Label:text")
 properties/10/spawn = true
 properties/10/replication_mode = 1
-properties/11/path = NodePath("MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer2/Label:visible")
+properties/11/path = NodePath("MeshInstance3D/Viewport/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer2/Label:visible")
 properties/11/spawn = true
 properties/11/replication_mode = 1
-properties/12/path = NodePath("MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer2/ProgressBar:visible")
+properties/12/path = NodePath("MeshInstance3D/Viewport/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer2/ProgressBar:visible")
 properties/12/spawn = true
 properties/12/replication_mode = 1
-properties/13/path = NodePath("MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer/TextureRect:imagePath")
+properties/13/path = NodePath("MeshInstance3D/Viewport/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer2/ProgressBar:max_value")
 properties/13/spawn = true
 properties/13/replication_mode = 1
-properties/14/path = NodePath("MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/Label:text")
+properties/14/path = NodePath("MeshInstance3D/Viewport/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer2/ProgressBar:value")
 properties/14/spawn = true
 properties/14/replication_mode = 1
 
 [node name="Billboard" type="Node3D" node_paths=PackedStringArray("timerLabel", "timer", "portrait0", "username0", "healthBar0", "portrait1", "username1", "healthBar1")]
 script = ExtResource("1_pjh6b")
-timerLabel = NodePath("MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/Label")
+timerLabel = NodePath("MeshInstance3D/Viewport/ColorRect/VBoxContainer/Label")
 timeLimit = 10
 timer = NodePath("SyncedTimer")
-portrait0 = NodePath("MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer/TextureRect")
-username0 = NodePath("MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer/Label")
-healthBar0 = NodePath("MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer/ProgressBar")
-portrait1 = NodePath("MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer2/TextureRect")
-username1 = NodePath("MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer2/Label")
-healthBar1 = NodePath("MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer2/ProgressBar")
+portrait0 = NodePath("MeshInstance3D/Viewport/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer/TextureRect")
+username0 = NodePath("MeshInstance3D/Viewport/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer/Label")
+healthBar0 = NodePath("MeshInstance3D/Viewport/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer/ProgressBar")
+portrait1 = NodePath("MeshInstance3D/Viewport/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer2/TextureRect")
+username1 = NodePath("MeshInstance3D/Viewport/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer2/Label")
+healthBar1 = NodePath("MeshInstance3D/Viewport/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer2/ProgressBar")
 
 [node name="SyncedTimer" parent="." instance=ExtResource("2_80opc")]
 
@@ -195,20 +195,13 @@ transparent_bg = true
 size = Vector2i(1200, 830)
 render_target_update_mode = 4
 
-[node name="Container" type="VSplitContainer" parent="MeshInstance3D/Viewport"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_bottom = -80.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="ColorRect" type="Panel" parent="MeshInstance3D/Viewport/Container"]
-layout_mode = 2
+[node name="ColorRect" type="Panel" parent="MeshInstance3D/Viewport"]
+offset_right = 1200.0
+offset_bottom = 750.0
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_sxhmu")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MeshInstance3D/Viewport/Container/ColorRect"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MeshInstance3D/Viewport/ColorRect"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -216,7 +209,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer"]
+[node name="Label" type="Label" parent="MeshInstance3D/Viewport/ColorRect/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
@@ -224,7 +217,7 @@ text = "00:10"
 label_settings = SubResource("LabelSettings_l7fl3")
 horizontal_alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MeshInstance3D/Viewport/ColorRect/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
@@ -232,17 +225,17 @@ theme_override_constants/margin_left = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 30
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MeshInstance3D/Viewport/ColorRect/VBoxContainer/MarginContainer"]
 layout_mode = 2
 
-[node name="VSplitContainer" type="VBoxContainer" parent="MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer"]
+[node name="VSplitContainer" type="VBoxContainer" parent="MeshInstance3D/Viewport/ColorRect/VBoxContainer/MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(500, 500)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8
 alignment = 1
 
-[node name="TextureRect" type="TextureRect" parent="MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer"]
+[node name="TextureRect" type="TextureRect" parent="MeshInstance3D/Viewport/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
@@ -250,7 +243,7 @@ texture = SubResource("CompressedTexture2D_q6vvj")
 stretch_mode = 3
 script = SubResource("GDScript_dal3g")
 
-[node name="Label" type="Label" parent="MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer"]
+[node name="Label" type="Label" parent="MeshInstance3D/Viewport/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer"]
 visible = false
 layout_mode = 2
 text = "Darye"
@@ -258,7 +251,7 @@ label_settings = SubResource("LabelSettings_c2im8")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ProgressBar" type="ProgressBar" parent="MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer"]
+[node name="ProgressBar" type="ProgressBar" parent="MeshInstance3D/Viewport/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer"]
 visible = false
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
@@ -266,7 +259,7 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_pit8o")
 value = 50.0
 show_percentage = false
 
-[node name="Label2" type="Label" parent="MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer"]
+[node name="Label2" type="Label" parent="MeshInstance3D/Viewport/ColorRect/VBoxContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "  V
@@ -281,14 +274,14 @@ label_settings = SubResource("LabelSettings_gvl2l")
 horizontal_alignment = 3
 justification_flags = 0
 
-[node name="VSplitContainer2" type="VBoxContainer" parent="MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer"]
+[node name="VSplitContainer2" type="VBoxContainer" parent="MeshInstance3D/Viewport/ColorRect/VBoxContainer/MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(500, 500)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
 alignment = 1
 
-[node name="TextureRect" type="TextureRect" parent="MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer2"]
+[node name="TextureRect" type="TextureRect" parent="MeshInstance3D/Viewport/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer2"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
@@ -297,7 +290,7 @@ stretch_mode = 3
 flip_h = true
 script = SubResource("GDScript_8p76t")
 
-[node name="Label" type="Label" parent="MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer2"]
+[node name="Label" type="Label" parent="MeshInstance3D/Viewport/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer2"]
 visible = false
 layout_mode = 2
 text = "Darye"
@@ -305,7 +298,7 @@ label_settings = SubResource("LabelSettings_c2im8")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ProgressBar" type="ProgressBar" parent="MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer2"]
+[node name="ProgressBar" type="ProgressBar" parent="MeshInstance3D/Viewport/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer2"]
 visible = false
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2

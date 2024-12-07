@@ -37,6 +37,12 @@ signal usernameChanged(newName: String)
 
 signal healthChanged(maxHealth: int, newHealth: int)
 
+var modifiers: Array = []
+signal appliedModifier(modifier: Modifier)
+func applyModifier(modifier: Modifier):
+	modifiers.append(modifier)
+	appliedModifier.emit(modifier)
+
 # Flags
 var weaponAnimPlayer: AnimationPlayer
 var defaultGravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
