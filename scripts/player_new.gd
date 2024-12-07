@@ -96,17 +96,25 @@ func _process(delta: float) -> void:
 		
 	if Input.is_action_pressed("build"):
 		blockManager.buildBlock()
+		
+	
+	var look_vertical = Input.get_axis("lookUp", "lookDown")
+	var look_horizontal = Input.get_axis("lookLeft", "lookRight")
+
+	# Aplicar rotación de cámara con joystick (ajusta la sensibilidad si es necesario)
+	if abs(look_vertical) > 0.1 or abs(look_horizontal) > 0.1:  # Deadzone manual
+		handle_camera_rotation(look_horizontal * 0.05, look_vertical * 0.05)
 
 func _input(event: InputEvent):
 	if (not is_multiplayer_authority()) or dead or Globals.paused:
 		return
 	
 	if event is InputEventMouseMotion:
-		handle_camera_rotation(event)
+		handle_camera_rotation(event.relative.x, event.relative.y)
 
-func handle_camera_rotation(event):
-	rotate_y(-event.relative.x * 0.005)
-	camera.rotate_x(-event.relative.y * 0.005)
+func handle_camera_rotation(delta_x: float, delta_y: float):
+	rotate_y(-delta_x)
+	camera.rotate_x(-delta_y)
 	camera.rotation.x = clamp(camera.rotation.x, -PI / 2, PI / 2)
 
 func player_movement():
