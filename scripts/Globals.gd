@@ -25,6 +25,15 @@ var currentMap: Map:
 	get:
 		return currentMap
 		
-var isViewer: bool = false
+
+var username: String = "Mermelada":
+	set(newName):
+		if myPlayer:
+			myPlayer.username = newName
+		username = newName
+	get:
+		return username
+
+var isServerNotPlaying: bool = false
 var isUsingVR: bool = false
 var paused: bool = false

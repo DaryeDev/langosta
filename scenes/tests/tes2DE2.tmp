@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://bhe4vrbbu2cw5"]
+[gd_scene load_steps=27 format=3 uid="uid://bhe4vrbbu2cw5"]
 
 [ext_resource type="Script" path="res://scripts/Map.gd" id="1_8qpcf"]
 [ext_resource type="PackedScene" uid="uid://c1j7an8woikyd" path="res://scenes/world/ground/test_level.tscn" id="1_xw303"]
@@ -7,8 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://b582iud1fulso" path="res://scenes/modules/SpawnPoint.tscn" id="4_mcr0v"]
 [ext_resource type="PackedScene" uid="uid://d3oyfoxvgu4fi" path="res://scenes/world/lights and environment/world_environment_web.tscn" id="4_r2u2b"]
 [ext_resource type="MeshLibrary" uid="uid://b1ymvt01dwlfv" path="res://scenes/modules/building/MeshLibrary.tres" id="7_dfum0"]
-[ext_resource type="Script" path="res://scripts/Billboard.gd" id="8_gguwt"]
-[ext_resource type="Script" path="res://scripts/SyncedTimer.gd" id="9_cv374"]
+[ext_resource type="Script" path="res://Scripts/Billboard.gd" id="8_r2ili"]
 [ext_resource type="PackedScene" uid="uid://b2it08goocwnd" path="res://scenes/modules/building/blocks/Block1/Block1.tscn" id="10_vwvsk"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_w6xfn"]
@@ -211,9 +210,6 @@ properties/12/replication_mode = 1
 properties/13/path = NodePath("MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer/TextureRect:imagePath")
 properties/13/spawn = true
 properties/13/replication_mode = 1
-properties/14/path = NodePath("MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/Label:text")
-properties/14/spawn = true
-properties/14/replication_mode = 1
 
 [node name="World" type="Node3D" node_paths=PackedStringArray("blockGrid", "billboard")]
 script = ExtResource("1_8qpcf")
@@ -276,21 +272,15 @@ script = SubResource("GDScript_4irtu")
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_rxd33")
 
-[node name="Billboard" type="Node3D" parent="." node_paths=PackedStringArray("timerLabel", "timer", "portrait0", "username0", "healthBar0", "portrait1", "username1", "healthBar1")]
-script = ExtResource("8_gguwt")
+[node name="Billboard" type="Node3D" parent="." node_paths=PackedStringArray("timerLabel", "portrait0", "username0", "healthBar0", "portrait1", "username1", "healthBar1")]
+script = ExtResource("8_r2ili")
 timerLabel = NodePath("MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/Label")
-timeLimit = 10
-timer = NodePath("Timer")
 portrait0 = NodePath("MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer/TextureRect")
 username0 = NodePath("MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer/Label")
 healthBar0 = NodePath("MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer/ProgressBar")
 portrait1 = NodePath("MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer2/TextureRect")
 username1 = NodePath("MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer2/Label")
 healthBar1 = NodePath("MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer2/ProgressBar")
-
-[node name="Timer" type="Timer" parent="Billboard"]
-one_shot = true
-script = ExtResource("9_cv374")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Billboard"]
 process_mode = 3

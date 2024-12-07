@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://ba4dqbjixuqtp"]
 
-[ext_resource type="Script" path="res://scripts/WeaponManager.gd" id="1_iwwt8"]
+[ext_resource type="Script" path="res://scripts/WeaponManager.gd" id="1_46gvm"]
 [ext_resource type="PackedScene" uid="uid://cd3a4mmoryrfd" path="res://scenes/modules/guns/gun1/Gun1.tscn" id="2_y0rxm"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_74u7g"]
@@ -18,7 +18,7 @@ properties/3/spawn = true
 properties/3/replication_mode = 1
 
 [node name="WeaponManager" type="Node3D"]
-script = ExtResource("1_iwwt8")
+script = ExtResource("1_46gvm")
 weaponScenes = Array[PackedScene]([ExtResource("2_y0rxm")])
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]

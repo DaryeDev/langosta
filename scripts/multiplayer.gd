@@ -10,8 +10,6 @@ extends Node
 @onready var pause_menu_ui = $Pause_Menu
 @onready var main_menu_ui = $Main_UI
 
-# Exported variables
-@export var Player = preload("res://scenes/modules/player.tscn")
 
 # Flags
 var initialized = false
@@ -28,8 +26,8 @@ var peer = WebSocketMultiplayerPeer.new()
 # Level spawner
 var levels = ["res://scenes/tests/test_nm.tscn", "res://scenes/jungle_level_web.tscn", "res://scenes/snow_level_web.tscn", "res://scenes/coliseum_level_web.tscn"]
 
-func isViewer():
-	return Globals.isViewer or OS.has_feature("viewer")
+func isServerNotPlaying():
+	return Globals.isServerNotPlaying or OS.has_feature("isServerNotPlaying")
 
 func _process(delta: float) -> void:
 	if !initialized:
@@ -123,7 +121,7 @@ func _input(event):
 		change_level.call_deferred(load(random_element))
 
 func _on_check_add_player_toggled(toggled_on: bool) -> void:
-	Globals.isViewer = !toggled_on
+	Globals.isServerNotPlaying = !toggled_on
 
 #func update_health_bar(health_value):
 	## Update the health bar value
@@ -147,7 +145,7 @@ func toggle_pause():
 	else:
 		pause_menu_ui.hide()
 		main_menu_ui.show()
-		#if isViewer() and server:
+		#if isServerNotPlaying() and server:
 			#Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		#else:
 			#Input.mouse_mode = Input.MOUSE_MODE_CAPTURED

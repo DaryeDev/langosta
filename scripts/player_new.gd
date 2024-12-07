@@ -1,4 +1,5 @@
 extends CharacterBody3D
+class_name Player
 
 #signal health_changed(health_value)
 
@@ -11,8 +12,18 @@ extends CharacterBody3D
 @onready var death_label: Label = $Control/SubViewportContainer/SubViewport/DeathScreen/ColorRect/death_label
 @onready var health_bar: ProgressBar = $HUD/HealthBar
 
+@export var portrait: CompressedTexture2D = preload("res://textures/yo.png")
+
 @export var weakPointCollision: CollisionShape3D
 @export var weakPointMultiplier: float = 1.5
+
+signal usernameChanged(newName: String)
+@export var username: String = "QuesoCrema":
+	set(newName):
+		username = newName
+		usernameChanged.emit(newName)
+	get:
+		return username
 
 # Exported variables
 @export var blockManager: BlockManager
@@ -24,6 +35,8 @@ extends CharacterBody3D
 @export var maxHealth = 100
 @export var health = 100
 
+signal healthChanged(maxHealth: int, newHealth: int)
+
 # Flags
 var weaponAnimPlayer: AnimationPlayer
 var defaultGravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -32,11 +45,13 @@ var defaultGravity: float = ProjectSettings.get_setting("physics/3d/default_grav
 func _enter_tree():
 	print("Player name in player_new: ", str(name))
 	set_multiplayer_authority(str(name).to_int())
+	if (multiplayer.get_unique_id() == str(name).to_int()):
+		username = Globals.username
 
 func _ready():
 	if not is_multiplayer_authority():
 		return
-		
+	
 	Globals.myPlayer = self
 	
 	self.process_mode = Node.PROCESS_MODE_ALWAYS
@@ -150,6 +165,7 @@ func damage(attack: Dictionary):
 	var damageQuantity = attack.get("damage", 1)
 	health -= damageQuantity
 	
+	healthChanged.emit(maxHealth, health)
 	
 	if (not is_multiplayer_authority()) or dead:
 		return
@@ -188,7 +204,9 @@ func reset_player_state():
 		death_screen.hide()
 	
 	weaponManager.reload()
+
 	health = maxHealth
+	healthChanged.emit(maxHealth, health)
 	
 	if Globals.currentMap and is_instance_valid(Globals.currentMap):
 		Globals.currentMap.spawnPlayer(self)

@@ -1,6 +1,16 @@
-[gd_scene load_steps=7 format=3 uid="uid://bvnwjpd0f3oa0"]
+[gd_scene load_steps=8 format=3 uid="uid://bvnwjpd0f3oa0"]
 
 [ext_resource type="Script" path="res://scripts/multiplayer.gd" id="1_jiv4u"]
+
+[sub_resource type="GDScript" id="GDScript_htf3p"]
+script/source = "extends LineEdit
+
+func _ready() -> void:
+	text = Globals.username
+	text_changed.connect(func(newText: String):
+		Globals.username = newText
+	)
+"
 
 [sub_resource type="InputEventKey" id="InputEventKey_usv6e"]
 device = -1
@@ -62,6 +72,21 @@ layout_mode = 2
 text = "Main Menu"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Main_UI/MainMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Main_UI/MainMenu/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Username: "
+
+[node name="AddressEntryHost" type="LineEdit" parent="Main_UI/MainMenu/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Mantequilla"
+alignment = 1
+caret_blink = true
+script = SubResource("GDScript_htf3p")
 
 [node name="CheckButton" type="CheckButton" parent="Main_UI/MainMenu/MarginContainer/VBoxContainer"]
 layout_mode = 2

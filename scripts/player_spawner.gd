@@ -32,7 +32,7 @@ func add_player(id: int):
 	var character
 	if id == 1:
 		print("Soy server")
-		if Globals.isViewer and OS.has_feature("viewer"):
+		if Globals.isServerNotPlaying and OS.has_feature("isServerNotPlaying"):
 			character = load("res://scenes/modules/server_viewport.tscn").instantiate()
 		else:
 			character = load("res://scenes/modules/player_new.tscn").instantiate()
@@ -46,6 +46,8 @@ func add_player(id: int):
 	character.position = Vector3(pos.x * SPAWN_RANDOM * randf(), 2, pos.y * SPAWN_RANDOM * randf())
 	character.name = str(id)
 	$Players.add_child(character, true)
+	if character is Player:
+		Globals.currentMap.billboard.addPlayer.call_deferred(character)
 
 
 func del_player(id: int):

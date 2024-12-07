@@ -5,6 +5,7 @@ class_name Map
 @export var navReg: NavigationRegion3D
 @export var blockGrid: GridMap
 @export var blocksPlaced: Array = []
+@export var billboard: Billboard
 
 func _ready() -> void:
 	Globals.currentMap = self

@@ -1,56 +1,7 @@
-[gd_scene load_steps=28 format=3 uid="uid://bhe4vrbbu2cw5"]
+[gd_scene load_steps=17 format=3 uid="uid://d26n3ejrixggv"]
 
-[ext_resource type="Script" path="res://scripts/Map.gd" id="1_8qpcf"]
-[ext_resource type="PackedScene" uid="uid://c1j7an8woikyd" path="res://scenes/world/ground/test_level.tscn" id="1_xw303"]
-[ext_resource type="PackedScene" uid="uid://df24n0qt0b1jm" path="res://scenes/props/crystals.tscn" id="2_61mdt"]
-[ext_resource type="PackedScene" uid="uid://lryua1aujudt" path="res://scenes/modules/player_spawner.tscn" id="3_c71rg"]
-[ext_resource type="PackedScene" uid="uid://b582iud1fulso" path="res://scenes/modules/SpawnPoint.tscn" id="4_mcr0v"]
-[ext_resource type="PackedScene" uid="uid://d3oyfoxvgu4fi" path="res://scenes/world/lights and environment/world_environment_web.tscn" id="4_r2u2b"]
-[ext_resource type="MeshLibrary" uid="uid://b1ymvt01dwlfv" path="res://scenes/modules/building/MeshLibrary.tres" id="7_dfum0"]
-[ext_resource type="Script" path="res://scripts/Billboard.gd" id="8_gguwt"]
-[ext_resource type="Script" path="res://scripts/SyncedTimer.gd" id="9_cv374"]
-[ext_resource type="PackedScene" uid="uid://b2it08goocwnd" path="res://scenes/modules/building/blocks/Block1/Block1.tscn" id="10_vwvsk"]
-
-[sub_resource type="NavigationMesh" id="NavigationMesh_w6xfn"]
-
-[sub_resource type="GDScript" id="GDScript_4irtu"]
-script/source = "extends GridMap
-
-@onready var currentPreview
-	
-func get_navreg() -> NavigationRegion3D:
-	var navReg = Globals.currentMap.navReg
-	if navReg:
-		return navReg
-	else: return null
-
-@rpc(\"any_peer\", \"call_local\", \"reliable\")
-func addBlock(blockPosition: Vector3, blockId: String = \"Block1\", addToBlocksPlaced: bool = true) -> void:
-	if addToBlocksPlaced:
-		Globals.currentMap.blocksPlaced.append([blockPosition, blockId])
-	
-	var navreg = get_navreg()
-	var newThing = (load(\"res://scenes/modules/building/blocks/\"+blockId+\"/\"+blockId+\".tscn\") as PackedScene).instantiate()
-	newThing.position = blockPosition + Vector3(0.5, 0.5, 0.5)
-	
-	set_cell_item(blockPosition, 1)
-	var deathCallback = func():
-		set_cell_item(blockPosition, -1)
-		if navreg:
-			navreg.bake_navigation_mesh()
-		
-	newThing.deathCallback = deathCallback
-	
-	add_child(newThing, true)
-	
-	if navreg:
-		navreg.bake_navigation_mesh()
-"
-
-[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_rxd33"]
-properties/0/path = NodePath(".:blocksPlaced")
-properties/0/spawn = true
-properties/0/replication_mode = 1
+[ext_resource type="Script" path="res://scripts/Billboard.gd" id="1_pjh6b"]
+[ext_resource type="PackedScene" uid="uid://biky3wjoogdnh" path="res://scenes/modules/SyncedTimer.tscn" id="2_80opc"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_hm6s1"]
 viewport_path = NodePath("Billboard/MeshInstance3D/Viewport")
@@ -215,72 +166,11 @@ properties/14/path = NodePath("MeshInstance3D/Viewport/Container/ColorRect/VBoxC
 properties/14/spawn = true
 properties/14/replication_mode = 1
 
-[node name="World" type="Node3D" node_paths=PackedStringArray("blockGrid", "billboard")]
-script = ExtResource("1_8qpcf")
-mapName = "Test"
-blockGrid = NodePath("NavigationRegion3D/GridMap")
-billboard = NodePath("Billboard")
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
-shadow_enabled = true
-
-[node name="crystals" parent="." instance=ExtResource("2_61mdt")]
-
-[node name="PlayerSpawner" parent="." instance=ExtResource("3_c71rg")]
-
-[node name="WorldEnvironmentWEB" parent="." instance=ExtResource("4_r2u2b")]
-
-[node name="PlayerSpawnPoints" type="Node3D" parent="."]
-
-[node name="1" parent="PlayerSpawnPoints" instance=ExtResource("4_mcr0v")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -21, 6, 0)
-
-[node name="2" parent="PlayerSpawnPoints" instance=ExtResource("4_mcr0v")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 21, 6, 0)
-
-[node name="3" parent="PlayerSpawnPoints" instance=ExtResource("4_mcr0v")]
-transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 6, -21)
-
-[node name="4" parent="PlayerSpawnPoints" instance=ExtResource("4_mcr0v")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6, 21)
-
-[node name="5" parent="PlayerSpawnPoints" instance=ExtResource("4_mcr0v")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
-
-[node name="6" parent="PlayerSpawnPoints" instance=ExtResource("4_mcr0v")]
-transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, -5, 6, 5)
-
-[node name="7" parent="PlayerSpawnPoints" instance=ExtResource("4_mcr0v")]
-transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 5, 6, 5)
-
-[node name="8" parent="PlayerSpawnPoints" instance=ExtResource("4_mcr0v")]
-transform = Transform3D(-0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, -0.707107, 5, 6, -5)
-
-[node name="9" parent="PlayerSpawnPoints" instance=ExtResource("4_mcr0v")]
-transform = Transform3D(-0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, -0.707107, -5, 6, -5)
-
-[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
-navigation_mesh = SubResource("NavigationMesh_w6xfn")
-
-[node name="Environment" parent="NavigationRegion3D" instance=ExtResource("1_xw303")]
-
-[node name="GridMap" type="GridMap" parent="NavigationRegion3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.001, 0)
-mesh_library = ExtResource("7_dfum0")
-cell_size = Vector3(1, 1, 1)
-collision_layer = 0
-collision_mask = 0
-script = SubResource("GDScript_4irtu")
-
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
-replication_config = SubResource("SceneReplicationConfig_rxd33")
-
-[node name="Billboard" type="Node3D" parent="." node_paths=PackedStringArray("timerLabel", "timer", "portrait0", "username0", "healthBar0", "portrait1", "username1", "healthBar1")]
-script = ExtResource("8_gguwt")
+[node name="Billboard" type="Node3D" node_paths=PackedStringArray("timerLabel", "timer", "portrait0", "username0", "healthBar0", "portrait1", "username1", "healthBar1")]
+script = ExtResource("1_pjh6b")
 timerLabel = NodePath("MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/Label")
 timeLimit = 10
-timer = NodePath("Timer")
+timer = NodePath("")
 portrait0 = NodePath("MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer/TextureRect")
 username0 = NodePath("MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer/Label")
 healthBar0 = NodePath("MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer/ProgressBar")
@@ -288,11 +178,9 @@ portrait1 = NodePath("MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/
 username1 = NodePath("MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer2/Label")
 healthBar1 = NodePath("MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer2/ProgressBar")
 
-[node name="Timer" type="Timer" parent="Billboard"]
-one_shot = true
-script = ExtResource("9_cv374")
+[node name="SyncedTimer" parent="." instance=ExtResource("2_80opc")]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Billboard"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 process_mode = 3
 transform = Transform3D(-0.1, 8.74228e-09, 0, -8.74228e-09, -0.1, 0, 0, 0, 1, 0, 16, 0)
 material_override = SubResource("StandardMaterial3D_fs2ji")
@@ -301,13 +189,13 @@ gi_mode = 0
 mesh = SubResource("PlaneMesh_1ojk6")
 script = SubResource("GDScript_pygg2")
 
-[node name="Viewport" type="SubViewport" parent="Billboard/MeshInstance3D"]
+[node name="Viewport" type="SubViewport" parent="MeshInstance3D"]
 disable_3d = true
 transparent_bg = true
 size = Vector2i(1200, 830)
 render_target_update_mode = 4
 
-[node name="Container" type="VSplitContainer" parent="Billboard/MeshInstance3D/Viewport"]
+[node name="Container" type="VSplitContainer" parent="MeshInstance3D/Viewport"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -315,12 +203,12 @@ offset_bottom = -80.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ColorRect" type="Panel" parent="Billboard/MeshInstance3D/Viewport/Container"]
+[node name="ColorRect" type="Panel" parent="MeshInstance3D/Viewport/Container"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_sxhmu")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Billboard/MeshInstance3D/Viewport/Container/ColorRect"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MeshInstance3D/Viewport/Container/ColorRect"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -328,7 +216,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="Billboard/MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer"]
+[node name="Label" type="Label" parent="MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
@@ -336,7 +224,7 @@ text = "00:10"
 label_settings = SubResource("LabelSettings_l7fl3")
 horizontal_alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="Billboard/MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
@@ -344,17 +232,17 @@ theme_override_constants/margin_left = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 30
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Billboard/MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer"]
 layout_mode = 2
 
-[node name="VSplitContainer" type="VBoxContainer" parent="Billboard/MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer"]
+[node name="VSplitContainer" type="VBoxContainer" parent="MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(500, 500)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8
 alignment = 1
 
-[node name="TextureRect" type="TextureRect" parent="Billboard/MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer"]
+[node name="TextureRect" type="TextureRect" parent="MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
@@ -362,7 +250,7 @@ texture = SubResource("CompressedTexture2D_q6vvj")
 stretch_mode = 3
 script = SubResource("GDScript_dal3g")
 
-[node name="Label" type="Label" parent="Billboard/MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer"]
+[node name="Label" type="Label" parent="MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer"]
 visible = false
 layout_mode = 2
 text = "Darye"
@@ -370,7 +258,7 @@ label_settings = SubResource("LabelSettings_c2im8")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ProgressBar" type="ProgressBar" parent="Billboard/MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer"]
+[node name="ProgressBar" type="ProgressBar" parent="MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer"]
 visible = false
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
@@ -378,7 +266,7 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_pit8o")
 value = 50.0
 show_percentage = false
 
-[node name="Label2" type="Label" parent="Billboard/MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer"]
+[node name="Label2" type="Label" parent="MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "  V
@@ -393,14 +281,14 @@ label_settings = SubResource("LabelSettings_gvl2l")
 horizontal_alignment = 3
 justification_flags = 0
 
-[node name="VSplitContainer2" type="VBoxContainer" parent="Billboard/MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer"]
+[node name="VSplitContainer2" type="VBoxContainer" parent="MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(500, 500)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
 alignment = 1
 
-[node name="TextureRect" type="TextureRect" parent="Billboard/MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer2"]
+[node name="TextureRect" type="TextureRect" parent="MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer2"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
@@ -409,7 +297,7 @@ stretch_mode = 3
 flip_h = true
 script = SubResource("GDScript_8p76t")
 
-[node name="Label" type="Label" parent="Billboard/MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer2"]
+[node name="Label" type="Label" parent="MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer2"]
 visible = false
 layout_mode = 2
 text = "Darye"
@@ -417,7 +305,7 @@ label_settings = SubResource("LabelSettings_c2im8")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ProgressBar" type="ProgressBar" parent="Billboard/MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer2"]
+[node name="ProgressBar" type="ProgressBar" parent="MeshInstance3D/Viewport/Container/ColorRect/VBoxContainer/MarginContainer/HBoxContainer/VSplitContainer2"]
 visible = false
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
@@ -425,8 +313,5 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_pit8o")
 value = 50.0
 show_percentage = false
 
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="Billboard"]
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_6dgsn")
-
-[node name="Block1" parent="." instance=ExtResource("10_vwvsk")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.42543, 1.07319, -2.75187)

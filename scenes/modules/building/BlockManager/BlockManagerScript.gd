@@ -26,8 +26,7 @@ func buildBlock(isPreview: bool = false):
 		if gridmap:
 			if isPreview: 
 				gridmap.clear()
-			else:
-				print("hola")
+			
 			if raycast.is_colliding():
 				# Obtener la posición del hit en coordenadas globales
 				var hit_pos = raycast.get_collision_point()

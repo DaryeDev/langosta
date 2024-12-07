@@ -6,6 +6,9 @@
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g7cym"]
 albedo_color = Color(1, 0, 0, 1)
+emission = Color(1, 0, 0, 1)
+grow_amount = 0.72
+proximity_fade_distance = 0.01
 
 [sub_resource type="BoxMesh" id="BoxMesh_i318v"]
 material = SubResource("StandardMaterial3D_g7cym")
