@@ -32,15 +32,25 @@ signal usernameChanged(newName: String)
 @export var SPEED: float = 5.0
 @export var runMultiplier: float = 2.0
 @export var maxHealth = 100
-@export var health = 100
+@export var health = 100:
+	set(newHealth):
+		health = clamp(newHealth, 0, maxHealth)
+		healthChanged.emit(maxHealth, newHealth)
 
 signal healthChanged(maxHealth: int, newHealth: int)
 
-var modifiers: Array = []
+var modifiers: Array[Modifier] = []
 signal appliedModifier(modifier: Modifier)
+signal removedModifier(modifier: Modifier)
+signal modifiedModifiers(modifiers: Array[Modifier])
 func applyModifier(modifier: Modifier):
 	modifiers.append(modifier)
 	appliedModifier.emit(modifier)
+	modifiedModifiers.emit(modifiers)
+func removeModifier(modifier: Modifier):
+	modifiers.erase(modifier)
+	removedModifier.emit(modifier)
+	modifiedModifiers.emit(modifiers)
 
 # Flags
 var weaponAnimPlayer: AnimationPlayer
@@ -92,9 +102,13 @@ func _process(delta: float) -> void:
 		
 	if Input.is_action_just_pressed("kms"):
 		damage.rpc({"damage": health})
-		
-	if Input.is_action_just_pressed("shoot"):
-		weaponManager.use()
+	
+	if weaponManager and weaponManager.weapon is Gun and (weaponManager.weapon as Gun).isAutomatic:
+		if Input.is_action_pressed("shoot"):
+			weaponManager.use()
+	else:
+		if Input.is_action_just_pressed("shoot"):
+			weaponManager.use()
 		
 	if Input.is_action_just_pressed("changeGun"):
 		weaponManager.changeWeapon.rpc()
@@ -179,9 +193,7 @@ func _physics_process(delta):
 @rpc("any_peer", "call_local")
 func damage(attack: Dictionary):
 	var damageQuantity = attack.get("damage", 1)
-	health -= damageQuantity
-	
-	healthChanged.emit(maxHealth, health)
+	health = clamp(health - damageQuantity, 0, maxHealth)
 	
 	if (not is_multiplayer_authority()) or dead:
 		return
@@ -231,7 +243,6 @@ func reset_player_state():
 	weaponManager.reload()
 
 	health = maxHealth
-	healthChanged.emit(maxHealth, health)
 	
 	if Globals.currentMap and is_instance_valid(Globals.currentMap):
 		Globals.currentMap.spawnPlayer(self)

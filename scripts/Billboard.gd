@@ -44,6 +44,14 @@ func addPlayer(player: Player):
 		if players.size() < 2:
 			players[player.name] = player
 			_modifiedPlayers()
+
+func removePlayer(player: Player):
+	removePlayerById(player.name)
+
+func removePlayerById(id: String):
+	if multiplayer.is_server():
+		players.erase(id)
+		_modifiedPlayers()
 		
 func _updateHealthBarProxy(_maxHealth: int, _newHealth: int, player: Player):
 	_updateHealthBar(players.keys().find(player.name), player)
@@ -63,6 +71,14 @@ func _updateHealthBar(index: int, player: Player):
 
 func _modifiedPlayers():
 	if multiplayer.is_server():
+		portrait0.visible = false
+		username0.visible = false
+		healthBar0.visible = false
+		
+		portrait1.visible = false
+		username1.visible = false
+		healthBar1.visible = false
+		
 		if players.size() >= 1:
 			var player0 = players.values()[0] as Player
 			var a = player0.portrait.resource_path

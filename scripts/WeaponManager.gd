@@ -1,7 +1,15 @@
 extends Node3D
 class_name WeaponManager
 
-@export var weaponIndex: int = 0
+@export var weaponIndex: int = 0:
+	set(newIndex):
+		if newIndex != weaponIndex:
+			weaponIndex = newIndex%weapons.size()
+			var resyncWeapon = func():
+				if weapons[weaponIndex] != weapon:
+					changeWeapon(weaponIndex)
+			resyncWeapon.call_deferred()
+		
 @export var weaponScenes: Array[PackedScene]
 
 var weapons: Array[Weapon]
@@ -13,7 +21,7 @@ func loadWeapons():
 		newWeapon.set_multiplayer_authority(get_multiplayer_authority())
 		weapons.append(newWeapon)
 	if not weapon:
-		changeWeapon.rpc(0)
+		changeWeapon.rpc(weaponIndex)
 
 func _ready() -> void:
 	loadWeapons()

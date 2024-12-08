@@ -6,7 +6,7 @@ signal mapChanged()
 #func _onHealthChanged(health_value: int):
 	#healthChanged.emit(health_value, myPlayer.maxHealth)
 
-var myPlayer: CharacterBody3D:
+var myPlayer: Player:
 	set(newPlayer):
 		#if myPlayer:
 			#myPlayer.health_changed.disconnect(_onHealthChanged)

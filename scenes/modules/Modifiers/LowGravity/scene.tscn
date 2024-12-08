@@ -1,6 +1,5 @@
-[gd_scene load_steps=12 format=3 uid="uid://bgv63kk1sgmcm"]
+[gd_scene load_steps=11 format=3 uid="uid://bgv63kk1sgmcm"]
 
-[ext_resource type="Texture2D" uid="uid://24yht61hl0bj" path="res://textures/yo.png" id="2_37t0n"]
 [ext_resource type="Texture2D" uid="uid://b0y3y4nw0do11" path="res://scenes/modules/Modifiers/LowGravity/icon.png" id="2_oqo8y"]
 
 [sub_resource type="GDScript" id="GDScript_ku7v3"]
@@ -74,10 +73,12 @@ func _process(delta: float) -> void:
 			look_at(Globals.myPlayer.global_transform.origin, Vector3.UP, true)
 "
 
-[node name="LowGravity" type="Node3D"]
+[node name="LowGravity" type="Node3D" node_paths=PackedStringArray("collider", "mesh")]
 script = SubResource("GDScript_ku7v3")
 modifierIcon = ExtResource("2_oqo8y")
 modifierIconPath = "res://scenes/modules/Modifiers/LowGravity/icon.png"
+collider = NodePath("Collision")
+mesh = NodePath("Mesh")
 
 [node name="Collision" type="Area3D" parent="."]
 transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0, 1, 0)
@@ -107,5 +108,5 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_37t0n")
+texture = ExtResource("2_oqo8y")
 expand_mode = 3

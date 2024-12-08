@@ -1,0 +1,237 @@
+[gd_scene load_steps=18 format=3 uid="uid://b5juiwj2k0pib"]
+
+[ext_resource type="Script" path="res://scripts/Gun.gd" id="1_4pl3h"]
+[ext_resource type="PackedScene" uid="uid://c215wmqfwapws" path="res://scenes/modules/guns/gun2/scene.gltf" id="2_itl6x"]
+[ext_resource type="Texture2D" uid="uid://vwob30tkwej4" path="res://addons/kenney_particle_pack/star_06.png" id="3_comvf"]
+[ext_resource type="AudioStream" uid="uid://bhnbnlskmep6n" path="res://scenes/modules/guns/gun2/gun2Sound.mp3" id="4_x3r25"]
+
+[sub_resource type="Gradient" id="Gradient_wbabq"]
+offsets = PackedFloat32Array(0, 0.141221, 1)
+colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_is51c"]
+gradient = SubResource("Gradient_wbabq")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_m0fvy"]
+angle_min = 45.0
+angle_max = 45.0
+gravity = Vector3(0, 0, 0)
+color_ramp = SubResource("GradientTexture1D_is51c")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4smqo"]
+transparency = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_color = Color(1, 0.960784, 0.670588, 1)
+albedo_texture = ExtResource("3_comvf")
+billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_1mg8c"]
+material = SubResource("StandardMaterial3D_4smqo")
+size = Vector2(0.5, 0.5)
+orientation = 2
+
+[sub_resource type="GDScript" id="GDScript_mbgcd"]
+script/source = "extends RayCast3D
+@onready var laser_mesh = $LaserSight
+@onready var turnOnLaser = false
+
+func _process(_delta):
+	# Actualiza el RayCast
+	force_raycast_update()
+	
+	if Input.is_action_just_pressed(\"grab\"):
+		turnOnLaser = true
+	if Input.is_action_just_released(\"grab\"):
+		turnOnLaser = false
+	
+	if turnOnLaser and Globals.isUsingVR and is_multiplayer_authority():
+		if is_colliding():
+			# Si el rayo choca con algo
+			var collision_point = get_collision_point()
+			var distance = global_transform.origin.distance_to(collision_point)
+			
+			# Ajustar la longitud del láser
+			laser_mesh.scale = Vector3(0.1, distance/10.0, 0.1)
+			laser_mesh.position = Vector3(0, -distance/2.0, -0.04)
+		else:
+			# Si no colisiona, usar una longitud máxima
+			var max_distance = 50
+			laser_mesh.scale = Vector3(0.1, max_distance/10.0, 0.1)
+			laser_mesh.position = Vector3(0, -max_distance/2.0, -0.04)
+	else:
+		laser_mesh.scale = Vector3(0,0,0)
+"
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_068xm"]
+albedo_color = Color(1, 0, 0, 1)
+emission_enabled = true
+emission = Color(1, 0, 0, 1)
+emission_energy_multiplier = 4.0
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_u7xru"]
+material = SubResource("StandardMaterial3D_068xm")
+top_radius = 0.01
+bottom_radius = 0.05
+height = 10.0
+
+[sub_resource type="Animation" id="Animation_j8h27"]
+length = 0.001
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1)
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MuzzleFlash:emitting")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sounds/ShootingSound:playing")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_o7n20"]
+resource_name = "reload"
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1, 0.133333, 1, 0.130526, 0, 0, 0.991445, 0.8, 1, 0.130526, 0, 0, 0.991445, 0.933333, 1, -0.130526, 0, 0, 0.991445, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="Animation" id="Animation_37dfl"]
+resource_name = "shoot"
+length = 0.1
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1, 0.05, 1, 0.0871557, 0, 0, 0.996195, 0.1, 1, 0, 0, 0, 1)
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MuzzleFlash:emitting")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sounds/ShootingSound:playing")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_b62v6"]
+_data = {
+"RESET": SubResource("Animation_j8h27"),
+"reload": SubResource("Animation_o7n20"),
+"shoot": SubResource("Animation_37dfl")
+}
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_mixuo"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath(".:scale")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+properties/3/path = NodePath("MuzzleFlash:emitting")
+properties/3/spawn = true
+properties/3/replication_mode = 1
+properties/4/path = NodePath("Label3D:text")
+properties/4/spawn = true
+properties/4/replication_mode = 1
+
+[node name="Gun2" type="Node3D" node_paths=PackedStringArray("animationPlayer", "bulletsLabel", "raycast")]
+script = ExtResource("1_4pl3h")
+maxBullets = 30
+isAutomatic = true
+recoil = 0.03
+bulletsLeft = 30
+animationPlayer = NodePath("AnimationPlayer")
+shootCooldown = 0.1
+bulletsLabel = NodePath("Label3D")
+raycast = NodePath("RayCast3D")
+
+[node name="Sketchfab_Scene" parent="." instance=ExtResource("2_itl6x")]
+transform = Transform3D(-4.37114e-09, 0, 0.1, 0, 0.1, 0, -0.1, 0, -4.37114e-09, -0.14808, -0.0374438, -0.0732077)
+
+[node name="MuzzleFlash" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.038681, -0.474728)
+emitting = false
+amount = 1
+lifetime = 0.05
+one_shot = true
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_m0fvy")
+draw_pass_1 = SubResource("PlaneMesh_1mg8c")
+
+[node name="Sounds" type="Node3D" parent="."]
+
+[node name="ShootingSound" type="AudioStreamPlayer3D" parent="Sounds"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0447374, -0.474758)
+stream = ExtResource("4_x3r25")
+
+[node name="RayCast3D" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.0384069, -0.462758)
+exclude_parent = false
+target_position = Vector3(0, -50, 0)
+collision_mask = 3
+script = SubResource("GDScript_mbgcd")
+
+[node name="LaserSight" type="MeshInstance3D" parent="RayCast3D"]
+transform = Transform3D(0.1, 0, 0, 0, 5, 0, 0, 0, 0.1, 0, -24.98, -0.041)
+mesh = SubResource("CylinderMesh_u7xru")
+
+[node name="Label3D" type="Label3D" parent="."]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0.107139, 0.0807779)
+billboard = 1
+text = "6/6"
+font_size = 30
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_b62v6")
+}
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_mixuo")

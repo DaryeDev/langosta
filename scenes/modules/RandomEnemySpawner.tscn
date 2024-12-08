@@ -1,0 +1,39 @@
+[gd_scene load_steps=2 format=3 uid="uid://c4j4r63vdbiap"]
+
+[sub_resource type="GDScript" id="GDScript_0q0xx"]
+script/source = "extends Node
+
+@export var spawn_min: Vector3 = Vector3(-10, 0, -10)  # Coordenadas mínimas
+@export var spawn_max: Vector3 = Vector3(10, 5, 10)    # Coordenadas máximas
+@export var enemy_template: PackedScene = preload(\"res://scenes/modules/Teper.tscn\")
+
+func _process(_delta: float) -> void:
+	if Input.is_action_just_pressed(\"spawnRandomEnemy\"):
+		spawn_enemy()
+		Input.action_release(\"spawnRandomEnemy\")
+
+func spawn_enemy():
+	if not enemy_template:
+		print(\"Enemy scene not assigned!\")
+		return
+
+	# Crear una instancia del enemigo
+	var enemy = enemy_template.instantiate()
+	
+	# Generar una posición aleatoria dentro del rango especificado
+	var random_position = Vector3(
+		randf_range(spawn_min.x, spawn_max.x),
+		randf_range(spawn_min.y, spawn_max.y),
+		randf_range(spawn_min.z, spawn_max.z)
+	)
+	
+	
+	# Añadir el enemigo como hijo de este nodo
+	Globals.currentMap.add_child(enemy)
+	
+	enemy.global_transform.origin = random_position  # Establece la posición del enemigo
+	print(\"Spawned enemy at:\", random_position)
+"
+
+[node name="RandomEnemySpawner" type="Node"]
+script = SubResource("GDScript_0q0xx")

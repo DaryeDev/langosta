@@ -80,11 +80,15 @@ func onButtonPressed(buttonName: String):
 	match buttonName:
 		"ax_button":
 			Input.action_press("jump")
+		"primary_click":
+			Input.action_press("changeGun")
 
 func onButtonReleased(buttonName: String):
 	match buttonName:
 		"ax_button":
 			Input.action_release("jump")
+		"primary_click":
+			Input.action_release("changeGun")
 
 func rotate_player(angle: float):
 	var t1 := Transform3D()

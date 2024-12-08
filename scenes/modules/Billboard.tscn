@@ -31,7 +31,7 @@ script/source = "extends MeshInstance3D
 
 @onready var viewport = $Viewport
 
-func _ready():
+func _ready() -> void:
 	material_override.albedo_texture.viewport_path = viewport.get_path()
 
 func _process(delta: float) -> void:
@@ -103,13 +103,14 @@ script/source = "extends TextureRect
 
 @export var imagePath: String:
 	set(newImagePath):
-		imagePath = newImagePath
-		var image = load(newImagePath)
-		
-		if image and image is Texture2D:
-			texture = image
-		else:
-			print(\"No se pudo cargar la textura desde: \", newImagePath)
+		if newImagePath and not newImagePath.is_empty():
+			imagePath = newImagePath
+			var image = load(newImagePath)
+			
+			if image and image is Texture2D:
+				texture = image
+			else:
+				print(\"No se pudo cargar la textura desde: \", newImagePath)
 	get:
 		return imagePath
 

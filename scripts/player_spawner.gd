@@ -31,8 +31,8 @@ func _exit_tree():
 func add_player(id: int):
 	var character
 	if id == 1:
-		print("Soy server")
-		if Globals.isServerNotPlaying and OS.has_feature("isServerNotPlaying"):
+		push_warning("Soy server")
+		if Globals.isServerNotPlaying or OS.has_feature("isServerNotPlaying"):
 			character = load("res://scenes/modules/server_viewport.tscn").instantiate()
 		else:
 			character = load("res://scenes/modules/player_new.tscn").instantiate()
@@ -46,11 +46,13 @@ func add_player(id: int):
 	character.position = Vector3(pos.x * SPAWN_RANDOM * randf(), 2, pos.y * SPAWN_RANDOM * randf())
 	character.name = str(id)
 	$Players.add_child(character, true)
-	if character is Player:
+	if character is Player and Globals.currentMap and Globals.currentMap.billboard:
 		Globals.currentMap.billboard.addPlayer.call_deferred(character)
 
 
 func del_player(id: int):
 	if not $Players.has_node(str(id)):
 		return
+	if Globals.currentMap and Globals.currentMap.billboard:
+		Globals.currentMap.billboard.removePlayerById.call_deferred(str(id))
 	$Players.get_node(str(id)).queue_free()

@@ -149,20 +149,20 @@ func _process(_delta):
 	if Input.is_action_just_released(\"grab\"):
 		turnOnLaser = false
 	
-	if turnOnLaser:
+	if turnOnLaser and Globals.isUsingVR and is_multiplayer_authority():
 		if is_colliding():
 			# Si el rayo choca con algo
 			var collision_point = get_collision_point()
 			var distance = global_transform.origin.distance_to(collision_point)
 			
 			# Ajustar la longitud del láser
-			laser_mesh.scale = Vector3(0.1, distance/10, 0.1)
-			laser_mesh.position = Vector3(0, -distance/2.0, -0.04)
+			laser_mesh.scale = Vector3(0.1, distance/10.0, 0.1)
+			laser_mesh.position = Vector3(0, -distance/2.0, -0.02)
 		else:
 			# Si no colisiona, usar una longitud máxima
 			var max_distance = 50
-			laser_mesh.scale = Vector3(0.1, max_distance/10, 0.1)
-			laser_mesh.position = Vector3(0, -max_distance/2.0, -0.04)
+			laser_mesh.scale = Vector3(0.1, max_distance/10.0, 0.1)
+			laser_mesh.position = Vector3(0, -max_distance/2.0, -0.02)
 	else:
 		laser_mesh.scale = Vector3(0,0,0)
 "
@@ -200,19 +200,20 @@ properties/4/replication_mode = 1
 script = ExtResource("2_4ajkm")
 damage = 20.0
 maxBullets = 6
+recoil = 0.05
 bulletsLeft = 6
 animationPlayer = NodePath("AnimationPlayer")
 bulletsLabel = NodePath("Label3D")
 raycast = NodePath("RayCast3D")
 
 [node name="Sketchfab_Scene" parent="." instance=ExtResource("3_jtxy2")]
-transform = Transform3D(-4.37114e-09, 0, 0.1, 0, 0.1, 0, -0.1, 0, -4.37114e-09, 0, -0.0341203, -0.0214492)
+transform = Transform3D(-2.18557e-09, 0, 0.05, 0, 0.05, 0, -0.05, 0, -2.18557e-09, -0.0069572, -0.016, 0.011)
 
 [node name="MuzzleFlash" type="GPUParticles3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0588368, -0.267713)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00661645, 0.032656, -0.116205)
 emitting = false
 amount = 1
-lifetime = 0.25
+lifetime = 0.1
 one_shot = true
 local_coords = true
 process_material = SubResource("ParticleProcessMaterial_wdbwb")
@@ -226,24 +227,25 @@ libraries = {
 [node name="Sounds" type="Node3D" parent="."]
 
 [node name="ShootingSound" type="AudioStreamPlayer3D" parent="Sounds"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.007, 0.033, -0.1162)
 stream = ExtResource("4_r0aug")
 
 [node name="RayCast3D" type="RayCast3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.0604744, -0.253157)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -0.00661645, 0.0342936, -0.106449)
 exclude_parent = false
 target_position = Vector3(0, -50, 0)
 collision_mask = 3
 script = SubResource("GDScript_vky57")
 
 [node name="LaserSight" type="MeshInstance3D" parent="RayCast3D"]
-transform = Transform3D(0.1, 0, 0, 0, 5, 0, 0, 0, 0.1, 0, -25, -0.04)
+transform = Transform3D(0.2, 0, 0, 0, 5, 0, 0, 0, 0.2, 0, -24.995, -0.02)
 mesh = SubResource("CylinderMesh_c5igq")
 
 [node name="Label3D" type="Label3D" parent="."]
-transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0.146339, 0.0315318)
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -0.00661645, 0.0736506, 0.0533383)
 billboard = 1
 text = "6/6"
-font_size = 50
+font_size = 30
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_un5v7")

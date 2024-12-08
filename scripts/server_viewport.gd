@@ -139,8 +139,8 @@ func _process(delta):
 		if sub_viewport:
 			var cloned_camera = sub_viewport.get_child(0)
 			if cloned_camera:
-				cloned_camera.global_position = player_node.get_node("Camera3D").global_position
-				cloned_camera.global_rotation = player_node.get_node("Camera3D").global_rotation
+				cloned_camera.global_position = player_node.camera.global_position
+				cloned_camera.global_rotation = player_node.camera.global_rotation
 
 # Simulate player connection and disconnection
 func _on_player_connected(player_name):

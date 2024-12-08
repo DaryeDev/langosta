@@ -7,8 +7,12 @@
 script/source = "extends RayCast3D
 @onready var laser_mesh = $LaserSight
 
+func _ready():
+	if laser_mesh.mesh:
+		laser_mesh.mesh = laser_mesh.mesh.duplicate()
+
 func _process(delta):
-	if Globals.isUsingVR:
+	if Globals.isUsingVR and is_multiplayer_authority():
 		force_raycast_update()
 		
 		if is_colliding():

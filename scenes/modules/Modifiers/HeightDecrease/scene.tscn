@@ -13,10 +13,11 @@ func _ready() -> void:
 	$Mesh/MeshInstance3D/SubViewport/TextureRect.texture = load(modifierIconPath)
 
 func _onAppliedOnPlayer() -> void:
-	player.scale /= multiplier
+	var inverse_multiplier = 1.0 / multiplier
+	player.global_scale(Vector3(inverse_multiplier, inverse_multiplier, inverse_multiplier))
 	
 func _onModifierTimeEnds() -> void:
-	player.scale *= multiplier
+	player.global_scale(Vector3(multiplier, multiplier, multiplier))
 "
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_d1a6w"]

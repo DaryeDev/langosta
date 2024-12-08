@@ -25,7 +25,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 1.5),
 "transitions": PackedFloat32Array(-2, -2),
 "update": 0,
-"values": [Vector3(0.5, -0.25, -0.5), Vector3(0.5, -0.284894, -0.5)]
+"values": [Vector3(0.375, -0.155, -0.4), Vector3(0.375, -0.18, -0.4)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -54,7 +54,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.25, 0.5, 0.75),
 "transitions": PackedFloat32Array(0.5, 2, 0.5, 2),
 "update": 0,
-"values": [Vector3(0.5, -0.25, -0.5), Vector3(0.455732, -0.215424, -0.5), Vector3(0.5, -0.25, -0.5), Vector3(0.55565, -0.198737, -0.5)]
+"values": [Vector3(0.375, -0.155, -0.4), Vector3(0.325, -0.14, -0.4), Vector3(0.375, -0.155, -0.4), Vector3(0.425, -0.14, -0.4)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_p6wdk"]
@@ -137,6 +137,24 @@ properties/4/replication_mode = 1
 properties/5/path = NodePath(".:maxHealth")
 properties/5/spawn = true
 properties/5/replication_mode = 1
+properties/6/path = NodePath("Camera3D/WeaponManager:position")
+properties/6/spawn = true
+properties/6/replication_mode = 1
+properties/7/path = NodePath("Camera3D/WeaponManager:rotation")
+properties/7/spawn = true
+properties/7/replication_mode = 1
+properties/8/path = NodePath("Camera3D/WeaponManager:scale")
+properties/8/spawn = true
+properties/8/replication_mode = 1
+properties/9/path = NodePath("Camera3D/BlockManager:position")
+properties/9/spawn = true
+properties/9/replication_mode = 1
+properties/10/path = NodePath("Camera3D/BlockManager:rotation")
+properties/10/spawn = true
+properties/10/replication_mode = 1
+properties/11/path = NodePath("Camera3D/BlockManager:scale")
+properties/11/spawn = true
+properties/11/replication_mode = 1
 
 [sub_resource type="LabelSettings" id="LabelSettings_l1v7f"]
 font_size = 50
@@ -165,7 +183,7 @@ cull_mask = 524287
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -0.5, -0.25, -0.5)
 
 [node name="WeaponManager" parent="Camera3D" instance=ExtResource("3_skmbn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, -0.25, -0.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.395, -0.149, -0.4)
 
 [node name="RayCast3D" type="RayCast3D" parent="Camera3D"]
 target_position = Vector3(0, 0, -50)

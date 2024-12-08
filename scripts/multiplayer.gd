@@ -119,6 +119,8 @@ func _input(event):
 		var random_index = randi() % levels.size()
 		var random_element = levels[random_index]
 		change_level.call_deferred(load(random_element))
+	if event.is_action("zombies") and Input.is_action_just_pressed("zombies"):
+		change_level.call_deferred(load("res://scenes/jungle_level_web.tscn"))
 
 func _on_check_add_player_toggled(toggled_on: bool) -> void:
 	Globals.isServerNotPlaying = !toggled_on

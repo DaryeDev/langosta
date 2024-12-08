@@ -8,6 +8,8 @@ class_name Gun
 @export var knockbackForce: float = 10.0
 @export var stunTime: float = 0
 @export var maxBullets: int = 10
+@export var isAutomatic: bool = false
+@export var recoil: float = 0.01
 
 @export_category("Gun Runtime Stats")
 @export var bulletsLeft: int = 10
@@ -58,6 +60,9 @@ func use() -> bool:
 	bulletsLeft -= 1
 	updateBulletsLabel()
 	
+	if Globals.myPlayer:
+		(Globals.myPlayer.camera as Camera3D).rotate_x(recoil)
+	
 	if raycast:
 		raycast.collision_mask = 1|2
 		#raycast.hit_from_inside = true
@@ -78,6 +83,13 @@ func use() -> bool:
 					
 					var attack = {}
 					attack.damage = damage * (hit.get("weakPointMultiplier") if (hit.get("weakPointMultiplier") and weakPointCollision and weakPointCollision == hit_shape) else 1.0) # Añadir multiplicador de crítico del arma.
+					
+					for modifier in Globals.myPlayer.modifiers:
+						if modifier and modifier != null and is_instance_valid(modifier) and modifier.has_method("attackModifier"):
+							attack = (modifier as Modifier).attackModifier(attack)
+							if attack.is_empty():
+								return false
+					
 					#attack.origin = getParentEntity()
 					attack.knockbackForce = pushForce
 					attack.impactPosition = hit_normal

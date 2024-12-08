@@ -53,6 +53,7 @@ func _internal_onBodyEntered(body: Node3D) -> void:
 			timer.start(modifierDuration)
 			timer.timeout.connect(func():
 				_onModifierTimeEnds.call_deferred()
+				body.removeModifier(self)
 				queue_free()
 			)
 
