@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://cj2x3814g2lee"]
+[gd_scene load_steps=5 format=3 uid="uid://cj2x3814g2lee"]
 
 [ext_resource type="Script" path="res://scripts/viewer_viewport.gd" id="1_lkuff"]
 
@@ -19,6 +19,17 @@ properties/4/path = NodePath("Camera3D/Gun1:rotation")
 properties/4/spawn = true
 properties/4/replication_mode = 1
 
+[sub_resource type="LabelSettings" id="LabelSettings_2awjv"]
+font_size = 50
+
+[sub_resource type="GDScript" id="GDScript_s6rix"]
+script/source = "extends Label
+
+func _process(delta: float) -> void:
+	if Globals.currentMap and Globals.currentMap.billboard:
+		text = Globals.currentMap.billboard.timerLabel.text
+"
+
 [node name="PLayer" type="Node3D"]
 script = ExtResource("1_lkuff")
 
@@ -31,3 +42,12 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="TimerLabel" type="Label" parent="."]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 23.0
+grow_horizontal = 2
+label_settings = SubResource("LabelSettings_2awjv")
+horizontal_alignment = 1
+script = SubResource("GDScript_s6rix")

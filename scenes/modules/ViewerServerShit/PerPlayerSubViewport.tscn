@@ -1,0 +1,74 @@
+[gd_scene load_steps=4 format=3 uid="uid://px4omte1p5ey"]
+
+[sub_resource type="GDScript" id="GDScript_jis36"]
+script/source = "extends SubViewportContainer
+
+@export var playerNameLabel: Label
+@export var playerHealthBar: ProgressBar
+@export var player: Player
+
+func _ready() -> void:
+	if player:
+		if playerNameLabel:
+			playerNameLabel.text = player.username
+		
+		if playerHealthBar:
+				playerHealthBar.max_value = player.maxHealth
+				playerHealthBar.value = player.health
+		
+		player.usernameChanged.connect(func(newName: String):
+			if playerNameLabel:
+				playerNameLabel.text = player.username
+		)
+		
+		player.healthChanged.connect(func(maxHealth: int, newHealth: int):
+			if playerHealthBar:
+				playerHealthBar.max_value = maxHealth
+				playerHealthBar.value = newHealth
+		)
+"
+
+[sub_resource type="LabelSettings" id="LabelSettings_vij8b"]
+font_size = 50
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d8fcl"]
+bg_color = Color(0, 1, 0, 1)
+
+[node name="PerPlayerSubViewport" type="SubViewportContainer" node_paths=PackedStringArray("playerNameLabel", "playerHealthBar")]
+script = SubResource("GDScript_jis36")
+playerNameLabel = NodePath("UIElements/Label")
+playerHealthBar = NodePath("UIElements/ProgressBar")
+
+[node name="UIElements" type="Control" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UIElements"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 23.0
+grow_horizontal = 2
+text = "Darye"
+label_settings = SubResource("LabelSettings_vij8b")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ProgressBar" type="ProgressBar" parent="UIElements"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -4.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/fill = SubResource("StyleBoxFlat_d8fcl")
+value = 20.0
+show_percentage = false
+
+[node name="SubViewport" type="SubViewport" parent="."]
+handle_input_locally = false
+render_target_update_mode = 4
+
+[node name="Camera3D" type="Camera3D" parent="SubViewport"]
+current = true

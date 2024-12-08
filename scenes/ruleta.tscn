@@ -1,0 +1,187 @@
+[gd_scene load_steps=12 format=3 uid="uid://c7h0q3gudkgjv"]
+
+[ext_resource type="Texture2D" uid="uid://24yht61hl0bj" path="res://textures/yo.png" id="1_avj40"]
+[ext_resource type="Texture2D" uid="uid://b0y3y4nw0do11" path="res://scenes/modules/Modifiers/LowGravity/icon.png" id="5_2u7q3"]
+[ext_resource type="Texture2D" uid="uid://dq21mqx0ox2ka" path="res://scenes/modules/Modifiers/InstaDamage/icon.png" id="6_2rjpl"]
+[ext_resource type="Texture2D" uid="uid://dj2nhrd5scfko" path="res://scenes/modules/Modifiers/InstaHeal/icon.png" id="7_k0iij"]
+[ext_resource type="Texture2D" uid="uid://clw3wr1eakxri" path="res://scenes/modules/Modifiers/JumpLower/icon.png" id="8_yhw12"]
+[ext_resource type="Texture2D" uid="uid://2pwe3clpwavp" path="res://scenes/modules/Modifiers/Poison/icon.png" id="11_wkobq"]
+[ext_resource type="Texture2D" uid="uid://d3jea0craa6d4" path="res://GK2O7OrWgAA9S9p.jpg" id="12_gibmy"]
+[ext_resource type="Texture2D" uid="uid://c8rc3g1cd2tiu" path="res://scenes/modules/Modifiers/Regen/icon.png" id="12_v4enm"]
+
+[sub_resource type="GDScript" id="GDScript_t2of7"]
+script/source = "extends Node2D
+class_name Ruleta
+
+@export var Modificadores: Array[Modifier] = []
+"
+
+[sub_resource type="GDScript" id="GDScript_6gsie"]
+script/source = "@tool
+extends Node2D
+
+# Parámetros configurables
+@export var radius: float = 200.0  # Radio del círculo
+#@export var segments: int = 6      # Número de segmentos
+@export var colors: PackedColorArray = [
+	Color.RED, 
+	Color.BLUE, 
+	Color.GREEN, 
+	Color.YELLOW, 
+	Color.PURPLE, 
+	Color.ORANGE
+]
+@export var icons: Array[Texture2D] = []  # Iconos para cada segmento
+
+# Almacenar referencias a los TextureRect
+var segment_icons: Array[TextureRect] = []
+
+func _ready():
+	# Crear TextureRect para cada segmento
+	for i in range(icons.size()):
+		var texture_rect = TextureRect.new()
+		texture_rect.texture = icons[i]
+		texture_rect.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
+		texture_rect.custom_minimum_size = Vector2(50, 50)  # Tamaño base
+		
+		add_child(texture_rect)
+		segment_icons.append(texture_rect)
+
+func _draw():
+	# Dibujar el círculo dividido en segmentos
+	var angle_step = 2 * PI / icons.size()
+	
+	for i in range(icons.size()):
+		# Calcular los ángulos para cada segmento
+		var start_angle = i * angle_step
+		var end_angle = (i + 1) * angle_step
+		
+		# Seleccionar color (ciclando si hay más segmentos que colores)
+		var segment_color = colors[i % colors.size()]
+		
+		# Dibujar el segmento
+		draw_circle_segment(Vector2.ZERO, radius, start_angle, end_angle, segment_color)
+		
+		# Posicionar el TextureRect en el segmento
+		if i < segment_icons.size():
+			position_icon(segment_icons[i], start_angle, end_angle)
+
+func draw_circle_segment(center: Vector2, radius: float, start_angle: float, end_angle: float, color: Color):
+	# Dibujar un segmento de círculo
+	var points = PackedVector2Array([center])
+	
+	# Agregar puntos en el arco
+	for j in range(32):  # Resolución del arco
+		var angle = lerp(start_angle, end_angle, j / 31.0)
+		points.append(center + Vector2(cos(angle), sin(angle)) * radius)
+	
+	# Dibujar el polígono del segmento
+	draw_polygon(points, PackedColorArray([color]))
+
+func position_icon(icon: TextureRect, start_angle: float, end_angle: float):
+	# Calcular punto medio del segmento
+	var mid_angle = (start_angle + end_angle) / 2
+	
+	# Calcular posición en el borde del círculo
+	var icon_position = Vector2(
+		cos(mid_angle) * radius * 0.8, 
+		sin(mid_angle) * radius * 0.8
+	)
+	
+	# Posicionar y rotar el ícono
+	icon.position = icon_position - icon.size / 2
+	icon.rotation = mid_angle + PI/2  # Rotar para que apunte hacia el centro
+"
+
+[sub_resource type="GDScript" id="GDScript_ijy4t"]
+script/source = "@tool
+extends Node2D
+
+@export var prize_images: Array[Texture2D]
+@export var rotation_speed: float = 300.0 # Velocidad inicial de rotación
+@export var deceleration: float = 50.0   # Deceleración de la ruleta
+var is_spinning: bool = false
+var current_speed: float = 0.0
+
+# Array para manejar las posiciones de los premios
+@onready var prize_nodes: Array[TextureRect] = []
+
+func _ready():
+	# Distribuir imágenes en un círculo
+	for i in range(prize_images.size()):
+		var texture_rect = TextureRect.new()
+		texture_rect.texture = prize_images[i]
+		texture_rect.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
+		texture_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		texture_rect.position = Vector2.ZERO
+		texture_rect.size = Vector2(64, 64) # Ajusta el tamaño según el diseño
+		add_child(texture_rect)
+		prize_nodes.append(texture_rect)
+	
+	# Ubicar premios en círculo
+	position_prizes_in_circle()
+	#start_spin()
+
+func position_prizes_in_circle():
+	var radius = 200.0 # Ajusta el radio según el diseño
+	for i in range(prize_nodes.size()):
+		var angle = i * TAU / prize_nodes.size()
+		var pos = Vector2(cos(angle), sin(angle)) * radius
+		prize_nodes[i].position = pos
+
+func start_spin():
+	if is_spinning:
+		return
+	is_spinning = true
+	current_speed = rotation_speed
+
+func _process(delta):
+	if is_spinning:
+		# Rotar la ruleta
+		rotation += current_speed * delta
+		
+		# Reducir la velocidad gradualmente
+		current_speed -= deceleration * delta
+		if current_speed <= 0:
+			current_speed = 0
+			is_spinning = false
+			choose_prize()
+
+func choose_prize():
+	# Determina el premio basado en el ángulo final
+	var final_angle = fmod(rotation, TAU)
+	var prize_index = int(final_angle / (TAU / prize_nodes.size()))
+	print(\"Premio ganado:\", prize_index, prize_images[prize_index].get_name())
+"
+
+[node name="Node2D" type="Node2D"]
+script = SubResource("GDScript_t2of7")
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="Node2D2" type="Node2D" parent="."]
+script = SubResource("GDScript_6gsie")
+radius = 250.0
+colors = PackedColorArray(1, 0, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0.627451, 0.12549, 0.941176, 1, 1, 0.647059, 0, 1)
+icons = Array[Texture2D]([ExtResource("6_2rjpl"), ExtResource("7_k0iij"), ExtResource("8_yhw12"), ExtResource("8_yhw12"), ExtResource("5_2u7q3"), ExtResource("11_wkobq")])
+
+[node name="Node2D" type="Node2D" parent="."]
+visible = false
+position = Vector2(-33, -34)
+script = SubResource("GDScript_ijy4t")
+prize_images = Array[Texture2D]([ExtResource("12_v4enm"), ExtResource("11_wkobq"), ExtResource("8_yhw12"), ExtResource("8_yhw12"), ExtResource("7_k0iij"), ExtResource("6_2rjpl"), ExtResource("1_avj40")])
+
+[node name="TextureRect" type="TextureRect" parent="Node2D"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -250.0
+offset_top = -250.0
+offset_right = -210.0
+offset_bottom = -210.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("12_gibmy")
+expand_mode = 3
+stretch_mode = 5
