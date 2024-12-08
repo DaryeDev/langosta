@@ -29,7 +29,8 @@ var peer = WebSocketMultiplayerPeer.new()
 #var peer = ENetMultiplayerPeer.new()
 
 # Level spawner
-var levels = ["res://scenes/tests/test_nm.tscn", "res://scenes/jungle_level_web.tscn", "res://scenes/snow_level_web.tscn", "res://scenes/coliseum_level_web.tscn"]
+#var levels = ["res://scenes/tests/test_nm.tscn", "res://scenes/jungle_level_web.tscn", "res://scenes/snow_level_web.tscn", "res://scenes/coliseum_level_web.tscn"]
+var levels = ["res://scenes/tests/test_nm.tscn", "res://scenes/jungle_level_web.tscn"]
 
 func isServerNotPlaying():
 	return Globals.isServerNotPlaying or OS.has_feature("isServerNotPlaying")
