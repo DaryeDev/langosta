@@ -19,8 +19,8 @@ func _ready():
 		return
 
 	self.process_mode = Node.PROCESS_MODE_ALWAYS
-	multiplayer.peer_connected.connect(_on_player_connected)
-	multiplayer.peer_disconnected.connect(_on_player_disconnected)
+	Globals.currentMap.onNewPlayer.connect(_on_player_connected)
+	Globals.currentMap.onPlayerDisconnected.connect(_on_player_disconnected)
 	get_viewport().connect("size_changed", _on_window_resized)
 
 # Function to handle a new player connection

@@ -34,7 +34,10 @@ var username: String = "Mermelada":
 	get:
 		return username
 
+var multiplayerManager: MultiplayerManager
+
+var role: String = "Player"
 var isServerNotPlaying: bool = false
-var isPlayerViewer: bool = false
+var isViewer: bool = false
 var isUsingVR: bool = false
 var paused: bool = false

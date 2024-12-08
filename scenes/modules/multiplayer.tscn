@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://bvnwjpd0f3oa0"]
+[gd_scene load_steps=10 format=3 uid="uid://bvnwjpd0f3oa0"]
 
 [ext_resource type="Script" path="res://scripts/multiplayer.gd" id="1_jiv4u"]
 
@@ -11,6 +11,10 @@ func _ready() -> void:
 		Globals.username = newText
 	)
 "
+
+[sub_resource type="LabelSettings" id="LabelSettings_2mtu5"]
+font_size = 18
+outline_size = 2
 
 [sub_resource type="InputEventKey" id="InputEventKey_usv6e"]
 device = -1
@@ -34,8 +38,15 @@ unicode = 106
 [sub_resource type="Shortcut" id="Shortcut_b25bp"]
 events = [SubResource("InputEventKey_bax4w"), SubResource("InputEventKey_6itoa")]
 
-[node name="Multiplayer" type="Node"]
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_jqw3i"]
+properties/0/path = NodePath(".:userInfo")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+
+[node name="Multiplayer" type="Node" node_paths=PackedStringArray("address_entry_host", "address_entry_connect")]
 script = ExtResource("1_jiv4u")
+address_entry_host = NodePath("Main_UI/MainMenu/MarginContainer/VBoxContainer/VBoxContainer/AddressEntryHost")
+address_entry_connect = NodePath("Main_UI/MainMenu/MarginContainer/VBoxContainer/VBoxContainer2/AddressEntryConnect")
 
 [node name="Level" type="Node" parent="."]
 
@@ -69,7 +80,8 @@ theme_override_constants/separation = 15
 
 [node name="Label" type="Label" parent="Main_UI/MainMenu/MarginContainer/VBoxContainer"]
 layout_mode = 2
-text = "Main Menu"
+text = "Proyecto Langosta
+"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -88,22 +100,18 @@ alignment = 1
 caret_blink = true
 script = SubResource("GDScript_htf3p")
 
-[node name="CheckButton" type="CheckButton" parent="Main_UI/MainMenu/MarginContainer/VBoxContainer"]
+[node name="HSeparator2" type="HSeparator" parent="Main_UI/MainMenu/MarginContainer/VBoxContainer"]
 layout_mode = 2
-text = "Enable VR"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Main_UI/MainMenu/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Host" type="Button" parent="Main_UI/MainMenu/MarginContainer/VBoxContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="Main_UI/MainMenu/MarginContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
-shortcut = SubResource("Shortcut_j7wos")
-text = "Host"
-
-[node name="CheckAddPlayer" type="CheckButton" parent="Main_UI/MainMenu/MarginContainer/VBoxContainer/VBoxContainer"]
-layout_mode = 2
-button_pressed = true
-text = "Add playable character?"
+text = "Host your Server"
+label_settings = SubResource("LabelSettings_2mtu5")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="AddressEntryHost" type="LineEdit" parent="Main_UI/MainMenu/MarginContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
@@ -111,8 +119,38 @@ placeholder_text = "Enter Address for Hosting"
 alignment = 1
 caret_blink = true
 
+[node name="CheckAddPlayer" type="CheckButton" parent="Main_UI/MainMenu/MarginContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+button_pressed = true
+text = "Add playable character?"
+
+[node name="Host" type="Button" parent="Main_UI/MainMenu/MarginContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+shortcut = SubResource("Shortcut_j7wos")
+text = "Host"
+
+[node name="HSeparator" type="HSeparator" parent="Main_UI/MainMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
 [node name="VBoxContainer2" type="VBoxContainer" parent="Main_UI/MainMenu/MarginContainer/VBoxContainer"]
 layout_mode = 2
+
+[node name="Label" type="Label" parent="Main_UI/MainMenu/MarginContainer/VBoxContainer/VBoxContainer2"]
+layout_mode = 2
+text = "Connect to a Server"
+label_settings = SubResource("LabelSettings_2mtu5")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AddressEntryConnect" type="LineEdit" parent="Main_UI/MainMenu/MarginContainer/VBoxContainer/VBoxContainer2"]
+layout_mode = 2
+placeholder_text = "Enter Address to Join Here"
+alignment = 1
+caret_blink = true
+
+[node name="CheckButton" type="CheckButton" parent="Main_UI/MainMenu/MarginContainer/VBoxContainer/VBoxContainer2"]
+layout_mode = 2
+text = "Enable VR"
 
 [node name="Connect" type="Button" parent="Main_UI/MainMenu/MarginContainer/VBoxContainer/VBoxContainer2"]
 layout_mode = 2
@@ -123,16 +161,6 @@ text = "Join"
 layout_mode = 2
 shortcut = SubResource("Shortcut_b25bp")
 text = "Connect Viewer"
-
-[node name="CheckAddViewer" type="CheckButton" parent="Main_UI/MainMenu/MarginContainer/VBoxContainer/VBoxContainer2"]
-layout_mode = 2
-text = "Is player viewer? (TESTING)"
-
-[node name="AddressEntryConnect" type="LineEdit" parent="Main_UI/MainMenu/MarginContainer/VBoxContainer/VBoxContainer2"]
-layout_mode = 2
-placeholder_text = "Enter Address to Join Here"
-alignment = 1
-caret_blink = true
 
 [node name="Host_UI" type="PanelContainer" parent="Main_UI"]
 visible = false
@@ -218,11 +246,13 @@ offset_right = 0.383972
 offset_bottom = 0.311981
 text = "Quit"
 
-[connection signal="toggled" from="Main_UI/MainMenu/MarginContainer/VBoxContainer/CheckButton" to="." method="_on_enableVR_button_toggled"]
-[connection signal="pressed" from="Main_UI/MainMenu/MarginContainer/VBoxContainer/VBoxContainer/Host" to="." method="_on_host_pressed"]
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_jqw3i")
+
 [connection signal="toggled" from="Main_UI/MainMenu/MarginContainer/VBoxContainer/VBoxContainer/CheckAddPlayer" to="." method="_on_check_add_player_toggled"]
+[connection signal="pressed" from="Main_UI/MainMenu/MarginContainer/VBoxContainer/VBoxContainer/Host" to="." method="_on_host_pressed"]
+[connection signal="toggled" from="Main_UI/MainMenu/MarginContainer/VBoxContainer/VBoxContainer2/CheckButton" to="." method="_on_enableVR_button_toggled"]
 [connection signal="pressed" from="Main_UI/MainMenu/MarginContainer/VBoxContainer/VBoxContainer2/Connect" to="." method="_on_connect_pressed"]
 [connection signal="pressed" from="Main_UI/MainMenu/MarginContainer/VBoxContainer/VBoxContainer2/ConnectViewer" to="." method="_on_connect_viewer_pressed"]
-[connection signal="toggled" from="Main_UI/MainMenu/MarginContainer/VBoxContainer/VBoxContainer2/CheckAddViewer" to="." method="_on_check_add_viewer_toggled"]
 [connection signal="pressed" from="Pause_Menu/Control/Panel/Resume" to="." method="_on_resume_pressed"]
 [connection signal="pressed" from="Pause_Menu/Control/Panel/Quit" to="." method="_on_quit_pressed"]

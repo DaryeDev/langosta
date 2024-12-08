@@ -1,15 +1,17 @@
 extends Node
+class_name MultiplayerManager
 
 # UI and game logic
 @onready var main_menu = $Main_UI/MainMenu
-@onready var address_entry_host: LineEdit = $Main_UI/MainMenu/MarginContainer/VBoxContainer/VBoxContainer/AddressEntryHost
-@onready var address_entry_connect: LineEdit = $Main_UI/MainMenu/MarginContainer/VBoxContainer/VBoxContainer2/AddressEntryConnect
+@export var address_entry_host: LineEdit
+@export var address_entry_connect: LineEdit
 #@onready var hud = $Main_UI/HUD
 #@onready var health_bar = $Main_UI/HUD/HealthBar
 @onready var host_ui = $Main_UI/Host_UI
 @onready var pause_menu_ui = $Pause_Menu
 @onready var main_menu_ui = $Main_UI
 
+@export var userInfo: Dictionary = {}
 
 # Flags
 var initialized = false
@@ -35,6 +37,8 @@ func _process(delta: float) -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if Globals.paused else Input.MOUSE_MODE_CAPTURED
 
 func _ready() -> void:
+	Globals.multiplayerManager = self
+	
 	if DisplayServer.get_name() == "headless":
 		dedicated = true
 		print("Automatically starting dedicated server")
@@ -56,6 +60,29 @@ func _unhandled_input(event):
 		get_tree().quit()
 
 
+@rpc("any_peer", "call_local", "reliable")
+func askForUserInfo():
+	setupUser.rpc_id(1, Globals.username, Globals.role)
+	if Globals.role == "Viewer":
+		Globals.currentMap.playerSpawner.add_player(multiplayer.get_unique_id(), Globals.username, "Viewer")
+
+@rpc("any_peer", "call_local", "reliable")
+func setupUser(userName: String, role: String):
+	if multiplayer.is_server():
+		var id = multiplayer.get_remote_sender_id()
+		if not id in userInfo:
+			userInfo[id] = {
+				"name" = userName,
+				"role" = role
+			}
+			
+			print("User %s (%d) role set to %s" % [userName, id, role])
+			
+			if Globals.currentMap and role != "Viewer":
+				Globals.currentMap.playerSpawner.add_player(id, userName, role)
+		else:
+			print("User %d not found to set role %s" % [id, role])
+
 # FIX TOGGLE FOR HOST
 func _on_host_pressed():
 	# Start as server
@@ -65,11 +92,15 @@ func _on_host_pressed():
 	else:
 		address = address_entry_host.text if address_entry_host.text != "" else "*"
 	peer.create_server(PORT, address)
+	multiplayer.peer_connected.connect(func(id: int):
+		askForUserInfo.rpc_id(id)
+	)
 	if peer.get_connection_status() == MultiplayerPeer.CONNECTION_DISCONNECTED:
 		OS.alert("Failed to start multiplayer server")
 		return
 	server = true
 	multiplayer.multiplayer_peer = peer
+	setupUser(Globals.username, Globals.role)
 	start_game()
 
 
@@ -125,12 +156,8 @@ func _input(event):
 func _on_check_add_player_toggled(toggled_on: bool) -> void:
 	Globals.isServerNotPlaying = !toggled_on
 
-func _on_check_add_viewer_toggled(toggled_on: bool) -> void:
-	Globals.isPlayerViewer = toggled_on
-
 func _on_connect_viewer_pressed() -> void:
-	push_error("THIS DOESN'T WORK UNLESS THE SERVER ACTIVATES THE TOGGLE")
-	Globals.isPlayerViewer = true
+	Globals.role = "Viewer"
 	_on_connect_pressed.call_deferred()
 
 #func update_health_bar(health_value):

@@ -38,6 +38,7 @@ signal usernameChanged(newName: String)
 		healthChanged.emit(maxHealth, newHealth)
 
 signal healthChanged(maxHealth: int, newHealth: int)
+signal onDead(origin: Node3D)
 
 var modifiers: Array[Modifier] = []
 signal appliedModifier(modifier: Modifier)
