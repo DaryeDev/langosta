@@ -35,7 +35,7 @@ var username: String = "Mermelada":
 		return username
 
 var multiplayerManager: MultiplayerManager
-
+var myViewer: Viewer
 var role: String = "Player"
 var isServerNotPlaying: bool = false
 var isViewer: bool = false

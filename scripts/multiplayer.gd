@@ -31,11 +31,6 @@ var levels = ["res://scenes/tests/test_nm.tscn", "res://scenes/jungle_level_web.
 func isServerNotPlaying():
 	return Globals.isServerNotPlaying or OS.has_feature("isServerNotPlaying")
 
-func _process(delta: float) -> void:
-	if !initialized:
-		return
-	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if Globals.paused else Input.MOUSE_MODE_CAPTURED
-
 func _ready() -> void:
 	Globals.multiplayerManager = self
 	
@@ -152,6 +147,53 @@ func _input(event):
 		change_level.call_deferred(load(random_element))
 	if event.is_action("zombies") and Input.is_action_just_pressed("zombies"):
 		change_level.call_deferred(load("res://scenes/jungle_level_web.tscn"))
+	if event.is_action("startVotation") and Input.is_action_just_pressed("startVotation"):
+		startVotation()
+
+var votes: Dictionary = {}
+var votationMutex: Mutex = Mutex.new()
+var votationTimer: Timer
+@export var votationTime: float = 10
+
+func startVotation():
+	if not multiplayer.is_server():
+		return
+		
+	if not votationTimer:
+		votationTimer = Timer.new()
+		votationTimer.one_shot = true
+		add_child(votationTimer, true)
+	
+	_showVoteButtons.rpc()
+	
+	votationTimer.start(votationTime)
+	votationTimer.timeout.connect(func():
+		endVotation()
+	)
+	
+func endVotation():
+	if votes.is_empty():
+		print("noWinner")
+	else:
+		var winner = votes.keys().reduce(func(a, b): return votes[a] < votes[b])
+		print(winner)
+	_hideVoteButtons.rpc()
+	
+@rpc("authority", "call_local", "reliable")
+func _showVoteButtons():
+	if Globals.role == "Viewer" and Globals.myViewer:
+		Globals.myViewer.showVotationStuff()
+@rpc("authority", "call_local", "reliable")
+func _hideVoteButtons():
+	if Globals.role == "Viewer" and Globals.myViewer:
+		Globals.myViewer.hideVotationStuff()
+
+@rpc("any_peer", "call_local", "reliable")
+func _registerVote(id: String):
+	votationMutex.lock()
+	votes[id] = votes.get_or_add(id, 0) + 1
+	votationMutex.unlock()
+
 
 func _on_check_add_player_toggled(toggled_on: bool) -> void:
 	Globals.isServerNotPlaying = !toggled_on
@@ -178,11 +220,11 @@ func toggle_pause():
 	if Globals.paused:
 		pause_menu_ui.show()
 		main_menu_ui.hide()
-		#Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	else:
 		pause_menu_ui.hide()
 		main_menu_ui.show()
-		#if isServerNotPlaying() and server:
+		#if (isServerNotPlaying() and server) or Globals.isViewer:
 			#Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		#else:
 			#Input.mouse_mode = Input.MOUSE_MODE_CAPTURED

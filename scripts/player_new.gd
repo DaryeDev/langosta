@@ -8,8 +8,8 @@ class_name Player
 @onready var anim_player = $AnimationPlayer
 @onready var raycast = $Camera3D/RayCast3D
 @onready var multiplayer_handler = $"../"
-@onready var death_screen: PanelContainer = $Control/SubViewportContainer/SubViewport/DeathScreen
-@onready var death_label: Label = $Control/SubViewportContainer/SubViewport/DeathScreen/ColorRect/death_label
+@onready var death_screen: PanelContainer = $UI/SubViewportContainer/SubViewport/DeathScreen
+@onready var death_label: Label = $UI/SubViewportContainer/SubViewport/DeathScreen/ColorRect/death_label
 
 @export var portrait: CompressedTexture2D = preload("res://textures/yo.png")
 
@@ -77,7 +77,7 @@ func _ready():
 	if Globals.currentMap and is_instance_valid(Globals.currentMap):
 		Globals.currentMap.spawnPlayer(self)
 	
-	#Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	camera.current = true
 	
 	if weaponManager and weaponManager.weapon and weaponManager.weapon.has_node("AnimationPlayer"):
@@ -98,7 +98,7 @@ func _ready():
 func _process(delta: float) -> void:
 	if (not is_multiplayer_authority()) or dead or Globals.paused:
 		return
-	
+		
 	if !Globals.isUsingVR:
 		if weaponManager and weaponManager.weapon:
 			weaponManager.weapon.raycast = raycast

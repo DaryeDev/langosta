@@ -69,7 +69,7 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Control/SubViewportContainer/SubViewport/HealScreen:modulate")
+tracks/0/path = NodePath("UI/SubViewportContainer/SubViewport/HealScreen:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -85,7 +85,7 @@ length = 0.4
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Control/SubViewportContainer/SubViewport/DamageScreen:modulate")
+tracks/0/path = NodePath("UI/SubViewportContainer/SubViewport/DamageScreen:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -101,7 +101,7 @@ length = 0.3
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Control/SubViewportContainer/SubViewport/HealScreen:modulate")
+tracks/0/path = NodePath("UI/SubViewportContainer/SubViewport/HealScreen:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -204,7 +204,7 @@ libraries = {
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_hn37q")
 
-[node name="Control" type="Control" parent="."]
+[node name="UI" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -212,7 +212,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ColorRect" type="ColorRect" parent="Control"]
+[node name="ColorRect" type="ColorRect" parent="UI"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -225,7 +225,7 @@ grow_horizontal = 2
 grow_vertical = 2
 rotation = -0.785398
 
-[node name="SubViewportContainer" type="SubViewportContainer" parent="Control"]
+[node name="SubViewportContainer" type="SubViewportContainer" parent="UI"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -233,14 +233,14 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="SubViewport" type="SubViewport" parent="Control/SubViewportContainer"]
+[node name="SubViewport" type="SubViewport" parent="UI/SubViewportContainer"]
 disable_3d = true
 transparent_bg = true
 handle_input_locally = false
 size = Vector2i(3000, 3000)
 render_target_update_mode = 4
 
-[node name="DamageScreen" type="ColorRect" parent="Control/SubViewportContainer/SubViewport"]
+[node name="DamageScreen" type="ColorRect" parent="UI/SubViewportContainer/SubViewport"]
 modulate = Color(1, 1, 1, 0)
 anchors_preset = 15
 anchor_right = 1.0
@@ -251,7 +251,7 @@ size_flags_horizontal = 6
 size_flags_vertical = 6
 color = Color(1, 0, 0, 0.270588)
 
-[node name="HealScreen" type="ColorRect" parent="Control/SubViewportContainer/SubViewport"]
+[node name="HealScreen" type="ColorRect" parent="UI/SubViewportContainer/SubViewport"]
 modulate = Color(1, 1, 1, 0)
 anchors_preset = 15
 anchor_right = 1.0
@@ -260,7 +260,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.513678, 1, 0.48175, 0.270588)
 
-[node name="DeathScreen" type="PanelContainer" parent="Control/SubViewportContainer/SubViewport"]
+[node name="DeathScreen" type="PanelContainer" parent="UI/SubViewportContainer/SubViewport"]
 visible = false
 anchors_preset = 15
 anchor_right = 1.0
@@ -268,11 +268,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ColorRect" type="ColorRect" parent="Control/SubViewportContainer/SubViewport/DeathScreen"]
+[node name="ColorRect" type="ColorRect" parent="UI/SubViewportContainer/SubViewport/DeathScreen"]
 layout_mode = 2
 color = Color(1, 0, 0, 0.270588)
 
-[node name="death_label" type="Label" parent="Control/SubViewportContainer/SubViewport/DeathScreen/ColorRect"]
+[node name="death_label" type="Label" parent="UI/SubViewportContainer/SubViewport/DeathScreen/ColorRect"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5

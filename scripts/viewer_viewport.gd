@@ -1,4 +1,5 @@
 extends Node3D
+class_name Viewer
 
 @onready var grid_container: GridContainer = $GridContainer
 @onready var players: Node = $"../../Players"
@@ -13,10 +14,40 @@ var height_adjustments = {}
 func _enter_tree():
 	print("Player name in viewport: ", str(name))
 	set_multiplayer_authority(str(name).to_int())
+	
+func showVotationStuff():
+	for player_name in player_viewports.keys():
+		var container = player_viewports[player_name]
+		var sub_viewport = container.get_child(0)
+		var player_node_path = NodePath(str(player_name))
+		var player_node = players.get_node_or_null(player_node_path)
+		
+		var button = Button.new()
+		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		button.size_flags_vertical = Control.SIZE_EXPAND_FILL
+		button.pressed.connect(func():
+			if player_node is Player:
+				print("%s (%s) seleccionado."%[player_node.username, player_node.name])
+				Globals.multiplayerManager._registerVote.rpc_id(1, str(player_node.name))
+				hideVotationStuff()
+		)
+		button.size = sub_viewport.size
+		button.name = "VoteButton"
+		container.add_child(button)
+		
+func hideVotationStuff():
+	for player_name in player_viewports.keys():
+		var container = player_viewports[player_name]
+		var button = container.get_node_or_null("VoteButton")
+		if button:
+			container.remove_child(button)
+			button.queue_free()
 
 func _ready():
 	if not is_multiplayer_authority():
 		return
+		
+	Globals.myViewer = self
 
 	self.process_mode = Node.PROCESS_MODE_ALWAYS
 	Globals.currentMap.onNewPlayer.connect(_on_player_connected)
@@ -38,6 +69,10 @@ func add_player_viewport(player_name):
 	if not player_node:
 		print("Player node not found: ", player_name)
 		return
+		
+	var playerUI = player_node.get_node_or_null("UI")
+	if playerUI:
+		playerUI.visible = false
 
 	# Fetch the Camera3D from the player node
 	var camera = player_node.get_node_or_null("Camera3D")
@@ -54,14 +89,23 @@ func add_player_viewport(player_name):
 	# Create a new SubViewport
 	var sub_viewport = SubViewport.new()
 	sub_viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
-
+	container.add_child(sub_viewport)
+	
 	# Create a clone of the camera for exclusive use in the SubViewport
 	var camera_clone = Camera3D.new()
 	camera_clone.current = true
 	sub_viewport.add_child(camera_clone)
-
-	# Add SubViewport to the container
-	container.add_child(sub_viewport)
+	
+	# Crear un botón transparente para detectar clics
+	var button = Button.new()
+	button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	button.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	#button.visible = false
+	button.pressed.connect(func():
+		if player_node is Player:
+			print("%s (%s) seleccionado."%[player_node.username, player_node.name])
+	)
+	container.add_child(button)
 
 	# Add the container to the GridContainer
 	grid_container.add_child(container)
@@ -124,7 +168,7 @@ func adjust_viewports():
 
 		var row = index / cols
 		var col = index % cols
-
+		
 		sub_viewport.size = Vector2(viewport_width, viewport_height)
 		container.size = Vector2(viewport_width, viewport_height)
 		container.position = Vector2(col * viewport_width, row * viewport_height)
@@ -133,6 +177,7 @@ func adjust_viewports():
 
 # Synchronize camera transform from the original camera and player
 func _process(delta):
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	for player_name in original_cameras.keys():
 		var original_camera = original_cameras[player_name]
 		var player_node = player_nodes[player_name]
