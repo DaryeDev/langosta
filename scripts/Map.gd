@@ -6,11 +6,25 @@ class_name Map
 @export var blockGrid: GridMap
 @export var blocksPlaced: Array = []
 @export var billboard: Billboard
+@export var playerSpawner: PlayerSpawner
 
 var players: Array[Player] = []
+signal onNewPlayer(id: int)
+signal onPlayerDisconnected(id: int)
+
+@rpc("authority", "call_local", "reliable")
+func _emitOnNewPlayer(id: int):
+	onNewPlayer.emit(id)
+@rpc("authority", "call_local", "reliable")
+func _emitOnPlayerDisconnected(id: int):
+	onPlayerDisconnected.emit(id)
 
 func _ready() -> void:
+	if not playerSpawner and $PlayerSpawner:
+		playerSpawner = $PlayerSpawner
+	
 	Globals.currentMap = self
+	
 	for block in blocksPlaced:
 		blockGrid.addBlock(block[0], block[1], false)
 	print(mapName)

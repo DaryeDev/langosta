@@ -1,6 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://cj2x3814g2lee"]
+[gd_scene load_steps=4 format=3 uid="uid://cj2x3814g2lee"]
 
-[ext_resource type="Script" path="res://scripts/player_viewport.gd" id="1_lkuff"]
+[ext_resource type="Script" path="res://scripts/viewer_viewport.gd" id="1_lkuff"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_hn37q"]
 properties/0/path = NodePath(".:position")
@@ -19,6 +19,9 @@ properties/4/path = NodePath("Camera3D/Gun1:rotation")
 properties/4/spawn = true
 properties/4/replication_mode = 1
 
+[sub_resource type="LabelSettings" id="LabelSettings_mobcy"]
+font_size = 60
+
 [node name="PLayer" type="Node3D"]
 script = ExtResource("1_lkuff")
 
@@ -31,3 +34,9 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="Label" type="Label" parent="."]
+offset_right = 218.0
+offset_bottom = 83.0
+text = "VIEWER"
+label_settings = SubResource("LabelSettings_mobcy")
