@@ -99,6 +99,8 @@ func _process(delta: float) -> void:
 	if (not is_multiplayer_authority()) or dead or Globals.paused:
 		return
 		
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		
 	if !Globals.isUsingVR:
 		if weaponManager and weaponManager.weapon:
 			weaponManager.weapon.raycast = raycast

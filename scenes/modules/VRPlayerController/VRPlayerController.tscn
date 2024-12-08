@@ -12,8 +12,9 @@ func _ready() -> void:
 	$MeshInstance3D.material_override.albedo_texture.viewport_path = Globals.myPlayer.get_node(\"Control/SubViewportContainer/SubViewport\").get_path()
 
 func _process(delta: float) -> void:
-	Globals.myPlayer.camera.global_position = global_position
-	Globals.myPlayer.camera.global_rotation = global_rotation
+	Globals.myPlayer.camera = self
+	#Globals.myPlayer.camera.global_position = global_position
+	#Globals.myPlayer.camera.global_rotation = global_rotation
 	
 	Globals.myPlayer.get_node(\"MeshInstance3D\").global_position.x = global_position.x
 	Globals.myPlayer.get_node(\"MeshInstance3D\").global_position.z = global_position.z
