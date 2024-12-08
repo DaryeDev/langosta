@@ -128,6 +128,11 @@ func _on_check_add_player_toggled(toggled_on: bool) -> void:
 func _on_check_add_viewer_toggled(toggled_on: bool) -> void:
 	Globals.isPlayerViewer = toggled_on
 
+func _on_connect_viewer_pressed() -> void:
+	push_error("THIS DOESN'T WORK UNLESS THE SERVER ACTIVATES THE TOGGLE")
+	Globals.isPlayerViewer = true
+	_on_connect_pressed.call_deferred()
+
 #func update_health_bar(health_value):
 	## Update the health bar value
 	#health_bar.value = health_value
