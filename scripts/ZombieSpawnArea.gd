@@ -20,20 +20,21 @@ func _ready() -> void:
 	_current_spawn_delay = initial_spawn_delay
 
 func _process(delta: float) -> void:
-	if Input.is_action_just_pressed("spawnRandomEnemy"):
-		spawnZombie()
-		Input.action_release("spawnRandomEnemy")
-	
-	_time_since_last_spawn += delta
+	if multiplayer.is_server():
+		if Input.is_action_just_pressed("spawnRandomEnemy"):
+			spawnZombie.rpc()
+			Input.action_release("spawnRandomEnemy")
+		
+		_time_since_last_spawn += delta
 
-	# Comprobar si es hora de spawnear un zombie
-	if _time_since_last_spawn >= _current_spawn_delay and _zombieCount < maxZombies:
-		_zombieCount += 1
-		spawnZombie()
-		_time_since_last_spawn = 0.0
+		# Comprobar si es hora de spawnear un zombie
+		if _time_since_last_spawn >= _current_spawn_delay and _zombieCount < maxZombies:
+			_zombieCount += 1
+			spawnZombie.rpc()
+			_time_since_last_spawn = 0.0
 
-		# Reducir progresivamente el tiempo entre spawns, sin bajar del mínimo
-		_current_spawn_delay = max(min_spawn_delay, _current_spawn_delay - spawn_delay_decrease_rate)
+			# Reducir progresivamente el tiempo entre spawns, sin bajar del mínimo
+			_current_spawn_delay = max(min_spawn_delay, _current_spawn_delay - spawn_delay_decrease_rate)
 
 # Devuelve una posición aleatoria dentro del área
 func get_random_position() -> Vector3:
@@ -58,15 +59,15 @@ func get_random_position() -> Vector3:
 		push_error("Forma no soportada en PlayerSpawnArea.")
 		return global_transform.origin
 
-# Método para spawnear un zombie
+@rpc("authority", "call_local", "reliable")
 func spawnZombie():
 	var spawn_position = get_random_position()
-	spawn_position.y = 2
 	var newZombie = zombieScene.instantiate()
 	newZombie.ded.connect(func():
 		_zombieCount -= 1
 		_zombiesKilled += 1
 	)
-	(newZombie as Node3D).global_position = spawn_position
+	
 	if Globals.currentMap:
-		Globals.currentMap.add_child(newZombie)
+		Globals.currentMap.add_child(newZombie, true)
+		(newZombie as Node3D).global_position = spawn_position

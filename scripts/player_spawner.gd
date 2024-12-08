@@ -46,13 +46,21 @@ func add_player(id: int):
 	character.position = Vector3(pos.x * SPAWN_RANDOM * randf(), 2, pos.y * SPAWN_RANDOM * randf())
 	character.name = str(id)
 	$Players.add_child(character, true)
-	if character is Player and Globals.currentMap and Globals.currentMap.billboard:
-		Globals.currentMap.billboard.addPlayer.call_deferred(character)
+	if character is Player and Globals.currentMap:
+		Globals.currentMap.players.append(character)
+		
+		if Globals.currentMap.billboard:
+			Globals.currentMap.billboard.addPlayer.call_deferred(character)
 
 
 func del_player(id: int):
 	if not $Players.has_node(str(id)):
 		return
-	if Globals.currentMap and Globals.currentMap.billboard:
-		Globals.currentMap.billboard.removePlayerById.call_deferred(str(id))
+	if Globals.currentMap:
+		Globals.currentMap.players = Globals.currentMap.players.filter(func(player):
+			return player.name != id
+		)
+		
+		if Globals.currentMap.billboard:
+			Globals.currentMap.billboard.removePlayerById.call_deferred(str(id))
 	$Players.get_node(str(id)).queue_free()

@@ -183,6 +183,7 @@ properties/4/replication_mode = 1
 
 [node name="Gun2" type="Node3D" node_paths=PackedStringArray("animationPlayer", "bulletsLabel", "raycast")]
 script = ExtResource("1_4pl3h")
+knockbackForce = 3.0
 maxBullets = 30
 isAutomatic = true
 recoil = 0.03

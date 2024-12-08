@@ -57,6 +57,8 @@ var weaponAnimPlayer: AnimationPlayer
 var defaultGravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 @export var dead = false
 
+var externalForces: Vector3 = Vector3.ZERO
+
 func _enter_tree():
 	print("Player name in player_new: ", str(name))
 	set_multiplayer_authority(str(name).to_int())
@@ -168,6 +170,7 @@ func update_velocity(direction, speed):
 	else:
 		velocity.x = move_toward(velocity.x, 0, speed)
 		velocity.z = move_toward(velocity.z, 0, speed)
+	
 
 func update_animation(input_dir):
 	if weaponAnimPlayer and weaponAnimPlayer.current_animation == "shoot":
@@ -187,6 +190,10 @@ func _physics_process(delta):
 
 	if !Globals.isUsingVR:
 		player_movement()
+		
+	
+	velocity += externalForces
+	externalForces = Vector3.ZERO
 	
 	move_and_slide()
 	
@@ -194,6 +201,9 @@ func _physics_process(delta):
 func damage(attack: Dictionary):
 	var damageQuantity = attack.get("damage", 1)
 	health = clamp(health - damageQuantity, 0, maxHealth)
+	
+	var knockbackForce = attack.get("knockbackForce", Vector3.ZERO)
+	externalForces += knockbackForce*2
 	
 	if (not is_multiplayer_authority()) or dead:
 		return
@@ -213,8 +223,8 @@ func spawnExplosionAtCoordinates(coords: Vector3):
 	if is_multiplayer_authority(): return
 	
 	var newExplosion = preload("res://scenes/modules/Explosion.tscn").instantiate()
-	newExplosion.global_position = coords
 	Globals.currentMap.add_child(newExplosion)
+	newExplosion.global_position = coords
 
 func handle_death():
 	spawnExplosionAtCoordinates.rpc(global_position)

@@ -7,6 +7,8 @@ class_name Map
 @export var blocksPlaced: Array = []
 @export var billboard: Billboard
 
+var players: Array[Player] = []
+
 func _ready() -> void:
 	Globals.currentMap = self
 	for block in blocksPlaced:
