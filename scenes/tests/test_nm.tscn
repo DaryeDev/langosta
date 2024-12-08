@@ -173,3 +173,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.19516, 1.82577, 19.1288)
 
 [node name="DamagePlus" parent="." instance=ExtResource("20_u8twq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.65705, 1.80584, 19.0292)
+
+[editable path="WorldEnvironmentWEB"]
