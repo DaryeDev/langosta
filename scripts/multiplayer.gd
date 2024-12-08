@@ -125,6 +125,9 @@ func _input(event):
 func _on_check_add_player_toggled(toggled_on: bool) -> void:
 	Globals.isServerNotPlaying = !toggled_on
 
+func _on_check_add_viewer_toggled(toggled_on: bool) -> void:
+	Globals.isPlayerViewer = toggled_on
+
 #func update_health_bar(health_value):
 	## Update the health bar value
 	#health_bar.value = health_value

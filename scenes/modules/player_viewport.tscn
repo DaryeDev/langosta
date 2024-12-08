@@ -1,0 +1,33 @@
+[gd_scene load_steps=3 format=3 uid="uid://cj2x3814g2lee"]
+
+[ext_resource type="Script" path="res://scripts/player_viewport.gd" id="1_lkuff"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_hn37q"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath("Camera3D:rotation")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+properties/3/path = NodePath("Camera3D/Gun1:position")
+properties/3/spawn = true
+properties/3/replication_mode = 1
+properties/4/path = NodePath("Camera3D/Gun1:rotation")
+properties/4/spawn = true
+properties/4/replication_mode = 1
+
+[node name="PLayer" type="Node3D"]
+script = ExtResource("1_lkuff")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_hn37q")
+
+[node name="GridContainer" type="GridContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

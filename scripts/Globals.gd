@@ -35,5 +35,6 @@ var username: String = "Mermelada":
 		return username
 
 var isServerNotPlaying: bool = false
+var isPlayerViewer: bool = false
 var isUsingVR: bool = false
 var paused: bool = false

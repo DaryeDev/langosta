@@ -37,7 +37,10 @@ func add_player(id: int):
 		else:
 			character = load("res://scenes/modules/player_new.tscn").instantiate()
 	else:
-		character = load("res://scenes/modules/player_new.tscn").instantiate()
+		if Globals.isPlayerViewer:
+			character = load("res://scenes/modules/player_viewport.tscn").instantiate()
+		else:
+			character = load("res://scenes/modules/player_new.tscn").instantiate()
 
 	# Set player id.
 	#character.player = id
@@ -58,7 +61,7 @@ func del_player(id: int):
 		return
 	if Globals.currentMap:
 		Globals.currentMap.players = Globals.currentMap.players.filter(func(player):
-			return player.name != id
+			return player.name != str(id)
 		)
 		
 		if Globals.currentMap.billboard:

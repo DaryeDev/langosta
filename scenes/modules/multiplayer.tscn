@@ -119,6 +119,10 @@ layout_mode = 2
 shortcut = SubResource("Shortcut_b25bp")
 text = "Join"
 
+[node name="CheckAddViewer" type="CheckButton" parent="Main_UI/MainMenu/MarginContainer/VBoxContainer/VBoxContainer2"]
+layout_mode = 2
+text = "Is player viewer?"
+
 [node name="AddressEntryConnect" type="LineEdit" parent="Main_UI/MainMenu/MarginContainer/VBoxContainer/VBoxContainer2"]
 layout_mode = 2
 placeholder_text = "Enter Address to Join Here"
@@ -213,5 +217,6 @@ text = "Quit"
 [connection signal="pressed" from="Main_UI/MainMenu/MarginContainer/VBoxContainer/VBoxContainer/Host" to="." method="_on_host_pressed"]
 [connection signal="toggled" from="Main_UI/MainMenu/MarginContainer/VBoxContainer/VBoxContainer/CheckAddPlayer" to="." method="_on_check_add_player_toggled"]
 [connection signal="pressed" from="Main_UI/MainMenu/MarginContainer/VBoxContainer/VBoxContainer2/Connect" to="." method="_on_connect_pressed"]
+[connection signal="toggled" from="Main_UI/MainMenu/MarginContainer/VBoxContainer/VBoxContainer2/CheckAddViewer" to="." method="_on_check_add_viewer_toggled"]
 [connection signal="pressed" from="Pause_Menu/Control/Panel/Resume" to="." method="_on_resume_pressed"]
 [connection signal="pressed" from="Pause_Menu/Control/Panel/Quit" to="." method="_on_quit_pressed"]
