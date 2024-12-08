@@ -5,6 +5,8 @@ class_name MultiplayerManager
 @onready var main_menu = $Main_UI/MainMenu
 @export var address_entry_host: LineEdit
 @export var address_entry_connect: LineEdit
+@onready var port_entry_connect: LineEdit = $Main_UI/MainMenu/MarginContainer/VBoxContainer/VBoxContainer2/PortEntryConnect
+
 #@onready var hud = $Main_UI/HUD
 #@onready var health_bar = $Main_UI/HUD/HealthBar
 @onready var host_ui = $Main_UI/Host_UI
@@ -21,9 +23,10 @@ var dedicated = false
 var server = false
 
 # Multiplayer
-const PORT = 3131
+const PORT = 8000
 const DEFAULT_SERVER_IP = "localhost"
 var peer = WebSocketMultiplayerPeer.new()
+#var peer = ENetMultiplayerPeer.new()
 
 # Level spawner
 var levels = ["res://scenes/tests/test_nm.tscn", "res://scenes/jungle_level_web.tscn", "res://scenes/snow_level_web.tscn", "res://scenes/coliseum_level_web.tscn"]
@@ -87,6 +90,7 @@ func _on_host_pressed():
 	else:
 		address = address_entry_host.text if address_entry_host.text != "" else "*"
 	peer.create_server(PORT, address)
+	#peer.create_server(PORT)
 	multiplayer.peer_connected.connect(func(id: int):
 		askForUserInfo.rpc_id(id)
 	)
@@ -102,8 +106,15 @@ func _on_host_pressed():
 func _on_connect_pressed():
 	# Start as client
 	# Make a toggle for viewer
-	var address = address_entry_connect.text if address_entry_connect.text != "" else "ws://"+DEFAULT_SERVER_IP
-	peer.create_client(address + ":" + str(PORT))
+	#var address = address_entry_connect.text if address_entry_connect.text != "" else "ws://"+DEFAULT_SERVER_IP
+	var address = address_entry_connect.text if address_entry_connect.text != "" else DEFAULT_SERVER_IP
+	var port = port_entry_connect.text.to_int() if port_entry_connect.text != "" else PORT
+	print(port)
+	var result = peer.create_client(address + ":" + str(port))
+	#var result = peer.create_client(address, port)
+	print(result)
+	if result != OK:
+		print("Client creation failed: ", result)
 	if peer.get_connection_status() == MultiplayerPeer.CONNECTION_DISCONNECTED:
 		OS.alert("Failed to start multiplayer client")
 		return
@@ -224,6 +235,7 @@ func toggle_pause():
 	else:
 		pause_menu_ui.hide()
 		main_menu_ui.show()
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 		#if (isServerNotPlaying() and server) or Globals.isViewer:
 			#Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		#else:

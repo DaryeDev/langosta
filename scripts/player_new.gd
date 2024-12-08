@@ -98,6 +98,8 @@ func _ready():
 func _process(delta: float) -> void:
 	if (not is_multiplayer_authority()) or dead or Globals.paused:
 		return
+	if Input.is_action_just_pressed("ui_home"):
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 		
 	if !Globals.isUsingVR:
 		if weaponManager and weaponManager.weapon:
