@@ -1,6 +1,7 @@
-[gd_scene load_steps=11 format=3 uid="uid://djmugko7tgloc"]
+[gd_scene load_steps=12 format=3 uid="uid://djmugko7tgloc"]
 
-[ext_resource type="Texture2D" uid="uid://clw3wr1eakxri" path="res://scenes/modules/Modifiers/JumpHigher/icon.png" id="1_xwpxn"]
+[ext_resource type="Texture2D" uid="uid://clw3wr1eakxri" path="res://scenes/modules/Modifiers/JumpLower/icon.png" id="2_ffr2t"]
+[ext_resource type="Texture2D" uid="uid://clw3wr1eakxri" path="res://scenes/modules/Modifiers/JumpHigher/icon.png" id="2_w783i"]
 
 [sub_resource type="GDScript" id="GDScript_adwoo"]
 script/source = "@tool
@@ -75,7 +76,7 @@ func _process(delta: float) -> void:
 
 [node name="JumpHigher" type="Node3D" node_paths=PackedStringArray("collider", "mesh")]
 script = SubResource("GDScript_adwoo")
-modifierIcon = ExtResource("1_xwpxn")
+modifierIcon = ExtResource("2_ffr2t")
 modifierIconPath = "res://scenes/modules/Modifiers/JumpHigher/icon.png"
 modifierName = "JumpHigher"
 modifierDescription = "Makes you jump higher for 10 seconds."
@@ -110,5 +111,5 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("1_xwpxn")
+texture = ExtResource("2_w783i")
 expand_mode = 3

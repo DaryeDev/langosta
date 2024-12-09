@@ -50,6 +50,14 @@ func _ready() -> void:
 	#pause_menu_ui.process_mode = Node.PROCESS_MODE_ALWAYS
 	self.process_mode = Node.PROCESS_MODE_ALWAYS
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	
+	if not votationTimer:
+		votationTimer = Timer.new()
+		votationTimer.one_shot = true
+		add_child(votationTimer, true)
+	if multiplayer.is_server() and votationInterval > 0:
+		votationTimer.start(votationInterval)
+		votationTimer.timeout.connect(startVotation, 4)
 
 func _unhandled_input(event):
 	# Handle pause and quit actions
@@ -166,18 +174,14 @@ func _input(event):
 var votes: Dictionary = {}
 var votationMutex: Mutex = Mutex.new()
 var votationTimer: Timer
-@export var votationTime: float = 2
+@export var votationTime: float = 20
+@export var votationInterval: float = 60
 
 func startVotation():
 	if not multiplayer.is_server():
 		return
 	
 	votes = {}
-	
-	if not votationTimer:
-		votationTimer = Timer.new()
-		votationTimer.one_shot = true
-		add_child(votationTimer, true)
 	
 	_showVoteButtons.rpc()
 	
@@ -188,6 +192,7 @@ func startVotation():
 		else:
 			var winner = votes.keys().reduce(func(a, b): return votes[a] < votes[b])
 			print(winner)
+			randomize()
 			var randomInitialRotation = range(360).pick_random()
 			endVotation.rpc(winner, randomInitialRotation)
 		_hideVoteButtons.rpc()
@@ -207,7 +212,7 @@ func endVotation(winnerId: String, randomInitialRotation: float):
 		var ruletaTime = preload("res://scenes/ruleta_time.tscn").instantiate()
 		match Globals.role:
 			"Player":
-				Globals.myPlayer.get_node("UI").add_child(ruletaTime)
+				Globals.myPlayer.get_node("UI/SubViewportContainer/SubViewport").add_child(ruletaTime)
 				pass
 			"Server":
 				Globals.myServer.get_node("Overlays").add_child(ruletaTime)
@@ -218,6 +223,11 @@ func endVotation(winnerId: String, randomInitialRotation: float):
 			_:
 				return
 		ruletaTime.start(winner, randomInitialRotation)
+		await get_tree().create_timer(15).timeout
+
+	if multiplayer.is_server() and votationInterval > 0:
+		votationTimer.start(votationInterval)
+		votationTimer.timeout.connect(startVotation, 4)
 	
 @rpc("authority", "call_local", "reliable")
 func _showVoteButtons():

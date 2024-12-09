@@ -242,7 +242,6 @@ properties/0/replication_mode = 1
 
 [node name="Ruleta" type="Node2D"]
 script = SubResource("GDScript_t2of7")
-randomInitialRotation = null
 modifierScenes = Array[PackedScene]([ExtResource("1_qq4tg"), ExtResource("2_mv1tf"), ExtResource("3_1axkr"), ExtResource("4_f3hs3"), ExtResource("5_n7l51"), ExtResource("3_4dysq"), ExtResource("7_uggic"), ExtResource("8_4mw5n"), ExtResource("9_ma4b8"), ExtResource("10_w2i6p"), ExtResource("11_bhgvv"), ExtResource("12_un5eo")])
 
 [node name="Border" type="Panel" parent="."]

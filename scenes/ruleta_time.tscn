@@ -223,4 +223,3 @@ pivot_offset = Vector2(262, 262)
 
 [node name="Ruleta" parent="Ruleta" instance=ExtResource("1_ewrhk")]
 position = Vector2(262, 262)
-randomInitialRotation = 0
