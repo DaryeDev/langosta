@@ -70,6 +70,5 @@ replication_config = SubResource("SceneReplicationConfig_3g4e3")
 stream = SubResource("AudioStreamPlaylist_aplq6")
 attenuation_model = 2
 autoplay = true
-stream_paused = true
 bus = &"Zombies"
 doppler_tracking = 2

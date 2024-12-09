@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://blr5sufhiuigm"]
 
 [ext_resource type="AudioStream" uid="uid://b8r2t575iuvge" path="res://sounds/zombies/353062__crocytc__zombie2.wav" id="1_5f3u2"]
-[ext_resource type="SpriteFrames" uid="uid://clabhaqx4rxqe" path="res://scenes/modules/pauline-roy-blood-explosion.gif" id="2_68onp"]
+[ext_resource type="SpriteFrames" uid="uid://clabhaqx4rxqe" path="res://textures/pauline-roy-blood-explosion.gif" id="2_68onp"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_k0dgj"]
 viewport_path = NodePath("SubViewport")
