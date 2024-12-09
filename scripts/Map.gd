@@ -7,6 +7,7 @@ class_name Map
 @export var blocksPlaced: Array = []
 @export var billboard: Billboard
 @export var playerSpawner: PlayerSpawner
+@export var enableVoting: bool = false
 
 var players: Array[Player] = []
 signal onNewPlayer(id: int)

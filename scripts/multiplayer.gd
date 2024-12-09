@@ -178,25 +178,35 @@ var votationTimer: Timer
 @export var votationInterval: float = 60
 
 func startVotation():
-	if not multiplayer.is_server():
+	votes = {}
+	if not multiplayer.is_server() or (Globals.currentMap and not Globals.currentMap.enableVoting):
 		return
 	
-	votes = {}
-	
-	_showVoteButtons.rpc()
-	
-	votationTimer.start(votationTime)
-	var onVotationTimerTimeout = func():
-		if votes.is_empty():
-			print("noWinner")
-		else:
-			var winner = votes.keys().reduce(func(a, b): return votes[a] < votes[b])
-			print(winner)
-			randomize()
-			var randomInitialRotation = range(360).pick_random()
-			endVotation.rpc(winner, randomInitialRotation)
-		_hideVoteButtons.rpc()
-	votationTimer.timeout.connect(onVotationTimerTimeout, 4)
+	var anyViewers: bool = false
+	for pid in userInfo:
+		if userInfo[pid].get("role") == "Viewer":
+			anyViewers = true
+			break
+			
+	if anyViewers:
+		
+		_showVoteButtons.rpc()
+		
+		votationTimer.start(votationTime)
+		var onVotationTimerTimeout = func():
+			if votes.is_empty():
+				print("noWinner")
+			else:
+				var winner = votes.keys().reduce(func(a, b): return votes[a] < votes[b])
+				print(winner)
+				randomize()
+				var randomInitialRotation = range(360).pick_random()
+				endVotation.rpc(winner, randomInitialRotation)
+			_hideVoteButtons.rpc()
+		votationTimer.timeout.connect(onVotationTimerTimeout, 4)
+	elif votationInterval > 0:
+		votationTimer.start(votationInterval)
+		votationTimer.timeout.connect(startVotation, 4)
 
 @rpc("authority", "call_local", "reliable")
 func endVotation(winnerId: String, randomInitialRotation: float):
@@ -231,8 +241,23 @@ func endVotation(winnerId: String, randomInitialRotation: float):
 	
 @rpc("authority", "call_local", "reliable")
 func _showVoteButtons():
-	if Globals.role == "Viewer" and Globals.myViewer:
-		Globals.myViewer.showVotationStuff()
+	var newInitialText = preload("res://scenes/initialText.tscn").instantiate()
+	match Globals.role:
+			"Server":
+				Globals.myServer.get_node("Overlays").add_child(newInitialText)
+				pass
+			"Viewer":
+				Globals.myViewer.get_node("Overlays").add_child(newInitialText)
+				pass
+			_:
+				return
+	(newInitialText.get_node("AnimationPlayer") as AnimationPlayer).animation_finished.connect(func(_animName):
+		newInitialText.get_parent().remove_child(newInitialText)
+		newInitialText.queue_free()
+		
+		if Globals.role == "Viewer" and Globals.myViewer:
+			Globals.myViewer.showVotationStuff()
+	)
 @rpc("authority", "call_local", "reliable")
 func _hideVoteButtons():
 	if Globals.role == "Viewer" and Globals.myViewer:

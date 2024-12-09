@@ -15,34 +15,6 @@ var height_adjustments = {}
 func _enter_tree():
 	print("Player name in viewport: ", str(name))
 	set_multiplayer_authority(str(name).to_int())
-	
-func showVotationStuff():
-	for player_name in player_viewports.keys():
-		var container = player_viewports[player_name]
-		var sub_viewport = container.get_child(0)
-		var player_node_path = NodePath(str(player_name))
-		var player_node = players.get_node_or_null(player_node_path)
-		
-		var button = Button.new()
-		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		button.size_flags_vertical = Control.SIZE_EXPAND_FILL
-		button.pressed.connect(func():
-			if player_node is Player:
-				print("%s (%s) seleccionado."%[player_node.username, player_node.name])
-				Globals.multiplayerManager._registerVote.rpc_id(1, str(player_node.name))
-				hideVotationStuff()
-		)
-		button.size = sub_viewport.size
-		button.name = "VoteButton"
-		container.add_child(button)
-		
-func hideVotationStuff():
-	for player_name in player_viewports.keys():
-		var container = player_viewports[player_name]
-		var button = container.get_node_or_null("VoteButton")
-		if button:
-			container.remove_child(button)
-			button.queue_free()
 
 func _ready():
 	if not is_multiplayer_authority():

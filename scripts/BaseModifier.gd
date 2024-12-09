@@ -5,7 +5,8 @@ class_name Modifier
 @export var modifierIcon: CompressedTexture2D:
 	set(newIcon):
 		modifierIcon = newIcon
-		modifierIconPath = newIcon.resource_path
+		if newIcon:
+			modifierIconPath = newIcon.resource_path
 
 @export var modifierIconPath: String = "res://textures/yo.png"
 

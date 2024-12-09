@@ -86,6 +86,7 @@ navReg = NodePath("NavigationRegion3D")
 blockGrid = NodePath("NavigationRegion3D/GridMap")
 billboard = NodePath("Billboard")
 playerSpawner = NodePath("PlayerSpawner")
+enableVoting = true
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
@@ -148,39 +149,51 @@ timeLimit = 1000
 
 [node name="JumpHigher" parent="." instance=ExtResource("9_cqx0c")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.08767, 2.38419e-07, 6.75109)
+modifierIcon = null
 
 [node name="LowGravity" parent="." instance=ExtResource("11_tjick")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.23569, -2.38419e-07, 8.81089)
+modifierIcon = null
 
 [node name="JumpLower" parent="." instance=ExtResource("11_f5ev8")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.93015, 0, 7.89116)
+modifierIcon = null
 
 [node name="InstaHeal" parent="." instance=ExtResource("12_ugb8q")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.26877, 0.445448, 12.2272)
+modifierIcon = null
 
 [node name="InstaDamage" parent="." instance=ExtResource("13_8jghg")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.19656, 0.395487, 11.9774)
+modifierIcon = null
 
 [node name="Regen" parent="." instance=ExtResource("14_2ful3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.09373, 0.891308, 14.4565)
+modifierIcon = null
 
 [node name="Poison" parent="." instance=ExtResource("15_bh8he")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.11327, 1.07578, 15.3789)
+modifierIcon = null
 
 [node name="HeightIncrease" parent="." instance=ExtResource("16_ktxkq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.01408, 1.39108, 16.9554)
+modifierIcon = null
 
 [node name="HeightDecrease" parent="." instance=ExtResource("17_uyhpf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.840671, 1.02192, 16.305)
+modifierIcon = null
 
 [node name="Death" parent="." instance=ExtResource("18_kpnfa")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.12328, 0, 9.49106)
+modifierIcon = null
 
 [node name="DamageMinus" parent="." instance=ExtResource("19_663ha")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.19516, 1.82577, 19.1288)
+modifierIcon = null
 
 [node name="DamagePlus" parent="." instance=ExtResource("20_u8twq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.65705, 1.80584, 19.0292)
+modifierIcon = null
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = SubResource("AudioStreamPlaylist_qgfp6")
