@@ -98,6 +98,7 @@ func _on_host_pressed():
 		OS.alert("Failed to start multiplayer server")
 		return
 	server = true
+	Globals.role = "Server" if Globals.isServerNotPlaying else "Player"
 	multiplayer.multiplayer_peer = peer
 	setupUser(Globals.username, Globals.role)
 	start_game()
@@ -152,10 +153,10 @@ func change_level(scene: PackedScene):
 func _input(event):
 	if not multiplayer.is_server():
 		return
-	if event.is_action("changeMap") and Input.is_action_just_pressed("changeMap"):
-		var random_index = randi() % levels.size()
-		var random_element = levels[random_index]
-		change_level.call_deferred(load(random_element))
+	#if event.is_action("changeMap") and Input.is_action_just_pressed("changeMap"):
+		#var random_index = randi() % levels.size()
+		#var random_element = levels[random_index]
+		#change_level.call_deferred(load(random_element))
 	if event.is_action("zombies") and Input.is_action_just_pressed("zombies"):
 		change_level.call_deferred(load("res://scenes/jungle_level_web.tscn"))
 	if event.is_action("startVotation") and Input.is_action_just_pressed("startVotation"):
@@ -164,12 +165,14 @@ func _input(event):
 var votes: Dictionary = {}
 var votationMutex: Mutex = Mutex.new()
 var votationTimer: Timer
-@export var votationTime: float = 10
+@export var votationTime: float = 2
 
 func startVotation():
 	if not multiplayer.is_server():
 		return
-		
+	
+	votes = {}
+	
 	if not votationTimer:
 		votationTimer = Timer.new()
 		votationTimer.one_shot = true
@@ -178,17 +181,42 @@ func startVotation():
 	_showVoteButtons.rpc()
 	
 	votationTimer.start(votationTime)
-	votationTimer.timeout.connect(func():
-		endVotation()
-	)
+	var onVotationTimerTimeout = func():
+		if votes.is_empty():
+			print("noWinner")
+		else:
+			var winner = votes.keys().reduce(func(a, b): return votes[a] < votes[b])
+			print(winner)
+			var randomInitialRotation = range(360).pick_random()
+			endVotation.rpc(winner, randomInitialRotation)
+		_hideVoteButtons.rpc()
+	votationTimer.timeout.connect(onVotationTimerTimeout, 4)
+
+@rpc("authority", "call_local", "reliable")
+func endVotation(winnerId: String, randomInitialRotation: float):
+	var winner: Player
+	var a = Globals.currentMap.players
+	if Globals.currentMap and Globals.currentMap.players:
+		for player in Globals.currentMap.players:
+			if player.name == winnerId:
+				winner = player
+				break
 	
-func endVotation():
-	if votes.is_empty():
-		print("noWinner")
-	else:
-		var winner = votes.keys().reduce(func(a, b): return votes[a] < votes[b])
-		print(winner)
-	_hideVoteButtons.rpc()
+	if winner:
+		var ruletaTime = preload("res://scenes/ruleta_time.tscn").instantiate()
+		match Globals.role:
+			"Player":
+				Globals.myPlayer.get_node("UI").add_child(ruletaTime)
+				pass
+			"Server":
+				Globals.myServer.get_node("Overlays").add_child(ruletaTime)
+				pass
+			"Viewer":
+				Globals.myViewer.get_node("Overlays").add_child(ruletaTime)
+				pass
+			_:
+				return
+		ruletaTime.start(winner, randomInitialRotation)
 	
 @rpc("authority", "call_local", "reliable")
 func _showVoteButtons():

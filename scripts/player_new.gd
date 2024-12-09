@@ -46,6 +46,7 @@ signal removedModifier(modifier: Modifier)
 signal modifiedModifiers(modifiers: Array[Modifier])
 func applyModifier(modifier: Modifier):
 	modifiers.append(modifier)
+	modifier._internal_appliedOnPlayer.call_deferred(self)
 	appliedModifier.emit(modifier)
 	modifiedModifiers.emit(modifiers)
 func removeModifier(modifier: Modifier):
@@ -65,6 +66,10 @@ func _enter_tree():
 	set_multiplayer_authority(str(name).to_int())
 	if (multiplayer.get_unique_id() == str(name).to_int()):
 		username = Globals.username
+	Globals.currentMap.players.append(self)
+	
+func _exit_tree() -> void:
+	Globals.currentMap.players.erase(self)
 
 func _ready():
 	if not is_multiplayer_authority():

@@ -1,0 +1,386 @@
+[gd_scene load_steps=27 format=3 uid="uid://badj5y55q3kfh"]
+
+[ext_resource type="Texture2D" uid="uid://dnupup2kudup3" path="res://scenes/modules/Modifiers/DamageMinus/icon.png" id="1_tntaa"]
+[ext_resource type="Texture2D" uid="uid://ttltyrsqfk3m" path="res://scenes/modules/Modifiers/DamagePlus/icon.png" id="2_wsl60"]
+[ext_resource type="Texture2D" uid="uid://b2eevocjehdhl" path="res://scenes/modules/Modifiers/Death/icon.png" id="3_dbve6"]
+[ext_resource type="Texture2D" uid="uid://bxp3c4q22ur2m" path="res://scenes/modules/Modifiers/HeightDecrease/icon.png" id="4_yjhku"]
+[ext_resource type="Texture2D" uid="uid://c8k8o0ps7v4e8" path="res://scenes/modules/Modifiers/HeightIncrease/icon.png" id="5_ja2wx"]
+[ext_resource type="Texture2D" uid="uid://dq21mqx0ox2ka" path="res://scenes/modules/Modifiers/InstaDamage/icon.png" id="6_yst7t"]
+[ext_resource type="Texture2D" uid="uid://dj2nhrd5scfko" path="res://scenes/modules/Modifiers/InstaHeal/icon.png" id="7_yibo7"]
+[ext_resource type="Texture2D" uid="uid://clw3wr1eakxri" path="res://scenes/modules/Modifiers/JumpLower/icon.png" id="8_2mt6w"]
+[ext_resource type="Texture2D" uid="uid://b0y3y4nw0do11" path="res://scenes/modules/Modifiers/LowGravity/icon.png" id="9_7v7l0"]
+[ext_resource type="Texture2D" uid="uid://2pwe3clpwavp" path="res://scenes/modules/Modifiers/Poison/icon.png" id="10_84isc"]
+[ext_resource type="Texture2D" uid="uid://c8rc3g1cd2tiu" path="res://scenes/modules/Modifiers/Regen/icon.png" id="11_5rk4p"]
+
+[sub_resource type="GDScript" id="GDScript_4xybi"]
+script/source = "@tool
+extends Node2D
+
+signal onFinishedSpinning()
+
+var rotation_speed: float = 300.0
+var deceleration: float = 50.0
+
+var is_spinning: bool = false
+var current_speed: float = 0.0
+
+var modifiers: Array[Modifier] = []
+
+func setup(modifiers: Array[Modifier], rotationSpeed: float, deceleration: float) -> void:
+	self.modifiers = modifiers
+	self.deceleration = deceleration
+	self.rotation_speed = rotationSpeed
+	
+	var modifierIcons: Array[Texture2D] = []
+	for modifier in modifiers:
+		modifierIcons.append(modifier.modifierIcon)
+
+	$Background.setup(modifierIcons.size())
+
+func spin(randomInitialRotation):
+	rotation = randomInitialRotation
+	if is_spinning:
+		return
+	is_spinning = true
+	current_speed = rotation_speed
+
+func _process(delta):
+	if is_spinning:
+		# Rotar la ruleta
+		rotation += current_speed * delta
+		
+		# Reducir la velocidad gradualmente
+		current_speed -= deceleration * delta
+		if current_speed <= 0:
+			current_speed = 0
+			is_spinning = false
+			onFinishedSpinning.emit()
+"
+
+[sub_resource type="GDScript" id="GDScript_e36bs"]
+script/source = "@tool
+extends Node2D
+
+# Parámetros configurables
+var radius: float = 250.0  # Radio del círculo
+var segments: int = 12
+@export var colors: PackedColorArray = [
+	Color.RED,
+	Color.ORANGE
+]
+
+func setup(segments: int):
+	self.segments = segments
+	queue_redraw()
+
+func _draw():
+	# Dibujar el círculo dividido en segmentos
+	var angle_step = 2 * PI / segments
+	
+	for i in range(segments):
+		# Calcular los ángulos para cada segmento
+		var start_angle = i * angle_step
+		var end_angle = (i + 1) * angle_step
+		
+		# Seleccionar color (ciclando si hay más segmentos que colores)
+		var segment_color = colors[i % colors.size()]
+		
+		# Dibujar el segmento
+		draw_circle_segment(Vector2.ZERO, radius, start_angle, end_angle, segment_color)
+
+func draw_circle_segment(center: Vector2, radius: float, start_angle: float, end_angle: float, color: Color):
+	# Dibujar un segmento de círculo
+	var points = PackedVector2Array([center])
+	
+	# Agregar puntos en el arco
+	for j in range(32):  # Resolución del arco
+		var angle = lerp(start_angle, end_angle, j / 31.0)
+		points.append(center + Vector2(cos(angle), sin(angle)) * radius)
+	
+	# Dibujar el polígono del segmento
+	draw_polygon(points, PackedColorArray([color]))
+"
+
+[sub_resource type="GDScript" id="GDScript_ijy4t"]
+script/source = "extends Node2D
+
+func _process(delta: float) -> void:
+	for i in get_children():
+		i.get_node(\"Node2D\").global_rotation = 0
+"
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_14dub"]
+a = Vector2(-75.4949, -7.39275)
+b = Vector2(25.5987, 71.2208)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_hd4ph"]
+a = Vector2(-62.4814, -44.3105)
+b = Vector2(-12.8313, 75.0163)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_fjmy1"]
+a = Vector2(-32.1705, -68.8604)
+b = Vector2(-49.4175, 58.3895)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_tcd4w"]
+a = Vector2(6.39284, -75.4811)
+b = Vector2(-72.2207, 25.6125)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_cvk1t"]
+a = Vector2(44.3105, -62.4814)
+b = Vector2(-76.03, -13.8174)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_a5g7t"]
+a = Vector2(68.8466, -33.1704)
+b = Vector2(-58.3895, -49.4175)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_aerrg"]
+a = Vector2(-25.6263, -73.2206)
+b = Vector2(76.4948, 7.37895)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_lee6n"]
+a = Vector2(12.8313, -75.0163)
+b = Vector2(62.4676, 43.3106)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_eip33"]
+a = Vector2(49.4038, -59.3894)
+b = Vector2(32.1705, 68.8604)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_8368q"]
+a = Vector2(71.2208, -25.5987)
+b = Vector2(-6.37904, 76.481)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_8ugmi"]
+a = Vector2(75.0301, 13.8312)
+b = Vector2(-44.3105, 62.4814)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_euwlc"]
+a = Vector2(57.3896, 49.4313)
+b = Vector2(-69.8603, 32.1843)
+
+[node name="RuletaInterna" type="Node2D"]
+rotation = 1139.5
+script = SubResource("GDScript_4xybi")
+
+[node name="Background" type="Node2D" parent="."]
+rotation = 0.261799
+script = SubResource("GDScript_e36bs")
+colors = PackedColorArray(1, 0, 0, 1, 1, 0.647059, 0, 1)
+
+[node name="Items" type="Node2D" parent="."]
+script = SubResource("GDScript_ijy4t")
+
+[node name="_Node2D_4" type="Node2D" parent="Items"]
+position = Vector2(200, 0)
+rotation = -2.22967
+metadata/index = 0
+
+[node name="_TextureRect_3" type="TextureRect" parent="Items/_Node2D_4"]
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+texture = ExtResource("1_tntaa")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Items/_Node2D_4"]
+shape = SubResource("SegmentShape2D_14dub")
+metadata/index = 1
+
+[node name="_Node2D_6" type="Node2D" parent="Items"]
+position = Vector2(173.205, 100)
+rotation = -2.22967
+metadata/index = 1
+
+[node name="_TextureRect_5" type="TextureRect" parent="Items/_Node2D_6"]
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+texture = ExtResource("2_wsl60")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Items/_Node2D_6"]
+shape = SubResource("SegmentShape2D_hd4ph")
+metadata/index = 1
+
+[node name="_Node2D_8" type="Node2D" parent="Items"]
+position = Vector2(100, 173.205)
+rotation = -2.22967
+metadata/index = 2
+
+[node name="_TextureRect_7" type="TextureRect" parent="Items/_Node2D_8"]
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+texture = ExtResource("3_dbve6")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Items/_Node2D_8"]
+shape = SubResource("SegmentShape2D_fjmy1")
+metadata/index = 2
+
+[node name="_Node2D_10" type="Node2D" parent="Items"]
+position = Vector2(1.22461e-14, 200)
+rotation = -2.22967
+metadata/index = 3
+
+[node name="_TextureRect_9" type="TextureRect" parent="Items/_Node2D_10"]
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+texture = ExtResource("4_yjhku")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Items/_Node2D_10"]
+shape = SubResource("SegmentShape2D_tcd4w")
+metadata/index = 3
+
+[node name="_Node2D_12" type="Node2D" parent="Items"]
+position = Vector2(-100, 173.205)
+rotation = -2.22967
+metadata/index = 4
+
+[node name="_TextureRect_11" type="TextureRect" parent="Items/_Node2D_12"]
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+texture = ExtResource("5_ja2wx")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Items/_Node2D_12"]
+shape = SubResource("SegmentShape2D_cvk1t")
+metadata/index = 4
+
+[node name="_Node2D_14" type="Node2D" parent="Items"]
+position = Vector2(-173.205, 100)
+rotation = -2.22967
+metadata/index = 5
+
+[node name="_TextureRect_13" type="TextureRect" parent="Items/_Node2D_14"]
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+texture = ExtResource("6_yst7t")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Items/_Node2D_14"]
+shape = SubResource("SegmentShape2D_a5g7t")
+metadata/index = 5
+
+[node name="_Node2D_16" type="Node2D" parent="Items"]
+position = Vector2(-200, 2.44921e-14)
+rotation = -2.22967
+metadata/index = 6
+
+[node name="_TextureRect_15" type="TextureRect" parent="Items/_Node2D_16"]
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+texture = ExtResource("7_yibo7")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Items/_Node2D_16"]
+shape = SubResource("SegmentShape2D_aerrg")
+metadata/index = 6
+
+[node name="_Node2D_18" type="Node2D" parent="Items"]
+position = Vector2(-173.205, -100)
+rotation = -2.22967
+metadata/index = 7
+
+[node name="_TextureRect_17" type="TextureRect" parent="Items/_Node2D_18"]
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+texture = ExtResource("8_2mt6w")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Items/_Node2D_18"]
+shape = SubResource("SegmentShape2D_lee6n")
+metadata/index = 7
+
+[node name="_Node2D_20" type="Node2D" parent="Items"]
+position = Vector2(-100, -173.205)
+rotation = -2.22967
+metadata/index = 8
+
+[node name="_TextureRect_19" type="TextureRect" parent="Items/_Node2D_20"]
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+texture = ExtResource("8_2mt6w")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Items/_Node2D_20"]
+shape = SubResource("SegmentShape2D_eip33")
+metadata/index = 8
+
+[node name="_Node2D_22" type="Node2D" parent="Items"]
+position = Vector2(-3.67382e-14, -200)
+rotation = -2.22967
+metadata/index = 9
+
+[node name="_TextureRect_21" type="TextureRect" parent="Items/_Node2D_22"]
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+texture = ExtResource("9_7v7l0")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Items/_Node2D_22"]
+shape = SubResource("SegmentShape2D_8368q")
+metadata/index = 9
+
+[node name="_Node2D_24" type="Node2D" parent="Items"]
+position = Vector2(100, -173.205)
+rotation = -2.22967
+metadata/index = 10
+
+[node name="_TextureRect_23" type="TextureRect" parent="Items/_Node2D_24"]
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+texture = ExtResource("10_84isc")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Items/_Node2D_24"]
+shape = SubResource("SegmentShape2D_8ugmi")
+metadata/index = 10
+
+[node name="_Node2D_26" type="Node2D" parent="Items"]
+position = Vector2(173.205, -100)
+rotation = -2.22967
+metadata/index = 11
+
+[node name="_TextureRect_25" type="TextureRect" parent="Items/_Node2D_26"]
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+texture = ExtResource("11_5rk4p")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Items/_Node2D_26"]
+shape = SubResource("SegmentShape2D_euwlc")
+metadata/index = 11

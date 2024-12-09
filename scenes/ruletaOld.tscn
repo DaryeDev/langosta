@@ -1,0 +1,278 @@
+[gd_scene load_steps=20 format=3 uid="uid://vh1rnx11qewn"]
+
+[ext_resource type="PackedScene" uid="uid://bkmx0pvtu5lt2" path="res://scenes/modules/Modifiers/DamageMinus/scene.tscn" id="1_h4vqv"]
+[ext_resource type="PackedScene" uid="uid://d3otxs58rokom" path="res://scenes/modules/Modifiers/DamagePlus/scene.tscn" id="2_fstt7"]
+[ext_resource type="PackedScene" uid="uid://cv84dws1umckx" path="res://scenes/modules/Modifiers/Death/scene.tscn" id="3_cdm5b"]
+[ext_resource type="PackedScene" uid="uid://50x5sw82i0h0" path="res://scenes/modules/Modifiers/HeightDecrease/scene.tscn" id="4_pus4e"]
+[ext_resource type="PackedScene" uid="uid://cumco1lqj2dia" path="res://scenes/modules/Modifiers/HeightIncrease/scene.tscn" id="5_uqaca"]
+[ext_resource type="PackedScene" uid="uid://cqs5p574lkk83" path="res://scenes/modules/Modifiers/InstaDamage/scene.tscn" id="6_q2sh4"]
+[ext_resource type="PackedScene" uid="uid://sgtxwnsdo51" path="res://scenes/modules/Modifiers/InstaHeal/scene.tscn" id="7_j3vyo"]
+[ext_resource type="PackedScene" uid="uid://djmugko7tgloc" path="res://scenes/modules/Modifiers/JumpHigher/scene.tscn" id="8_e13lm"]
+[ext_resource type="PackedScene" uid="uid://vqpku0f5r5jg" path="res://scenes/modules/Modifiers/JumpLower/scene.tscn" id="9_3qiiu"]
+[ext_resource type="PackedScene" uid="uid://bgv63kk1sgmcm" path="res://scenes/modules/Modifiers/LowGravity/scene.tscn" id="10_i2uji"]
+[ext_resource type="PackedScene" uid="uid://bkrdl5v83x81s" path="res://scenes/modules/Modifiers/Poison/scene.tscn" id="11_h423y"]
+[ext_resource type="PackedScene" uid="uid://cy5rbjkd4yd3p" path="res://scenes/modules/Modifiers/Regen/scene.tscn" id="12_0iqny"]
+[ext_resource type="Texture2D" uid="uid://ehtmaov57qao" path="res://textures/ruletaFlecha.png" id="13_3ktf5"]
+
+[sub_resource type="GDScript" id="GDScript_t2of7"]
+script/source = "@tool
+extends Node2D
+class_name Ruleta
+
+signal onFinish(modifier: Modifier)
+
+@export var rotationSpeed: float = 300.0 # Velocidad inicial de rotación
+@export var deceleration: float = 50.0
+@export var randomInitialRotation: int = 0
+
+@export var modifierScenes: Array[PackedScene] = []:
+	set(newModifierScenes):
+		modifierScenes = newModifierScenes
+		if _hasAlreadyBeenSetUp:
+			setup()
+	
+var modifiers: Array[Modifier] = []
+
+var _hasAlreadyBeenSetUp: bool = false
+func _ready() -> void:
+	setup()
+	_hasAlreadyBeenSetUp = true
+
+func setup(randomInitialRotation: int = 0) -> void:
+	self.randomInitialRotation = randomInitialRotation
+	
+	modifiers = []
+	for modifierScene in modifierScenes:
+		var modifier = modifierScene.instantiate()
+		if modifier is Modifier:
+			modifiers.append(modifier)
+			
+	$RuletaInterna.setup(modifiers, rotationSpeed, deceleration)
+	$RuletaInterna.onFinish.connect(func(modifier: Modifier):
+		onFinish.emit(modifier)
+	)
+
+	
+func startSpin() -> void:
+	$RuletaInterna.spin(randomInitialRotation)
+"
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1tjpo"]
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 250
+corner_radius_top_right = 250
+corner_radius_bottom_right = 250
+corner_radius_bottom_left = 250
+
+[sub_resource type="GDScript" id="GDScript_4xybi"]
+script/source = "@tool
+extends Node2D
+
+signal onFinish(modifier: Modifier)
+
+var rotation_speed: float = 300.0
+var deceleration: float = 50.0
+
+var is_spinning: bool = false
+var current_speed: float = 0.0
+
+var modifiers: Array[Modifier] = []
+
+func setup(modifiers: Array[Modifier], rotationSpeed: float, deceleration: float) -> void:
+	self.modifiers = modifiers
+	self.deceleration = deceleration
+	self.rotation_speed = rotationSpeed
+	
+	var modifierIcons: Array[Texture2D] = []
+	for modifier in modifiers:
+		modifierIcons.append(modifier.modifierIcon)
+
+	$Background.setup(modifierIcons.size())
+	$Items.setup(modifierIcons)
+
+func spin(randomInitialRotation):
+	rotation = randomInitialRotation
+	if is_spinning:
+		return
+	is_spinning = true
+	current_speed = rotation_speed
+
+func _process(delta):
+	if is_spinning:
+		# Rotar la ruleta
+		rotation += current_speed * delta
+		
+		# Reducir la velocidad gradualmente
+		current_speed -= deceleration * delta
+		if current_speed <= 0:
+			current_speed = 0
+			is_spinning = false
+			choose_prize()
+
+func choose_prize():
+	# Asegúrate de que el ángulo esté entre 0 y TAU
+	var final_angle = fmod(rotation_degrees, 360)
+	var sector_angle = 360 / modifiers.size()
+	var prize_index = int(final_angle / sector_angle)
+	onFinish.emit(modifiers[prize_index])
+	if multiplayer.is_server():
+		pass
+"
+
+[sub_resource type="GDScript" id="GDScript_e36bs"]
+script/source = "@tool
+extends Node2D
+
+# Parámetros configurables
+var radius: float = 250.0  # Radio del círculo
+var segments: int = 6
+@export var colors: PackedColorArray = [
+	Color.RED, 
+	Color.BLUE, 
+	Color.GREEN, 
+	Color.YELLOW, 
+	Color.PURPLE, 
+	Color.ORANGE
+]
+
+func setup(segments: int):
+	self.segments = segments
+	queue_redraw()
+
+func _draw():
+	# Dibujar el círculo dividido en segmentos
+	var angle_step = 2 * PI / segments
+	
+	for i in range(segments):
+		# Calcular los ángulos para cada segmento
+		var start_angle = i * angle_step
+		var end_angle = (i + 1) * angle_step
+		
+		# Seleccionar color (ciclando si hay más segmentos que colores)
+		var segment_color = colors[i % colors.size()]
+		
+		# Dibujar el segmento
+		draw_circle_segment(Vector2.ZERO, radius, start_angle, end_angle, segment_color)
+
+func draw_circle_segment(center: Vector2, radius: float, start_angle: float, end_angle: float, color: Color):
+	# Dibujar un segmento de círculo
+	var points = PackedVector2Array([center])
+	
+	# Agregar puntos en el arco
+	for j in range(32):  # Resolución del arco
+		var angle = lerp(start_angle, end_angle, j / 31.0)
+		points.append(center + Vector2(cos(angle), sin(angle)) * radius)
+	
+	# Dibujar el polígono del segmento
+	draw_polygon(points, PackedColorArray([color]))
+"
+
+[sub_resource type="GDScript" id="GDScript_ijy4t"]
+script/source = "@tool
+extends Node2D
+
+var icons: Array[Texture2D] = []
+var prize_nodes: Array[Node2D] = []
+
+func setup(icons: Array[Texture2D]):
+	self.icons = icons
+	prize_nodes = []
+	
+	# Distribuir imágenes en un círculo
+	for i in range(icons.size()):
+		var texture_rect = TextureRect.new()
+		texture_rect.texture = icons[i]
+		texture_rect.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
+		texture_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		texture_rect.size = Vector2(64, 64)
+		
+		var wrapper = Node2D.new()
+		wrapper.set_meta(\"index\", i)
+		wrapper.add_child(texture_rect)
+		texture_rect.position = Vector2(-32, -32)
+		add_child(wrapper)
+		
+		prize_nodes.append(wrapper)
+	
+	# Ubicar premios en círculo
+	position_prizes_in_circle()
+
+func position_prizes_in_circle():
+	var radius = 200.0 # Ajusta el radio según el diseño
+	var angle_step = TAU / prize_nodes.size()
+	for i in range(prize_nodes.size()):
+		var angle = i * angle_step
+		var pos = Vector2(cos(angle), sin(angle)) * radius
+		prize_nodes[i].position = pos
+		
+		# Calcular ángulo inicial y final de la sección
+		var angle_start = (i * angle_step)
+		var angle_end = (i + 1) * angle_step
+
+		# Calcular los puntos A y B de la cuerda
+		var point_a = Vector2(radius * cos(angle_start), radius * sin(angle_start))
+		var point_b = Vector2(radius * cos(angle_end), radius * sin(angle_end))
+		
+		# Crear el SegmentShape2D
+		var segment_shape = SegmentShape2D.new()
+		segment_shape.a = point_a
+		segment_shape.b = point_b
+		
+func _process(delta: float) -> void:
+	for i in range(prize_nodes.size()):
+		prize_nodes[i].global_rotation = 0
+"
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_3r82l"]
+properties/0/path = NodePath("RuletaInterna:rotation")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+
+[node name="Ruleta" type="Node2D"]
+script = SubResource("GDScript_t2of7")
+randomInitialRotation = null
+modifierScenes = Array[PackedScene]([ExtResource("1_h4vqv"), ExtResource("2_fstt7"), ExtResource("3_cdm5b"), ExtResource("4_pus4e"), ExtResource("5_uqaca"), ExtResource("6_q2sh4"), ExtResource("7_j3vyo"), ExtResource("8_e13lm"), ExtResource("9_3qiiu"), ExtResource("10_i2uji"), ExtResource("11_h423y"), ExtResource("12_0iqny")])
+
+[node name="Border" type="Panel" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -262.5
+offset_top = -262.5
+offset_right = 262.5
+offset_bottom = 262.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_1tjpo")
+
+[node name="RuletaInterna" type="Node2D" parent="."]
+script = SubResource("GDScript_4xybi")
+
+[node name="Background" type="Node2D" parent="RuletaInterna"]
+rotation = 0.261799
+script = SubResource("GDScript_e36bs")
+colors = PackedColorArray(1, 0, 0, 1, 1, 0.647059, 0, 1)
+
+[node name="Items" type="Node2D" parent="RuletaInterna"]
+script = SubResource("GDScript_ijy4t")
+
+[node name="ArrowPivot" type="Node2D" parent="."]
+position = Vector2(0, -275)
+
+[node name="Arrow" type="TextureRect" parent="ArrowPivot"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -50.0
+offset_top = -26.0
+offset_right = 50.0
+offset_bottom = 74.0
+grow_horizontal = 2
+texture = ExtResource("13_3ktf5")
+expand_mode = 5
+stretch_mode = 5
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_3r82l")

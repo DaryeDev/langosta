@@ -77,6 +77,8 @@ func _process(delta: float) -> void:
 script = SubResource("GDScript_ku7v3")
 modifierIcon = ExtResource("2_oqo8y")
 modifierIconPath = "res://scenes/modules/Modifiers/LowGravity/icon.png"
+modifierName = "LowGravity"
+modifierDescription = "Makes you float like you are on the Moon!"
 collider = NodePath("Collision")
 mesh = NodePath("Mesh")
 

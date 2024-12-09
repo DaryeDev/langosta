@@ -1,4 +1,5 @@
 extends Node3D
+class_name Server
 
 @onready var grid_container: GridContainer = $GridContainer
 @onready var players: Node = $"../../Players"
@@ -17,6 +18,8 @@ func _enter_tree():
 func _ready():
 	if not is_multiplayer_authority():
 		return
+		
+	Globals.myServer = self
 
 	self.process_mode = Node.PROCESS_MODE_ALWAYS
 	Globals.currentMap.onNewPlayer.connect(_on_player_connected)

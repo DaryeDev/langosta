@@ -22,7 +22,7 @@ func _ready():
 
 	# Spawn the local player unless this is a dedicated server export.
 	if not OS.has_feature("dedicated_server") and spawn_host_player:
-		add_player(1, Globals.username, "Server" if Globals.isServerNotPlaying else "Player")
+		add_player(1, Globals.username, Globals.role)
 
 
 func _exit_tree():
@@ -56,7 +56,6 @@ func add_player(id: int, userName: String = "PanTostado", role: String = "Player
 	if character is Player and Globals.currentMap:
 		Globals.currentMap._emitOnNewPlayer.rpc(id)
 		(character as Player).username = userName
-		Globals.currentMap.players.append(character)
 		
 		if Globals.currentMap.billboard:
 			Globals.currentMap.billboard.addPlayer.call_deferred(character)
@@ -67,9 +66,9 @@ func del_player(id: int):
 		return
 	if Globals.currentMap:
 		Globals.currentMap._emitOnPlayerDisconnected.rpc(id)
-		Globals.currentMap.players = Globals.currentMap.players.filter(func(player):
-			return player.name != str(id)
-		)
+		#Globals.currentMap.players = Globals.currentMap.players.filter(func(player):
+			#return player.name != str(id)
+		#)
 		
 		if Globals.currentMap.billboard:
 			Globals.currentMap.billboard.removePlayerById.call_deferred(str(id))

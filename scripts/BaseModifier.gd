@@ -40,22 +40,30 @@ func _internal_onBodyEntered(body: Node3D) -> void:
 		body = (body as Player)
 		player = body
 		body.applyModifier(self)
-		
-		_onAppliedOnPlayer.call_deferred()
-		
-		if collider:
-			collider.queue_free()
 
-		if mesh:
-			mesh.queue_free()
+func _internal_appliedOnPlayer(player: Player):
+	self.player = player
+	
+	if not timer:
+		timer = Timer.new()
+		timer.one_shot = true
+		add_child(timer, true)
+	
+	_onAppliedOnPlayer.call_deferred()
+		
+	if collider:
+		collider.queue_free()
 
-		if timer:
-			timer.start(modifierDuration)
-			timer.timeout.connect(func():
-				_onModifierTimeEnds.call_deferred()
-				body.removeModifier(self)
-				queue_free()
-			)
+	if mesh:
+		mesh.queue_free()
+
+	if timer:
+		timer.start(modifierDuration)
+		timer.timeout.connect(func():
+			_onModifierTimeEnds.call_deferred()
+			player.removeModifier(self)
+			queue_free()
+		)
 
 func _onAppliedOnPlayer() -> void:
 	pass

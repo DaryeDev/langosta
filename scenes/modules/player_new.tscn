@@ -155,6 +155,9 @@ properties/10/replication_mode = 1
 properties/11/path = NodePath("Camera3D/BlockManager:scale")
 properties/11/spawn = true
 properties/11/replication_mode = 1
+properties/12/path = NodePath(".:scale")
+properties/12/spawn = true
+properties/12/replication_mode = 1
 
 [sub_resource type="LabelSettings" id="LabelSettings_l1v7f"]
 font_size = 50
