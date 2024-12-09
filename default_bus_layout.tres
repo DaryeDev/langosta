@@ -29,6 +29,7 @@ resource_name = "Limiter"
 ceiling_db = -6.0
 
 [resource]
+bus/0/volume_db = -7.26851
 bus/0/effect/0/effect = SubResource("AudioEffectReverb_j81w7")
 bus/0/effect/0/enabled = false
 bus/0/effect/1/effect = SubResource("AudioEffectStereoEnhance_gckrd")
