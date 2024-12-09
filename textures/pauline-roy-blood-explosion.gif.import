@@ -1,0 +1,15 @@
+[remap]
+
+importer="import_gif_to_sprite_frames"
+type="SpriteFrames"
+uid="uid://clabhaqx4rxqe"
+path="res://.godot/imported/pauline-roy-blood-explosion.gif-b235c99978fd665ddd4fc6aa56000118.tres"
+
+[deps]
+
+source_file="res://textures/pauline-roy-blood-explosion.gif"
+dest_files=["res://.godot/imported/pauline-roy-blood-explosion.gif-b235c99978fd665ddd4fc6aa56000118.tres"]
+
+[params]
+
+frames_per_second=30
