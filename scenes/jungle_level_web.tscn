@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=3 uid="uid://c78woxn32desr"]
+[gd_scene load_steps=47 format=3 uid="uid://c78woxn32desr"]
 
 [ext_resource type="Script" path="res://scripts/Map.gd" id="1_2j6sc"]
 [ext_resource type="Material" uid="uid://c7mw5tryqfggw" path="res://addons/proton_scatter/demos/assets/materials/m_water.tres" id="1_4adjy"]
@@ -15,12 +15,16 @@
 [ext_resource type="PackedScene" uid="uid://ucejrc8oyf4f" path="res://scenes/modules/SpawnArea.tscn" id="14_t7sg5"]
 [ext_resource type="PackedScene" uid="uid://d10v0dr35joby" path="res://scenes/modules/ZombieSpawnArea.tscn" id="15_l4vwf"]
 [ext_resource type="PackedScene" uid="uid://xd6lbpa52xf7" path="res://scenes/world/ground/jungle_world_web.tscn" id="17_6oy5u"]
+[ext_resource type="CameraAttributesPractical" uid="uid://d0wfsxauvyj5a" path="res://scenes/world/lights and environment/camera_web.tres" id="17_eh42y"]
+[ext_resource type="AudioStream" uid="uid://b2ir8g48uk3k2" path="res://sounds/music/jungle/2015-03-01_-_Panic_Man_-_David_Fesliyan.mp3" id="18_18g3y"]
 [ext_resource type="PackedScene" uid="uid://lryua1aujudt" path="res://scenes/modules/player_spawner.tscn" id="18_25eqd"]
+[ext_resource type="AudioStream" uid="uid://buu47o2yokqe7" path="res://sounds/music/jungle/2019-06-18_-_Creepy_Vibes_-_David_Fesliyan.mp3" id="20_3ua75"]
+[ext_resource type="AudioStream" uid="uid://dwkpreji74gxg" path="res://sounds/music/jungle/2015-10-18_-_ Panic_Man_3_-_David_Fesliyan.mp3" id="20_f3fcu"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_0xjln"]
 size = Vector2(300, 300)
 
-[sub_resource type="Resource" id="Resource_kmsec"]
+[sub_resource type="Resource" id="Resource_ayaod"]
 script = ExtResource("5_t0m2l")
 spacing = Vector3(4, 4, 4)
 enabled = true
@@ -29,7 +33,7 @@ custom_seed = 0
 restrict_height = true
 reference_frame = 0
 
-[sub_resource type="Resource" id="Resource_8pun8"]
+[sub_resource type="Resource" id="Resource_d7emp"]
 script = ExtResource("6_pxlg8")
 position = Vector3(10, 4, 10)
 rotation = Vector3(10, 180, 10)
@@ -40,7 +44,7 @@ custom_seed = 25
 restrict_height = false
 reference_frame = 2
 
-[sub_resource type="Resource" id="Resource_eujpf"]
+[sub_resource type="Resource" id="Resource_86ao2"]
 script = ExtResource("7_ip7e8")
 rotation = Vector3(360, 0, 360)
 snap_angle = Vector3(180, 0, 180)
@@ -50,9 +54,9 @@ custom_seed = 0
 restrict_height = false
 reference_frame = 2
 
-[sub_resource type="Resource" id="Resource_onmjw"]
+[sub_resource type="Resource" id="Resource_7veq7"]
 script = ExtResource("3_sfqau")
-stack = Array[ExtResource("4_4wb6j")]([SubResource("Resource_kmsec"), SubResource("Resource_8pun8"), SubResource("Resource_eujpf")])
+stack = Array[ExtResource("4_4wb6j")]([SubResource("Resource_ayaod"), SubResource("Resource_d7emp"), SubResource("Resource_86ao2")])
 
 [sub_resource type="Resource" id="Resource_j7t0k"]
 script = ExtResource("11_fvcjf")
@@ -70,7 +74,7 @@ size = Vector3(300, 1, 20)
 script = ExtResource("11_fvcjf")
 size = Vector3(300, 1, 20)
 
-[sub_resource type="Resource" id="Resource_1exwp"]
+[sub_resource type="Resource" id="Resource_nshj3"]
 script = ExtResource("5_t0m2l")
 spacing = Vector3(1.5, 2, 1)
 enabled = true
@@ -79,7 +83,7 @@ custom_seed = 0
 restrict_height = true
 reference_frame = 0
 
-[sub_resource type="Resource" id="Resource_agu1u"]
+[sub_resource type="Resource" id="Resource_i0w1w"]
 script = ExtResource("6_pxlg8")
 position = Vector3(0.173, 0.222, 0.918)
 rotation = Vector3(10, 360, 10)
@@ -90,7 +94,7 @@ custom_seed = 10
 restrict_height = false
 reference_frame = 2
 
-[sub_resource type="Resource" id="Resource_vkes3"]
+[sub_resource type="Resource" id="Resource_3636u"]
 script = ExtResource("7_ip7e8")
 rotation = Vector3(360, 0, 360)
 snap_angle = Vector3(180, 0, 180)
@@ -100,9 +104,9 @@ custom_seed = 0
 restrict_height = false
 reference_frame = 2
 
-[sub_resource type="Resource" id="Resource_48xeh"]
+[sub_resource type="Resource" id="Resource_ptkb7"]
 script = ExtResource("3_sfqau")
-stack = Array[ExtResource("4_4wb6j")]([SubResource("Resource_1exwp"), SubResource("Resource_agu1u"), SubResource("Resource_vkes3")])
+stack = Array[ExtResource("4_4wb6j")]([SubResource("Resource_nshj3"), SubResource("Resource_i0w1w"), SubResource("Resource_3636u")])
 
 [sub_resource type="Curve3D" id="Curve3D_2vyue"]
 _data = {
@@ -261,14 +265,14 @@ sky_material = SubResource("ShaderMaterial_lh3ci")
 
 [sub_resource type="Environment" id="Environment_48y4a"]
 background_mode = 2
+background_energy_multiplier = 0.6
 background_intensity = 100000.0
 sky = SubResource("Sky_c2u8v")
-ambient_light_color = Color(0.352941, 0.215686, 0.529412, 1)
-ambient_light_sky_contribution = 0.2
-ambient_light_energy = 0.0
+ambient_light_color = Color(0.104778, 0.340441, 0.348697, 1)
 reflected_light_source = 2
 tonemap_white = 1.2
 ssao_detail = 2.0
+sdfgi_use_occlusion = true
 glow_normalized = true
 glow_intensity = 6.68
 fog_enabled = true
@@ -278,16 +282,18 @@ fog_aerial_perspective = 0.353
 fog_sky_affect = 0.05
 fog_height = 4.0
 fog_height_density = 0.02
-volumetric_fog_density = 0.005
-volumetric_fog_emission = Color(0.596078, 0.866667, 0.980392, 1)
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.25
+volumetric_fog_albedo = Color(0, 0.349058, 0.78127, 1)
+volumetric_fog_emission = Color(0.53, 0.53, 0.53, 1)
 adjustment_enabled = true
 
-[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_ic46u"]
-auto_exposure_scale = 0.22
-auto_exposure_speed = 0.8
-dof_blur_far_distance = 1.44
-dof_blur_near_distance = 0.01
-auto_exposure_min_sensitivity = 8.01
+[sub_resource type="AudioStreamPlaylist" id="AudioStreamPlaylist_mql6h"]
+shuffle = true
+stream_count = 3
+stream_0 = ExtResource("18_18g3y")
+stream_1 = ExtResource("20_f3fcu")
+stream_2 = ExtResource("20_3ua75")
 
 [node name="Node3D" type="Node3D" node_paths=PackedStringArray("navReg")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.31789, 10.3343, 7.17958)
@@ -307,7 +313,7 @@ metadata/_edit_group_ = true
 [node name="Mountains" type="Node3D" parent="."]
 process_mode = 3
 script = ExtResource("2_7fh4a")
-modifier_stack = SubResource("Resource_onmjw")
+modifier_stack = SubResource("Resource_7veq7")
 Performance/use_chunks = true
 Performance/chunk_dimensions = Vector3(15, 15, 15)
 
@@ -348,7 +354,7 @@ collision_mask = 0
 process_mode = 3
 script = ExtResource("2_7fh4a")
 render_mode = 1
-modifier_stack = SubResource("Resource_48xeh")
+modifier_stack = SubResource("Resource_ptkb7")
 Performance/use_chunks = true
 Performance/chunk_dimensions = Vector3(15, 15, 15)
 
@@ -370,4 +376,11 @@ navigation_mesh = SubResource("NavigationMesh_6ht0r")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_48y4a")
-camera_attributes = SubResource("CameraAttributesPractical_ic46u")
+camera_attributes = ExtResource("17_eh42y")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = SubResource("AudioStreamPlaylist_mql6h")
+autoplay = true
+stream_paused = true
+mix_target = 1
+bus = &"Music"

@@ -294,4 +294,7 @@ label_settings = SubResource("LabelSettings_l1v7f")
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="AudioListener3D" type="AudioListener3D" parent="."]
+current = true
+
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

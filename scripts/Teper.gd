@@ -79,7 +79,7 @@ func damage(attack: Dictionary):
 func handle_death():
 	ded.emit()
 	
-	var newExplosion = preload("res://scenes/modules/Explosion.tscn").instantiate()
+	var newExplosion = preload("res://scenes/modules/Z_death.tscn").instantiate()
 	Globals.currentMap.add_child(newExplosion)
 	newExplosion.global_position = global_position
 	queue_free()

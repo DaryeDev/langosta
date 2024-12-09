@@ -1,0 +1,74 @@
+[gd_resource type="AudioBusLayout" load_steps=9 format=3 uid="uid://dthto3k5o8rax"]
+
+[sub_resource type="AudioEffectReverb" id="AudioEffectReverb_j81w7"]
+resource_name = "Reverb"
+
+[sub_resource type="AudioEffectStereoEnhance" id="AudioEffectStereoEnhance_gckrd"]
+resource_name = "StereoEnhance"
+
+[sub_resource type="AudioEffectLimiter" id="AudioEffectLimiter_4glnh"]
+resource_name = "Limiter"
+ceiling_db = -12.0
+
+[sub_resource type="AudioEffectReverb" id="AudioEffectReverb_rs858"]
+resource_name = "Reverb"
+room_size = 0.3
+
+[sub_resource type="AudioEffectCompressor" id="AudioEffectCompressor_grgg0"]
+resource_name = "Compressor"
+
+[sub_resource type="AudioEffectLimiter" id="AudioEffectLimiter_n0vkw"]
+resource_name = "Limiter"
+ceiling_db = -7.0
+
+[sub_resource type="AudioEffectCompressor" id="AudioEffectCompressor_5p1nn"]
+resource_name = "Compressor"
+
+[sub_resource type="AudioEffectLimiter" id="AudioEffectLimiter_rqi34"]
+resource_name = "Limiter"
+ceiling_db = -6.0
+
+[resource]
+bus/0/volume_db = -7.26851
+bus/0/effect/0/effect = SubResource("AudioEffectReverb_j81w7")
+bus/0/effect/0/enabled = false
+bus/0/effect/1/effect = SubResource("AudioEffectStereoEnhance_gckrd")
+bus/0/effect/1/enabled = false
+bus/1/name = &"Zombies"
+bus/1/solo = false
+bus/1/mute = false
+bus/1/bypass_fx = false
+bus/1/volume_db = 0.0
+bus/1/send = &"Master"
+bus/1/effect/0/effect = SubResource("AudioEffectLimiter_4glnh")
+bus/1/effect/0/enabled = true
+bus/1/effect/1/effect = SubResource("AudioEffectReverb_rs858")
+bus/1/effect/1/enabled = true
+bus/1/effect/2/effect = SubResource("AudioEffectCompressor_grgg0")
+bus/1/effect/2/enabled = true
+bus/1/effect/3/effect = SubResource("AudioEffectLimiter_n0vkw")
+bus/1/effect/3/enabled = true
+bus/2/name = &"Background Sounds"
+bus/2/solo = false
+bus/2/mute = false
+bus/2/bypass_fx = false
+bus/2/volume_db = 0.0
+bus/2/send = &"Master"
+bus/2/effect/0/effect = SubResource("AudioEffectLimiter_4glnh")
+bus/2/effect/0/enabled = true
+bus/2/effect/1/effect = SubResource("AudioEffectReverb_rs858")
+bus/2/effect/1/enabled = true
+bus/2/effect/2/effect = SubResource("AudioEffectCompressor_grgg0")
+bus/2/effect/2/enabled = true
+bus/2/effect/3/effect = SubResource("AudioEffectLimiter_n0vkw")
+bus/2/effect/3/enabled = true
+bus/3/name = &"Music"
+bus/3/solo = false
+bus/3/mute = false
+bus/3/bypass_fx = false
+bus/3/volume_db = -3.54298
+bus/3/send = &"Master"
+bus/3/effect/0/effect = SubResource("AudioEffectCompressor_5p1nn")
+bus/3/effect/0/enabled = true
+bus/3/effect/1/effect = SubResource("AudioEffectLimiter_rqi34")
+bus/3/effect/1/enabled = true

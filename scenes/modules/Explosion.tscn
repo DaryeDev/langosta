@@ -1,6 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://br0ycdywxldy7"]
+[gd_scene load_steps=10 format=3 uid="uid://br0ycdywxldy7"]
 
-[ext_resource type="AudioStream" uid="uid://2d55qxbdnh0t" path="res://sounds/explosion.mp3" id="1_eqsr5"]
+[ext_resource type="AudioStream" uid="uid://dk8tq8sdphv4y" path="res://sounds/zombies/445982__breviceps__zombie-dies-1.wav" id="1_fre7u"]
+[ext_resource type="AudioStream" uid="uid://b8r2t575iuvge" path="res://sounds/zombies/353062__crocytc__zombie2.wav" id="2_1gxkv"]
 [ext_resource type="SpriteFrames" uid="uid://5wfttckjw8so" path="res://textures/explosion.gif" id="2_sxcy1"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_k0dgj"]
@@ -45,15 +46,23 @@ func _process(delta: float) -> void:
 			look_at(Globals.myPlayer.global_transform.origin, Vector3.UP, true)
 "
 
+[sub_resource type="AudioStreamPlaylist" id="AudioStreamPlaylist_6o05b"]
+shuffle = true
+loop = false
+stream_count = 2
+stream_0 = ExtResource("1_fre7u")
+stream_1 = ExtResource("2_1gxkv")
+
 [node name="Explosion" type="MeshInstance3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1183, 0)
 material_override = SubResource("StandardMaterial3D_2qycb")
 mesh = SubResource("PlaneMesh_rgvy3")
 script = SubResource("GDScript_4l6cr")
 
-[node name="Explosion" type="AudioStreamPlayer3D" parent="."]
-stream = ExtResource("1_eqsr5")
+[node name="Dead" type="AudioStreamPlayer3D" parent="."]
+stream = SubResource("AudioStreamPlaylist_6o05b")
 autoplay = true
+bus = &"Zombies"
 
 [node name="SubViewport" type="SubViewport" parent="."]
 disable_3d = true
